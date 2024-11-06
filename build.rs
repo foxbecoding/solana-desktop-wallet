@@ -5,5 +5,6 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 
 fn build_app_ui() -> Result<(), Box<dyn Error>> {
-    Ok(slint_build::compile("app/app.slint")?)
+    let config = slint_build::CompilerConfiguration::new().with_style("cosmic-dark".into());
+    Ok(slint_build::compile_with_config("app/app.slint", config)?)
 }
