@@ -1,0 +1,25 @@
+import { Button, VerticalBox } from "std-widgets.slint";
+
+export component App inherits Window {
+    width: 375px;
+    height: 600px;
+    background: #121212;
+    no-frame: false;
+    always-on-top: true;
+    title: "Solana Desktop Wallet";
+
+    in-out property <int> counter: 0;
+    callback request-increase-value();
+    VerticalBox {
+        Text {
+            text: "Counter: \{root.counter}";
+        }
+
+        Button {
+            text: "Increase value";
+            clicked => {
+                root.request-increase-value();
+            }
+        }
+    }
+}
