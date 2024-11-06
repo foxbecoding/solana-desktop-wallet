@@ -10,5 +10,10 @@ run_project() {
   fi
 }
 
-# Run the project (which will compile Slint files through build.rs)
-run_project
+if [ "$1" == "run_project" ]; then
+  run_project
+else
+  # Use cargo watch to watch the app and src directories and call the run_project function on changes
+  # The \$ is used to escape $ so it's not interpreted within the single quotes
+  cargo watch -w app -w src -s 'bash -c "./watch_and_run.sh run_project"'
+fi
