@@ -1,10 +1,9 @@
-import {Palette, Button, VerticalBox } from "std-widgets.slint";
+import {Palette, VerticalBox } from "std-widgets.slint";
+import { SideNavAccount } from "components.slint";
 
 export component SideNav inherits Rectangle {
     background: Palette.background;
     width: 300px;
 
-    VerticalBox {
-        Text {text: "Side Navigation";}
-    }
+    SideNavAccount {}
 }
