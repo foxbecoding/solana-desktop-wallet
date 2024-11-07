@@ -6,6 +6,7 @@ use slint::PlatformError;
 slint::include_modules!();
 fn main() -> Result<(), PlatformError> {
     let app = App::new()?;
+    // app.window().set_maximized(true);
     app.run()?;
     Ok(())
 }
