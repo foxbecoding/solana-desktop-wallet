@@ -1,3 +1,6 @@
+# Ignore target directory
 /target/
 
+# Ignore .env file
+.env
 
