@@ -6,7 +6,7 @@ fn main() -> Result<(), CompileError> {
 }
 
 fn build_app_ui() -> Result<(), CompileError> {
-    let config = slint_build::CompilerConfiguration::new().with_style("cosmic-dark".into());
+    let config = slint_build::CompilerConfiguration::new().with_style("fluent-dark".into());
     slint_build::compile_with_config("app/app.slint", config)?;
     Ok(())
 }
