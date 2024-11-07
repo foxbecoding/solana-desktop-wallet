@@ -1,6 +1,5 @@
 import {Palette, Button, VerticalBox } from "std-widgets.slint";
-import {MainContent} from "components/MainContent.slint";
-import {SideNav} from "components/SideNav.slint";
+
 
 export component App inherits Window {
     preferred-width: 900px;
@@ -10,8 +9,5 @@ export component App inherits Window {
     always-on-top: true;
     title: "Solana Desktop Wallet";
 
-    HorizontalLayout {
-        Rectangle { background: Palette.background; width: 320px; }
-        Rectangle { horizontal-stretch: 1; }
-    }
+
 }
