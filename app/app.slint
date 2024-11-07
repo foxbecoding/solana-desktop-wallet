@@ -1,5 +1,5 @@
 import {Palette, Button, VerticalBox } from "std-widgets.slint";
-
+import {AppView} from "components/AppView.slint";
 
 export component App inherits Window {
     preferred-width: 900px;
@@ -9,5 +9,5 @@ export component App inherits Window {
     always-on-top: true;
     title: "Solana Desktop Wallet";
 
-
+    AppView {}
 }
