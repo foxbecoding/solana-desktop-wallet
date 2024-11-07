@@ -1,0 +1,21 @@
+import {Palette, VerticalBox } from "std-widgets.slint";
+
+export component SideNavAccount inherits Rectangle {
+    background: Palette.alternate-background;
+    border-radius: 6px;
+    height: 60px;
+    in property <string> account_id: "D504F...1111";
+
+    VerticalBox {
+        VerticalLayout {
+            Text {
+                font-size: 12px;
+                font-weight: 700;
+                text: "Connected Account";
+            }
+        }
+        VerticalLayout {
+            Text {text: account_id;}
+        }
+    }
+}
