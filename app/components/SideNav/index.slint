@@ -1,5 +1,5 @@
 import {Palette, VerticalBox, HorizontalBox } from "std-widgets.slint";
-import { SideNavAccount } from "components.slint";
+import { SideNavAccount, SideNavList } from "components.slint";
 
 export component SideNav inherits Rectangle {
     background: Palette.background;
@@ -9,6 +9,7 @@ export component SideNav inherits Rectangle {
         VerticalLayout {
             spacing: 9px;
             SideNavAccount {}
+            SideNavList {}
         }
     }
 }

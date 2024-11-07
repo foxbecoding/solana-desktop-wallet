@@ -1,26 +1,97 @@
-import {Palette, VerticalBox } from "std-widgets.slint";
+import {Palette, VerticalBox, HorizontalBox } from "std-widgets.slint";
 
-export component SideNavList inherits VerticalBox {
-    VerticalLayout {
-        Text {
-            font-size: 12px;
-            text: "Wallet";
+export component SideNavList inherits VerticalLayout {
+    padding-top: 18px;
+    
+    Rectangle {
+        background: Palette.alternate-background;
+        height: 36px;
+        border-radius: 6px;
+
+        HorizontalBox {
+            Image{
+                 source: @image-url("../../assets/icons/wallet-icon-filled.svg");
+                 width: 21px;
+                 colorize: Palette.accent-background;
+             }
+            Text {
+                vertical-alignment: center;
+                font-size: 15px;
+                font-weight: 500;
+                text: "Wallet";
+            }
         }
-        Text {
-            font-size: 12px;
-            text: "Collections";
+    }
+    Rectangle {
+        background: transparent;
+        height: 36px;
+        border-radius: 6px;
+
+        HorizontalBox {
+            Image{
+                 source: @image-url("../../assets/icons/grid-icon.svg");
+                 width: 21px;
+             }
+            Text {
+                vertical-alignment: center;
+                font-size: 15px;
+                font-weight: 500;
+                text: "Collections";
+            }
         }
-        Text {
-            font-size: 12px;
-            text: "Swap";
+    }
+    Rectangle {
+        background: transparent;
+        height: 36px;
+        border-radius: 6px;
+
+        HorizontalBox {
+            Image{
+                 source: @image-url("../../assets/icons/swap-icon.svg");
+                 width: 21px;
+             }
+            Text {
+                vertical-alignment: center;
+                font-size: 15px;
+                font-weight: 500;
+                text: "Swap";
+            }
         }
-        Text {
-            font-size: 12px;
-            text: "Activites";
+    }
+    Rectangle {
+        background: transparent;
+        height: 36px;
+        border-radius: 6px;
+
+        HorizontalBox {
+            Image{
+                 source: @image-url("../../assets/icons/globe-icon.svg");
+                 width: 21px;
+             }
+            Text {
+                vertical-alignment: center;
+                font-size: 15px;
+                font-weight: 500;
+                text: "Explore";
+            }
         }
-        Text {
-            font-size: 12px;
-            text: "Settings";
+    }
+    Rectangle {
+        background: transparent;
+        height: 36px;
+        border-radius: 6px;
+
+        HorizontalBox {
+            Image{
+                 source: @image-url("../../assets/icons/settings-icon.svg");
+                 width: 21px;
+             }
+            Text {
+                vertical-alignment: center;
+                font-size: 15px;
+                font-weight: 500;
+                text: "Settings";
+            }
         }
     }
 }
