@@ -1,0 +1,11 @@
+export enum View {
+    wallet,
+    collections,
+    swap,
+    explorer,
+    settings
+}
+
+export global ViewManager {
+    in-out property <View> activeView: wallet;
+}
