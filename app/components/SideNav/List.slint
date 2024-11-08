@@ -5,36 +5,52 @@ import { ViewManager, View } from "../../utils/view-manager.slint";
 export component SideNavList inherits VerticalLayout {
     padding-top: 18px;
     property <image> walletIcon: ViewManager.activeView == View.wallet ? @image-url("../../assets/icons/wallet-icon-filled.svg") :  @image-url("../../assets/icons/wallet-icon.svg");
-    property <image> collectionsIcon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg");
+    property <image> collectionsIcon: ViewManager.activeView == View.collections ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg");
     property <image> swapIcon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg");
     property <image> explorerIcon: ViewManager.activeView == View.explorer ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg");
     property <image> settingsIcon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg");
+
+    function labelSelector(view: View) -> string {
+        if (view == View.wallet) {
+            return "Wallet";
+        } else if (view == View.collections) {
+            return "Collections";
+        } else if (view == View.swap) {
+            return "Swap";
+        } else if (view == View.explorer) {
+            return "Explorer";
+        } else if (view == View.settings) {
+            return "Settings";
+        } else {
+            return "Unavailable";
+        }
+    }
 
     private property <[ListItem]> listItems: [
         {
             view: View.wallet,
             icon: walletIcon,
-            label: "Wallet"
+            label: labelSelector(View.wallet)
         },
         {
             view: View.collections,
             icon: collectionsIcon,
-            label: "Collections"
+            label: labelSelector(View.collections)
         },
         {
             view: View.swap,
             icon: swapIcon,
-            label: "Swap"
+            label: labelSelector(View.swap)
         },
         {
             view: View.explorer,
             icon: explorerIcon,
-            label: "Explorer"
+            label: labelSelector(View.explorer)
         },
         {
             view: View.settings,
             icon: settingsIcon,
-            label: "Settings"
+            label: labelSelector(View.settings)
         },
     ];
 
