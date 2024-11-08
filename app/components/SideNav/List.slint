@@ -4,31 +4,53 @@ import { ViewManager, View } from "../../utils/view-manager.slint";
 
 export component SideNavList inherits VerticalLayout {
     padding-top: 18px;
+    property <image> walletIcon: ViewManager.activeView == View.wallet ? @image-url("../../assets/icons/wallet-icon-filled.svg") :  @image-url("../../assets/icons/wallet-icon.svg");
+    property <image> collectionsIcon: ViewManager.activeView == View.collections ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg");
+    property <image> swapIcon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg");
+    property <image> explorerIcon: ViewManager.activeView == View.explorer ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg");
+    property <image> settingsIcon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg");
+
+    function labelSelector(view: View) -> string {
+        if (view == View.wallet) {
+            return "Wallet";
+        } else if (view == View.collections) {
+            return "Collections";
+        } else if (view == View.swap) {
+            return "Swap";
+        } else if (view == View.explorer) {
+            return "Explorer";
+        } else if (view == View.settings) {
+            return "Settings";
+        } else {
+            return "Unavailable";
+        }
+    }
+
     private property <[ListItem]> listItems: [
         {
             view: View.wallet,
-            icon: ViewManager.activeView == View.wallet ? @image-url("../../assets/icons/wallet-icon-filled.svg") :  @image-url("../../assets/icons/wallet-icon.svg"),
-            label: "Wallet"
+            icon: walletIcon,
+            label: labelSelector(View.wallet)
         },
         {
             view: View.collections,
-            icon: ViewManager.activeView == View.collections ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg"),
-            label: "Collections"
+            icon: collectionsIcon,
+            label: labelSelector(View.collections)
         },
         {
             view: View.swap,
-            icon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg"),
-            label: "Swap"
+            icon: swapIcon,
+            label: labelSelector(View.swap)
         },
         {
             view: View.explorer,
-            icon: ViewManager.activeView == View.explorer ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg"),
-            label: "Explorer"
+            icon: explorerIcon,
+            label: labelSelector(View.explorer)
         },
         {
             view: View.settings,
-            icon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg"),
-            label: "Settings"
+            icon: settingsIcon,
+            label: labelSelector(View.settings)
         },
     ];
 
