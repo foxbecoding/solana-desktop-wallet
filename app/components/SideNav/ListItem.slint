@@ -1,0 +1,49 @@
+import { Palette, HorizontalBox }  from "std-widgets.slint";
+import { ViewManager, View } from "../../utils/view-manager.slint";
+
+export struct ListItem {
+    view: View,
+    icon: image,
+    label: string
+}
+
+export component SideNavListItem inherits Rectangle {
+    background: root.is_view ? Palette.alternate-background : Palette.background;
+    height: 36px;
+    border-radius: 6px;
+    in-out property<View> view;
+    in-out property<string> label;
+    in-out property<image> icon;
+
+    property <bool> is_view: ViewManager.activeView == root.view;
+
+    HorizontalBox {
+        Image{
+            source: icon;
+            width: 21px;
+            colorize: root.is_view ? Palette.accent-background : Palette.foreground;
+        }
+
+        Text {
+            vertical-alignment: center;
+            font-size: 15px;
+            font-weight: 500;
+            text: label;
+        }
+    }
+    states [
+        pressed when touch.pressed: {
+            root.opacity: 0.5;
+            root.background: Palette.alternate-background;
+        }
+        hover when touch.has-hover: {
+            root.opacity: 0.7;
+            root.background: Palette.alternate-background;
+        }
+    ]
+    touch := TouchArea {
+        clicked => {
+            ViewManager.activeView = view;
+        }
+    }
+}

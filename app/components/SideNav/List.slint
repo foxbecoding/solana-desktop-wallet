@@ -1,97 +1,37 @@
-import {Palette, VerticalBox, HorizontalBox } from "std-widgets.slint";
+import { Palette, HorizontalBox }  from "std-widgets.slint";
+import { SideNavListItem, ListItem } from "ListItem.slint";
+import { ViewManager, View } from "../../utils/view-manager.slint";
 
 export component SideNavList inherits VerticalLayout {
     padding-top: 18px;
-    
-    Rectangle {
-        background: Palette.alternate-background;
-        height: 36px;
-        border-radius: 6px;
+    private property <[ListItem]> listItems: [
+        {
+            view: View.wallet,
+            icon: ViewManager.activeView == View.wallet ? @image-url("../../assets/icons/wallet-icon-filled.svg") :  @image-url("../../assets/icons/wallet-icon.svg"),
+            label: "Wallet"
+        },
+        {
+            view: View.collections,
+            icon: ViewManager.activeView == View.collections ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg"),
+            label: "Collections"
+        },
+        {
+            view: View.swap,
+            icon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg"),
+            label: "Swap"
+        },
+        {
+            view: View.explorer,
+            icon: ViewManager.activeView == View.explorer ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg"),
+            label: "Explorer"
+        },
+        {
+            view: View.settings,
+            icon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg"),
+            label: "Settings"
+        },
+    ];
 
-        HorizontalBox {
-            Image{
-                 source: @image-url("../../assets/icons/wallet-icon-filled.svg");
-                 width: 21px;
-                 colorize: Palette.accent-background;
-             }
-            Text {
-                vertical-alignment: center;
-                font-size: 15px;
-                font-weight: 500;
-                text: "Wallet";
-            }
-        }
-    }
-    Rectangle {
-        background: transparent;
-        height: 36px;
-        border-radius: 6px;
+    for item[index] in listItems: SideNavListItem { view: item.view; icon: item.icon; label: item.label; }
 
-        HorizontalBox {
-            Image{
-                 source: @image-url("../../assets/icons/grid-icon.svg");
-                 width: 21px;
-             }
-            Text {
-                vertical-alignment: center;
-                font-size: 15px;
-                font-weight: 500;
-                text: "Collections";
-            }
-        }
-    }
-    Rectangle {
-        background: transparent;
-        height: 36px;
-        border-radius: 6px;
-
-        HorizontalBox {
-            Image{
-                 source: @image-url("../../assets/icons/swap-icon.svg");
-                 width: 21px;
-             }
-            Text {
-                vertical-alignment: center;
-                font-size: 15px;
-                font-weight: 500;
-                text: "Swap";
-            }
-        }
-    }
-    Rectangle {
-        background: transparent;
-        height: 36px;
-        border-radius: 6px;
-
-        HorizontalBox {
-            Image{
-                 source: @image-url("../../assets/icons/globe-icon.svg");
-                 width: 21px;
-             }
-            Text {
-                vertical-alignment: center;
-                font-size: 15px;
-                font-weight: 500;
-                text: "Explore";
-            }
-        }
-    }
-    Rectangle {
-        background: transparent;
-        height: 36px;
-        border-radius: 6px;
-
-        HorizontalBox {
-            Image{
-                 source: @image-url("../../assets/icons/settings-icon.svg");
-                 width: 21px;
-             }
-            Text {
-                vertical-alignment: center;
-                font-size: 15px;
-                font-weight: 500;
-                text: "Settings";
-            }
-        }
-    }
 }
