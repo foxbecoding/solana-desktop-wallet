@@ -1,0 +1,31 @@
+import { Palette, HorizontalBox }  from "std-widgets.slint";
+
+export struct ListItem {
+    id: int,
+    icon: image,
+    label: string
+}
+
+export component SideNavListItem inherits Rectangle {
+//    background: Palette.alternate-background;
+    height: 36px;
+    border-radius: 6px;
+    in-out property <int> id;
+    in-out property<string> label;
+    in-out property<image> icon;
+
+    HorizontalBox {
+        Image{
+            source: icon;
+            width: 21px;
+//            colorize: Palette.accent-background;
+        }
+
+        Text {
+            vertical-alignment: center;
+            font-size: 15px;
+            font-weight: 500;
+            text: label;
+        }
+    }
+}
