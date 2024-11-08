@@ -5,7 +5,7 @@ import { ViewManager, View } from "../../utils/view-manager.slint";
 export component SideNavList inherits VerticalLayout {
     padding-top: 18px;
     property <image> walletIcon: ViewManager.activeView == View.wallet ? @image-url("../../assets/icons/wallet-icon-filled.svg") :  @image-url("../../assets/icons/wallet-icon.svg");
-    property <image> collectionsIcon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg");
+    property <image> collectionsIcon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg");
     property <image> swapIcon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg");
     property <image> explorerIcon: ViewManager.activeView == View.explorer ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg");
     property <image> settingsIcon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg");
@@ -18,22 +18,22 @@ export component SideNavList inherits VerticalLayout {
         },
         {
             view: View.collections,
-            icon: ViewManager.activeView == View.collections ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg"),
+            icon: collectionsIcon,
             label: "Collections"
         },
         {
             view: View.swap,
-            icon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg"),
+            icon: swapIcon,
             label: "Swap"
         },
         {
             view: View.explorer,
-            icon: ViewManager.activeView == View.explorer ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg"),
+            icon: explorerIcon,
             label: "Explorer"
         },
         {
             view: View.settings,
-            icon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg"),
+            icon: settingsIcon,
             label: "Settings"
         },
     ];
