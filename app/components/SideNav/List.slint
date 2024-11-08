@@ -1,16 +1,37 @@
 import { Palette, HorizontalBox }  from "std-widgets.slint";
 import { SideNavListItem, ListItem } from "ListItem.slint";
+import { ViewManager, View } from "../../utils/view-manager.slint";
 
 export component SideNavList inherits VerticalLayout {
     padding-top: 18px;
     private property <[ListItem]> listItems: [
-        { id: 1, icon: @image-url("../../assets/icons/wallet-icon.svg"), label: "Wallet" },
-        { id: 2, icon: @image-url("../../assets/icons/grid-icon.svg"), label: "Collections" },
-        { id: 3, icon: @image-url("../../assets/icons/swap-icon.svg"), label: "Swap" },
-        { id: 4, icon: @image-url("../../assets/icons/globe-icon.svg"), label: "Explorer" },
-        { id: 5, icon: @image-url("../../assets/icons/settings-icon.svg"), label: "Settings" },
+        {
+            view: View.wallet,
+            icon: ViewManager.activeView == View.wallet ? @image-url("../../assets/icons/wallet-icon-filled.svg") :  @image-url("../../assets/icons/wallet-icon.svg"),
+            label: "Wallet"
+        },
+        {
+            view: View.collections,
+            icon: ViewManager.activeView == View.collections ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg"),
+            label: "Collections"
+        },
+        {
+            view: View.swap,
+            icon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg"),
+            label: "Swap"
+        },
+        {
+            view: View.explorer,
+            icon: ViewManager.activeView == View.explorer ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg"),
+            label: "Explorer"
+        },
+        {
+            view: View.settings,
+            icon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg"),
+            label: "Settings"
+        },
     ];
 
-    for item[index] in listItems: SideNavListItem { id: item.id; icon: item.icon; label: item.label; }
+    for item[index] in listItems: SideNavListItem { view: item.view; icon: item.icon; label: item.label; }
 
 }

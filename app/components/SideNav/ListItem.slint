@@ -1,16 +1,17 @@
 import { Palette, HorizontalBox }  from "std-widgets.slint";
+import { ViewManager, View } from "../../utils/view-manager.slint";
 
 export struct ListItem {
-    id: int,
+    view: View,
     icon: image,
     label: string
 }
 
 export component SideNavListItem inherits Rectangle {
-//    background: Palette.alternate-background;
+    background: ViewManager.activeView == root.view ? Palette.alternate-background : Palette.background;
     height: 36px;
     border-radius: 6px;
-    in-out property <int> id;
+    in-out property<View> view;
     in-out property<string> label;
     in-out property<image> icon;
 
