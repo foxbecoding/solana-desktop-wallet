@@ -1,5 +1,6 @@
 import {Palette} from "std-widgets.slint";
 import {AppView} from "components/AppView.slint";
+import {Wallet, WalletManager} from "utils/wallet-manager.slint";
 
 export component App inherits Window {
     background: Palette.alternate-background.darker(0.25);
@@ -11,3 +12,5 @@ export component App inherits Window {
 
     AppView {}
 }
+
+export {Wallet, WalletManager}

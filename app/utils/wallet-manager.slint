@@ -1,0 +1,12 @@
+export struct Wallet {
+    id: int,
+    name: string,
+    seed: string,
+    public_key: string,
+    is_passphrase_protected: bool
+}
+
+export global WalletManager {
+    in-out property <[Wallet]> wallets;
+    in-out property <Wallet> selected_wallet;
+}
