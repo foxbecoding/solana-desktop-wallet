@@ -3,7 +3,7 @@ use thiserror::Error;
 use crate::database::{
     database_connection,
     errors::DatabaseError,
-    wallet::{Wallet, create_wallets_table, insert_wallet},
+    wallet::{Wallet, insert_wallet},
 };
 
 #[derive(Error, Debug)]
@@ -18,18 +18,12 @@ pub enum AppError {
 pub struct App {}
 
 impl App {
-    pub fn start() -> Result<(), AppError> {
-        let conn = database_connection()?;
-        create_wallets_table(&conn)?;
+    pub fn start(&self) -> Result<(), AppError> {
+        self.run_app()?;
+        Ok(())
+    }
 
-        // Insert a new wallet
-        let wallet = Wallet {
-            id: None,
-            name: String::from("Main Wallet"),
-            seed: String::from("random seed phrase"),
-        };
-        insert_wallet(&conn, &wallet)?;
-
+    fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
         app.run()?;
         Ok(())
