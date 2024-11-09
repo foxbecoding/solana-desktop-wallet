@@ -1,10 +1,13 @@
-use slint::{ComponentHandle, PlatformError};
 use thiserror::Error;
 use crate::database::{
     database_connection,
     errors::DatabaseError,
     wallet::{Wallet, insert_wallet},
 };
+
+use std::rc::Rc;
+use slint::{Global, ComponentHandle, PlatformError, ModelRc, SharedString, VecModel, Model};
+use crate::slint_generatedApp::Wallet as SlintWallet;
 
 #[derive(Error, Debug)]
 pub enum AppError {
@@ -25,6 +28,25 @@ impl App {
 
     fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
+        let wallet =
+            SlintWallet {
+                id: 1,
+                name: SharedString::from("Main Account".to_string()),
+                seed: SharedString::from("Some Seed Phrase".to_string()),
+                public_key: SharedString::from("Sd89hd943qrfjv94oif94".to_string()),
+                is_passphrase_protected: false,
+            };
+
+        let wallets = vec![wallet.clone()];
+
+
+        // used to set wallets vector
+        let rc_wallets: Rc<VecModel<SlintWallet>> = Rc::new(VecModel::from(wallets));
+        let model_rc_wallets = ModelRc::from(rc_wallets.clone());
+        crate::WalletManager::get(&app).set_wallets(model_rc_wallets);
+
+        crate::WalletManager::get(&app).set_selected_wallet(wallet);
+
         app.run()?;
         Ok(())
     }
