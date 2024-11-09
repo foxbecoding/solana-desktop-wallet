@@ -1,5 +1,5 @@
-import { Palette, HorizontalBox }  from "std-widgets.slint";
-import { ViewManager, View } from "../../utils/view-manager.slint";
+import {Palette, HorizontalBox}  from "std-widgets.slint";
+import {ViewManager, View} from "../../utils/view-manager.slint";
 
 export struct ListItem {
     view: View,
@@ -27,8 +27,9 @@ export component SideNavListItem inherits Rectangle {
         Text {
             vertical-alignment: center;
             font-size: 15px;
-            font-weight: 500;
+            font-weight: 600;
             text: label;
+            color: Palette.foreground.with-alpha(0.85);
         }
     }
     states [
