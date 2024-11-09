@@ -1,9 +1,10 @@
-import {Palette, Button, VerticalBox } from "std-widgets.slint";
+import {Wallet, Swap, Collections, Explore, Settings} from "../views/index.slint";
+import {ViewManager, View} from "../utils/view-manager.slint";
 
 export component Main inherits Rectangle {
-    horizontal-stretch: 1;
-    
-    VerticalBox {
-        Text {text: "Main Content";}
-    }
+    if ViewManager.activeView == View.wallet : Wallet {}
+    if ViewManager.activeView == View.collections : Collections {}
+    if ViewManager.activeView == View.swap : Swap {}
+    if ViewManager.activeView == View.explore : Explore {}
+    if ViewManager.activeView == View.settings : Settings {}
 }
