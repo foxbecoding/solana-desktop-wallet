@@ -1,6 +1,10 @@
-import {HorizontalBox} from "std-widgets.slint";
-import {Wallet } from "../views/Wallet.slint";
+import {Wallet, Swap, Collections, Explore, Settings} from "../views/index.slint";
+import {ViewManager, View} from "../utils/view-manager.slint";
 
 export component Main inherits Rectangle {
-    Wallet {}
+    if ViewManager.activeView == View.wallet : Wallet {}
+    if ViewManager.activeView == View.collections : Collections {}
+    if ViewManager.activeView == View.swap : Swap {}
+    if ViewManager.activeView == View.explore : Explore {}
+    if ViewManager.activeView == View.settings : Settings {}
 }
