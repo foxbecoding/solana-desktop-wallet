@@ -8,6 +8,7 @@ use slint::{include_modules as include_slint_modules};
 
 include_slint_modules!();
 fn main() -> Result<(), app::AppError> {
-    app::App::start()?;
+    let app = app::App {};
+    app.start()?;
     Ok(())
 }
