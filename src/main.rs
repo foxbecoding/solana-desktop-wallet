@@ -2,11 +2,12 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod app;
+mod database;
 
-use slint::{PlatformError, include_modules as include_slint_modules};
+use slint::{include_modules as include_slint_modules};
 
 include_slint_modules!();
-fn main() -> Result<(), PlatformError> {
+fn main() -> Result<(), app::AppError> {
     app::App::start()?;
     Ok(())
 }
