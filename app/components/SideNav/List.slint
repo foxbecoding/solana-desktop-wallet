@@ -4,11 +4,11 @@ import { ViewManager, View } from "../../utils/view-manager.slint";
 
 export component SideNavList inherits VerticalLayout {
     padding-top: 18px;
-    property <image> walletIcon: ViewManager.activeView == View.wallet ? @image-url("../../assets/icons/wallet-icon-filled.svg") :  @image-url("../../assets/icons/wallet-icon.svg");
-    property <image> collectionsIcon: ViewManager.activeView == View.collections ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg");
-    property <image> swapIcon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg");
-    property <image> explorerIcon: ViewManager.activeView == View.explorer ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg");
-    property <image> settingsIcon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg");
+    private property <image> walletIcon: ViewManager.activeView == View.wallet ? @image-url("../../assets/icons/wallet-icon-filled.svg") :  @image-url("../../assets/icons/wallet-icon.svg");
+    private property <image> collectionsIcon: ViewManager.activeView == View.collections ? @image-url("../../assets/icons/grid-icon-filled.svg") : @image-url("../../assets/icons/grid-icon.svg");
+    private property <image> swapIcon: ViewManager.activeView == View.swap ? @image-url("../../assets/icons/swap-icon-filled.svg") : @image-url("../../assets/icons/swap-icon.svg");
+    private property <image> explorerIcon: ViewManager.activeView == View.explore ? @image-url("../../assets/icons/globe-icon-filled.svg") : @image-url("../../assets/icons/globe-icon.svg");
+    private property <image> settingsIcon: ViewManager.activeView == View.settings ? @image-url("../../assets/icons/settings-icon-filled.svg") : @image-url("../../assets/icons/settings-icon.svg");
 
     function labelSelector(view: View) -> string {
         if (view == View.wallet) {
@@ -17,8 +17,8 @@ export component SideNavList inherits VerticalLayout {
             return "Collections";
         } else if (view == View.swap) {
             return "Swap";
-        } else if (view == View.explorer) {
-            return "Explorer";
+        } else if (view == View.explore) {
+            return "Explore";
         } else if (view == View.settings) {
             return "Settings";
         } else {
@@ -43,9 +43,9 @@ export component SideNavList inherits VerticalLayout {
             label: labelSelector(View.swap)
         },
         {
-            view: View.explorer,
+            view: View.explore,
             icon: explorerIcon,
-            label: labelSelector(View.explorer)
+            label: labelSelector(View.explore)
         },
         {
             view: View.settings,
