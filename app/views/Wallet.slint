@@ -1,0 +1,13 @@
+import {HorizontalBox, Palette } from "std-widgets.slint";
+
+export component Wallet inherits HorizontalLayout {
+    HorizontalBox {
+        padding: 30px;
+        Text {
+            text: "Wallet";
+            font-size: 30px;
+            font-weight: 800;
+            color: Palette.foreground.with-alpha(0.85);
+        }
+    }
+}

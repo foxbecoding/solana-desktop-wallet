@@ -1,9 +1,6 @@
-import {Palette, Button, VerticalBox } from "std-widgets.slint";
+import {HorizontalBox} from "std-widgets.slint";
+import {Wallet } from "../views/Wallet.slint";
 
 export component Main inherits Rectangle {
-    horizontal-stretch: 1;
-    
-    VerticalBox {
-        Text {text: "Main Content";}
-    }
+    Wallet {}
 }

@@ -2,11 +2,11 @@ import {Palette, Button, VerticalBox } from "std-widgets.slint";
 import {AppView} from "components/AppView.slint";
 
 export component App inherits Window {
+    background: Palette.alternate-background.darker(0.25);
     preferred-width: 900px;
     preferred-height: 600px;
     no-frame: false;
-    background: Palette.alternate-background;
-    always-on-top: true;
+    always-on-top: false;
     title: "Solana Desktop Wallet";
 
     AppView {}
