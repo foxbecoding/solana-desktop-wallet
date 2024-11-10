@@ -1,29 +1,56 @@
 import {Palette, VerticalBox, Button} from "std-widgets.slint";
 import {Wallet, WalletManager} from "../../utils/wallet-manager.slint";
 
-export component SideNavAccount inherits Rectangle {
-    background: Palette.alternate-background;
-    border-radius: 6px;
-    height: 60px;
-    in property <string> account_id: "D504F...1111";
+export component SideNavAccount {
+    height: 120px;
     private property <bool> is_wallets_set: WalletManager.wallets.length > 0 ? true : false;
 
     VerticalBox {
-        VerticalLayout {
-            visible: is_wallets_set;
-            Text {
-                font-size: 12px;
-                font-weight: 700;
-                text: "Connected Account";
-            }
+        spacing: 3px;
+        visible: is_wallets_set;
+        height: 100px;
+        Text {
+            font-size: 15px;
+            font-weight: 700;
+            text: WalletManager.selected_wallet.name;
+        }
+        Text {
+            text: WalletManager.selected_wallet.public_key_display;
+            font-weight: 500;
         }
         VerticalLayout {
             visible: is_wallets_set;
-            Text {text: WalletManager.selected_wallet.public_key;}
-        }
-        VerticalLayout {
-            visible: !is_wallets_set;
-            Button { text: "Create Wallet"; primary: true;}
+            padding-top: 9px;
+            Button { text: "Change Account"; }
         }
     }
+
+    VerticalLayout {
+        spacing: 6px;
+        visible: !is_wallets_set;
+        Rectangle {
+            background: @linear-gradient(60deg, #2979FF 0%, #9C27B0 100%);
+            border-radius: 6px;
+            height: 120px;
+            VerticalBox {
+                Text {
+                    visible: true;
+                    font-size: 21px;
+                    font-weight: 800;
+                    text: "Create a Wallet";
+                    color: Palette.foreground.with-alpha(0.85);
+                }
+                Text {
+                    visible: true;
+                    font-size: 21px;
+                    font-weight: 800;
+                    text: "to get started";
+                    color: Palette.foreground.with-alpha(0.85);
+                }
+                Button { text: "Create Wallet"; }
+            }
+        }
+
+    }
+
 }
