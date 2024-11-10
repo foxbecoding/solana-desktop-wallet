@@ -7,6 +7,7 @@ use crate::database::{
 
 use std::rc::Rc;
 use slint::{Global, ComponentHandle, PlatformError, ModelRc, SharedString, VecModel, Model};
+use solana_sdk::pubkey::Pubkey;
 use crate::slint_generatedApp::Wallet as SlintWallet;
 
 #[derive(Error, Debug)]
@@ -28,12 +29,17 @@ impl App {
 
     fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
+
+        //for testing
+        let pubkey = Pubkey::new_unique();
+
         let wallet =
             SlintWallet {
                 id: 1,
                 name: SharedString::from("Main Account".to_string()),
                 seed: SharedString::from("Some Seed Phrase".to_string()),
-                public_key: SharedString::from("Sd89hd943qrfjv94oif94".to_string()),
+                public_key: SharedString::from(pubkey.to_string()),
+                public_key_display: pubkey_display_generator(pubkey.to_string()),
                 is_passphrase_protected: false,
             };
 
@@ -50,4 +56,18 @@ impl App {
         app.run()?;
         Ok(())
     }
+}
+
+fn pubkey_display_generator(pubkey: String) -> SharedString {
+    let input_string = pubkey;
+
+    // Get the first 5 characters
+    let first_part = &input_string[0..5];
+    // Get the last 4 characters
+    let last_part = &input_string[input_string.len() - 4..];
+
+    // Combine with "..."
+    let combined_string = format!("{}...{}", first_part, last_part);
+
+    SharedString::from(combined_string)
 }

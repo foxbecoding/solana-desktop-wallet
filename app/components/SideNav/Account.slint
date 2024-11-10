@@ -2,9 +2,9 @@ import {Palette, VerticalBox, Button} from "std-widgets.slint";
 import {Wallet, WalletManager} from "../../utils/wallet-manager.slint";
 
 export component SideNavAccount inherits Rectangle {
-    background: Palette.alternate-background;
-    border-radius: 6px;
-    height: 60px;
+//    background: Palette.alternate-background;
+//    border-radius: 6px;
+    height: 48px;
     in property <string> account_id: "D504F...1111";
     private property <bool> is_wallets_set: WalletManager.wallets.length > 0 ? true : false;
 
@@ -12,14 +12,17 @@ export component SideNavAccount inherits Rectangle {
         VerticalLayout {
             visible: is_wallets_set;
             Text {
-                font-size: 12px;
+                font-size: 15px;
                 font-weight: 700;
-                text: "Connected Account";
+                text: WalletManager.selected_wallet.name;
             }
         }
         VerticalLayout {
             visible: is_wallets_set;
-            Text {text: WalletManager.selected_wallet.public_key;}
+            Text {
+                text: WalletManager.selected_wallet.public_key_display;
+                font-weight: 500;
+            }
         }
         VerticalLayout {
             visible: !is_wallets_set;
