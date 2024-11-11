@@ -1,3 +1,4 @@
+use serde::de::StdError;
 use slint::PlatformError;
 use thiserror::Error;
 use crate::database::errors::DatabaseError;
@@ -9,4 +10,7 @@ pub enum AppError {
 
     #[error("Database error: {0}")]
     DatabaseError(#[from] DatabaseError),
+
+    #[error("Other error: {0}")]
+    Other(#[from] Box<dyn StdError>),
 }

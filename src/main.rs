@@ -5,8 +5,9 @@ mod app;
 mod database;
 
 use std::error::Error;
+use rusqlite::Connection;
 use slint::{include_modules as include_slint_modules};
-use crate::database::{account::{Account as AccountModel}, errors::DatabaseError};
+use crate::database::{account::{Account as AccountModel, create_account}, errors::DatabaseError};
 use crate::app::{app::App as MainApp, errors::AppError};
 
 include_slint_modules!();
@@ -16,15 +17,19 @@ fn main() -> Result<(), AppError> {
 }
 
 fn init() -> Result<(), AppError> {
-    let accounts = init_accounts()?;
+    let conn = database::database_connection()?;
+    let mut accounts = init_accounts(&conn)?;
     let has_accounts = !accounts.is_empty();
+    let new_account_name = "Main Account".to_string();
+    let account = create_account(&conn, new_account_name)?;
+    accounts.push(account);
     let app = MainApp { accounts, show_app_content: has_accounts };
+    println!("app: {:#?}", app);
     init_app(app)?;
     Ok(())
 }
 
-fn init_accounts() -> Result<Vec<AccountModel>, DatabaseError> {
-    let conn = database::database_connection()?;
+fn init_accounts(conn: &Connection) -> Result<Vec<AccountModel>, DatabaseError> {
     let accounts = database::account::get_accounts(&conn)?;
     Ok(accounts)
 }
