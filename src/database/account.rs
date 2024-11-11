@@ -16,6 +16,40 @@ pub struct Account {
     pub is_passphrase_protected: bool,
 }
 
+impl Account {
+    pub fn new(conn: &Connection, name: String) -> Result<Self, Box<dyn Error>> {
+        let mnemonic = Mnemonic::generate(12)?;
+        let seed_phrase = mnemonic.words().collect::<Vec<&str>>().join(" ");
+        let hashed_seed = seed_phrase_hasher(&seed_phrase);
+        let keypair = keypair::keypair_from_seed(hashed_seed.as_bytes())?;
+        let pubkey = keypair.pubkey().to_string();
+        let account = Account {
+            id: None,
+            name,
+            seed: seed_phrase,
+            pubkey,
+            is_passphrase_protected: false,
+        };
+        insert_account(conn, &account)?;
+
+        Ok(account)
+    }
+
+    pub fn pubkey_display(&self) -> SharedString {
+        let input_string = self.pubkey.clone();
+
+        // Get the first 5 characters
+        let first_part = &input_string[0..5];
+        // Get the last 4 characters
+        let last_part = &input_string[input_string.len() - 4..];
+
+        // Combine with "..."
+        let combined_string = format!("{}...{}", first_part, last_part);
+
+        SharedString::from(combined_string)
+    }
+}
+
 
 // Function to insert a new account into the accounts table
 pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
@@ -51,26 +85,10 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
     Ok(accounts)
 }
 
-fn get_account_pubkey_display(pubkey: String) -> SharedString {
-    let input_string = pubkey;
-
-    // Get the first 5 characters
-    let first_part = &input_string[0..5];
-    // Get the last 4 characters
-    let last_part = &input_string[input_string.len() - 4..];
-
-    // Combine with "..."
-    let combined_string = format!("{}...{}", first_part, last_part);
-
-    SharedString::from(combined_string)
-}
-
 pub fn create_account(conn: &Connection, name: String) -> Result<Account, Box<dyn Error>> {
     let mnemonic = Mnemonic::generate(12)?;
     let seed_phrase = mnemonic.words().collect::<Vec<&str>>().join(" ");
-
     let hashed_seed = seed_phrase_hasher(&seed_phrase);
-
     let keypair = keypair::keypair_from_seed(hashed_seed.as_bytes())?;
     let pubkey = keypair.pubkey().to_string();
     let account = Account {
