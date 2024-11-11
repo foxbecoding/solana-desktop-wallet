@@ -10,7 +10,10 @@ use slint::{Global, ComponentHandle, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
 use crate::slint_generatedApp::Account as SlintAccount;
 
-pub struct App {}
+pub struct App {
+    pub accounts: Vec<Account>,
+    pub show_app_content: bool,
+}
 
 impl App {
     pub fn start(&self) -> Result<(), AppError> {

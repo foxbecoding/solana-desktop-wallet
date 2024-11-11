@@ -1,5 +1,9 @@
+use std::error::Error;
+use bip39::Mnemonic;
 use rusqlite::{params, Connection};
 use slint::SharedString;
+use solana_sdk::signature::keypair;
+use solana_sdk::signer::Signer;
 use crate::database::errors::DatabaseError;
 
 #[derive(Debug)]
@@ -58,4 +62,26 @@ fn get_account_pubkey_display(pubkey: String) -> SharedString {
     let combined_string = format!("{}...{}", first_part, last_part);
 
     SharedString::from(combined_string)
+}
+
+pub fn generate_keypair(seed_phrase: String, passphrase: String) -> Result<(), Box<dyn Error>> {
+    // let seed = keypair::generate_seed_from_seed_phrase_and_passphrase(seed_phrase, passphrase);
+    let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*seed_phrase, &*passphrase)?;
+    println!("keypair: {:#?}", keypair.pubkey());
+    Ok(())
+}
+
+fn generate_seed_hrase() -> Result<String, Box<dyn Error>> {
+    let mnemonic = Mnemonic::generate(12)?;
+
+    // Retrieve the mnemonic phrase as a string
+    let mnemonic_phrase = mnemonic.words().collect::<Vec<&str>>().join(" ");
+
+    Ok(mnemonic_phrase)
+    // let passphrase = "42";
+    // let seed = Seed::new(&mnemonic, passphrase);
+    // let expected_keypair = keypair_from_seed(seed.as_bytes()).unwrap();
+    // let keypair =
+    //     keypair_from_seed_phrase_and_passphrase(mnemonic.phrase(), passphrase).unwrap();
+    // assert_eq!(keypair.pubkey(), expected_keypair.pubkey());
 }

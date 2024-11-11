@@ -4,20 +4,32 @@
 mod app;
 mod database;
 
+use std::error::Error;
 use slint::{include_modules as include_slint_modules};
+use crate::database::{account::{Account as AccountModel}, errors::DatabaseError};
+use crate::app::{app::App as MainApp, errors::AppError};
 
 include_slint_modules!();
-fn main() -> Result<(), app::errors::AppError> {
-    let app = app::app::App {};
+fn main() -> Result<(), AppError> {
+    init()?;
+    Ok(())
+}
+
+fn init() -> Result<(), AppError> {
+    let accounts = init_accounts()?;
+    let has_accounts = !accounts.is_empty();
+    let app = MainApp { accounts, show_app_content: has_accounts };
+    init_app(app)?;
+    Ok(())
+}
+
+fn init_accounts() -> Result<Vec<AccountModel>, DatabaseError> {
+    let conn = database::database_connection()?;
+    let accounts = database::account::get_accounts(&conn)?;
+    Ok(accounts)
+}
+
+fn init_app(app: MainApp) -> Result<(), AppError> {
     app.start()?;
     Ok(())
 }
-
-
-fn init() -> Result<(), app::errors::AppError> {
-
-    Ok(())
-}
-
-fn init_accounts() -> Result<(), app::errors::AppError> { Ok(()) }
-fn init_app() -> Result<(), app::errors::AppError> { Ok(()) }
