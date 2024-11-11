@@ -7,8 +7,8 @@ mod database;
 use slint::{include_modules as include_slint_modules};
 
 include_slint_modules!();
-fn main() -> Result<(), app::AppError> {
-    let app = app::App {};
+fn main() -> Result<(), app::errors::AppError> {
+    let app = app::app::App {};
     app.start()?;
     Ok(())
 }
