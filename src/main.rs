@@ -12,3 +12,12 @@ fn main() -> Result<(), app::errors::AppError> {
     app.start()?;
     Ok(())
 }
+
+
+fn init() -> Result<(), app::errors::AppError> {
+
+    Ok(())
+}
+
+fn init_accounts() -> Result<(), app::errors::AppError> { Ok(()) }
+fn init_app() -> Result<(), app::errors::AppError> { Ok(()) }
