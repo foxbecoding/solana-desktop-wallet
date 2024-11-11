@@ -1,0 +1,13 @@
+export struct Account {
+    id: int,
+    name: string,
+    seed: string,
+    pubkey: string,
+    pubkey_display: string,
+    is_passphrase_protected: bool
+}
+
+export global AccountManager {
+    in-out property <[Account]> accounts;
+    in-out property <Account> selected_account;
+}

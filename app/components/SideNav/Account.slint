@@ -1,25 +1,25 @@
 import {Palette, VerticalBox, Button} from "std-widgets.slint";
-import {Wallet, WalletManager} from "../../utils/wallet-manager.slint";
+import {Account, AccountManager} from "../../utils/account-manager.slint";
 
 export component SideNavAccount {
     height: 120px;
-    private property <bool> is_wallets_set: WalletManager.wallets.length > 0 ? true : false;
+    private property <bool> is_accounts_set: AccountManager.accounts.length > 0 ? true : false;
 
     VerticalBox {
         spacing: 3px;
-        visible: is_wallets_set;
+        visible: is_accounts_set;
         height: 100px;
         Text {
             font-size: 15px;
             font-weight: 700;
-            text: WalletManager.selected_wallet.name;
+            text: AccountManager.selected_account.name;
         }
         Text {
-            text: WalletManager.selected_wallet.pubkey_display;
+            text: AccountManager.selected_account.pubkey_display;
             font-weight: 500;
         }
         VerticalLayout {
-            visible: is_wallets_set;
+            visible: is_accounts_set;
             padding-top: 9px;
             Button { text: "Change Account"; }
         }
@@ -27,7 +27,7 @@ export component SideNavAccount {
 
     VerticalLayout {
         spacing: 6px;
-        visible: !is_wallets_set;
+        visible: !is_accounts_set;
         Rectangle {
             background: @linear-gradient(60deg, #2979FF 0%, #9C27B0 100%);
             border-radius: 6px;
@@ -37,7 +37,7 @@ export component SideNavAccount {
                     visible: true;
                     font-size: 21px;
                     font-weight: 800;
-                    text: "Create a Wallet";
+                    text: "Create a account";
                     color: Palette.foreground.with-alpha(0.85);
                 }
                 Text {
@@ -47,7 +47,7 @@ export component SideNavAccount {
                     text: "to get started";
                     color: Palette.foreground.with-alpha(0.85);
                 }
-                Button { text: "Create Wallet"; }
+                Button { text: "Create account"; }
             }
         }
 
