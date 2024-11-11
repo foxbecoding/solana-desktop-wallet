@@ -48,17 +48,3 @@ impl App {
         Ok(())
     }
 }
-
-fn pubkey_display_generator(pubkey: String) -> SharedString {
-    let input_string = pubkey;
-
-    // Get the first 5 characters
-    let first_part = &input_string[0..5];
-    // Get the last 4 characters
-    let last_part = &input_string[input_string.len() - 4..];
-
-    // Combine with "..."
-    let combined_string = format!("{}...{}", first_part, last_part);
-
-    SharedString::from(combined_string)
-}
