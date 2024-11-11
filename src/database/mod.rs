@@ -1,4 +1,4 @@
-pub mod wallet;
+pub mod account;
 pub mod errors;
 
 use rusqlite::{Connection, Result};

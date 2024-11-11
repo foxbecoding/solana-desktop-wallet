@@ -2,7 +2,7 @@ use thiserror::Error;
 use crate::database::{
     database_connection,
     errors::DatabaseError,
-    wallet::{Wallet, insert_wallet},
+    account::{Account, insert_account},
 };
 
 use std::rc::Rc;
