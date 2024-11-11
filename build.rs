@@ -17,6 +17,7 @@ pub enum BuildError {
 }
 
 fn main() -> Result<(), BuildError> {
+    println!("cargo:rerun-if-changed=force_rebuild");
     // Load environment variables from a .env file
     dotenv::dotenv().ok();
     build_app_ui()?;

@@ -1,5 +1,4 @@
-use std::error::Error;
-use bip39::{Mnemonic, Error as MnemonicError};
+use bip39::{Mnemonic};
 use rusqlite::{params, Connection};
 use slint::SharedString;
 use solana_sdk::keccak;
@@ -17,7 +16,7 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(conn: &Connection, name: String) -> Result<Self, Box<dyn Error>> {
+    pub fn new(conn: &Connection, name: String) -> Result<Self, DatabaseError> {
         let mnemonic = Mnemonic::generate(12)?;
         let seed_phrase = mnemonic.words().collect::<Vec<&str>>().join(" ");
         let hashed_seed = seed_phrase_hasher(&seed_phrase);
@@ -83,24 +82,6 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
         accounts.push(account_result?);
     }
     Ok(accounts)
-}
-
-pub fn create_account(conn: &Connection, name: String) -> Result<Account, Box<dyn Error>> {
-    let mnemonic = Mnemonic::generate(12)?;
-    let seed_phrase = mnemonic.words().collect::<Vec<&str>>().join(" ");
-    let hashed_seed = seed_phrase_hasher(&seed_phrase);
-    let keypair = keypair::keypair_from_seed(hashed_seed.as_bytes())?;
-    let pubkey = keypair.pubkey().to_string();
-    let account = Account {
-        id: None,
-        name,
-        seed: seed_phrase,
-        pubkey,
-        is_passphrase_protected: false,
-    };
-    insert_account(conn, &account)?;
-
-    Ok(account)
 }
 
 fn seed_phrase_hasher(seed_phrase: &String) -> String {
