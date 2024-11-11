@@ -20,9 +20,13 @@ fn init() -> Result<(), AppError> {
     let conn = database::database_connection()?;
     let mut accounts = init_accounts(&conn)?;
     let has_accounts = !accounts.is_empty();
-    let new_account_name = "Main Account".to_string();
-    let account = create_account(&conn, new_account_name)?;
-    accounts.push(account);
+
+    if !has_accounts {
+        let new_account_name = "Main Account".to_string();
+        let account = create_account(&conn, new_account_name)?;
+        accounts.push(account);
+    }
+
     let app = MainApp { accounts, show_app_content: has_accounts };
     println!("app: {:#?}", app);
     init_app(app)?;
