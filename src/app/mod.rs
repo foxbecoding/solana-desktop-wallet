@@ -8,7 +8,7 @@ use crate::database::{
 use std::rc::Rc;
 use slint::{Global, ComponentHandle, PlatformError, ModelRc, SharedString, VecModel, Model};
 use solana_sdk::pubkey::Pubkey;
-use crate::slint_generatedApp::Wallet as SlintWallet;
+use crate::slint_generatedApp::Account as SlintAccount;
 
 #[derive(Error, Debug)]
 pub enum AppError {
