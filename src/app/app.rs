@@ -28,7 +28,7 @@ impl App {
     }
 
     fn set_app_globals(&self, app: &crate::App) -> Result<(), AppError> {
-        let selected_account = self.get_selected_account()?;
+        self.set_selected_account(app)?;
         let accounts = self.get_accounts();
 
         // used to set accounts vector
@@ -36,19 +36,19 @@ impl App {
         let model_rc_accounts = ModelRc::from(rc_accounts.clone());
         crate::AccountManager::get(&app).set_accounts(model_rc_accounts);
 
-        // Set selected account
-        crate::AccountManager::get(app).set_selected_account(selected_account);
         Ok(())
     }
 
-    fn get_selected_account(&self) -> Result<SlintAccount, AppError> {
-        match self.accounts.first() {
+    fn set_selected_account(&self, app: &crate::App) -> Result<(), AppError> {
+       match self.accounts.first() {
             Some(account) => {
                 let slint_account = slint_account_builder(account);
-                Ok(slint_account)
+                crate::AccountManager::get(app).set_selected_account(slint_account);
+                Ok(())
             },
             None => Err(AppError::NoAccountSelected),
         }
+
     }
 
     fn get_accounts(&self) -> Vec<SlintAccount> {
