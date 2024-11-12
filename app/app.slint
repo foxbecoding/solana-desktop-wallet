@@ -1,6 +1,5 @@
 import {Palette} from "std-widgets.slint";
 import {AppView} from "components/AppView.slint";
-import {InitAccountSetup, InitAccountGlobals} from "components/InitAccountSetup.slint";
 import {Account, AccountManager} from "utils/account-manager.slint";
 import {AppManager} from "utils/app-manager.slint";
 
@@ -12,8 +11,7 @@ export component App inherits Window {
     always-on-top: false;
     title: "Solana Desktop Wallet";
 
-    if !InitAccountGlobals.is_init_account : AppView {}
-    if InitAccountGlobals.is_init_account : InitAccountSetup {}
+    AppView {}
 }
 
 export {Account, AccountManager}
