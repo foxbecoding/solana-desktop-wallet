@@ -4,6 +4,8 @@ use slint_build::CompileError;
 use rusqlite::{Connection, Result, Error as RusqliteError};
 use thiserror::Error as ThisError;
 
+const FORCE_REBUILD: bool = false;
+
 #[derive(ThisError, Debug)]
 pub enum BuildError {
     #[error("Environment variable error: {0}")]
@@ -17,13 +19,20 @@ pub enum BuildError {
 }
 
 fn main() -> Result<(), BuildError> {
-    println!("cargo:rerun-if-changed=force_rebuild");
     // Load environment variables from a .env file
     dotenv::dotenv().ok();
+    force_rebuild();
     build_app_ui()?;
     let conn = database_connection()?;
     create_accounts_table(&conn)?;
     Ok(())
+}
+
+fn force_rebuild() {
+    let rebuild = FORCE_REBUILD;
+    if rebuild {
+        println!("cargo:rerun-if-changed=force_rebuild");
+    }
 }
 
 fn build_app_ui() -> Result<(), BuildError> {
