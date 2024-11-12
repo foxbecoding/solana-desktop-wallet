@@ -55,7 +55,7 @@ impl Account {
 // Function to insert a new account into the accounts table
 pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
     conn.execute(
-        "INSERT INTO accounts (name, seed, pubkey) VALUES (?1, ?2, ?3, ?4)",
+        "INSERT INTO accounts (name, seed, pubkey) VALUES (?1, ?2, ?3)",
         params![
             &account.name,
             &account.seed,
