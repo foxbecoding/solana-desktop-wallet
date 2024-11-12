@@ -24,33 +24,4 @@ export component SideNavAccount {
             Button { text: "Change Account"; }
         }
     }
-
-    VerticalLayout {
-        spacing: 6px;
-        visible: !is_accounts_set;
-        Rectangle {
-            background: @linear-gradient(60deg, #2979FF 0%, #9C27B0 100%);
-            border-radius: 6px;
-            height: 120px;
-            VerticalBox {
-                Text {
-                    visible: true;
-                    font-size: 21px;
-                    font-weight: 800;
-                    text: "Create a account";
-                    color: Palette.foreground.with-alpha(0.85);
-                }
-                Text {
-                    visible: true;
-                    font-size: 21px;
-                    font-weight: 800;
-                    text: "to get started";
-                    color: Palette.foreground.with-alpha(0.85);
-                }
-                Button { text: "Create account"; }
-            }
-        }
-
-    }
-
 }
