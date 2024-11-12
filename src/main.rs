@@ -24,6 +24,7 @@ fn init() -> Result<(), AppError> {
     if !has_accounts {
         let new_account_name = "Main Account".to_string();
         let account = AccountModel::new(&conn, new_account_name)?;
+
         accounts.push(account);
     }
 

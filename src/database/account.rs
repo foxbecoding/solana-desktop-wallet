@@ -12,7 +12,6 @@ pub struct Account {
     pub name: String,
     pub seed: String,
     pub pubkey: String,
-    pub is_passphrase_protected: bool,
 }
 
 impl Account {
@@ -27,7 +26,6 @@ impl Account {
             name,
             seed: seed_phrase,
             pubkey,
-            is_passphrase_protected: false,
         };
         insert_account(conn, &account)?;
 
@@ -57,27 +55,25 @@ impl Account {
 // Function to insert a new account into the accounts table
 pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
     conn.execute(
-        "INSERT INTO accounts (name, seed, pubkey, is_passphrase_protected) VALUES (?1, ?2, ?3, ?4)",
+        "INSERT INTO accounts (name, seed, pubkey) VALUES (?1, ?2, ?3, ?4)",
         params![
             &account.name,
             &account.seed,
-            &account.pubkey,
-            &account.is_passphrase_protected
+            &account.pubkey
         ],
     ).map_err(DatabaseError::from)
 }
 
 // Function to retrieve all accounts from the accounts table
 pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
-    let query = "SELECT id, name, seed, pubkey, is_passphrase_protected FROM accounts";
+    let query = "SELECT id, name, seed, pubkey FROM accounts";
     let mut stmt = conn.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
         Ok(Account {
             id: row.get(0)?,
             name: row.get(1)?,
             seed: row.get(2)?,
-            pubkey: row.get(3)?,
-            is_passphrase_protected: row.get(4)?,
+            pubkey: row.get(3)?
         })
     })?;
 

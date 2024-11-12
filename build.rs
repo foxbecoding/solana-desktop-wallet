@@ -56,8 +56,7 @@ pub fn create_accounts_table(conn: &Connection) -> Result<(), BuildError> {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             seed TEXT NOT NULL,
-            pubkey TEXT NOT NULL,
-            is_passphrase_protected BOOLEAN NOT NULL
+            pubkey TEXT NOT NULL
         )",
         [],
     )?;
