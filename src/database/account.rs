@@ -6,7 +6,7 @@ use solana_sdk::signature::keypair;
 use solana_sdk::signer::Signer;
 use crate::database::errors::DatabaseError;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Account {
     pub id: Option<i32>,
     pub name: String,
