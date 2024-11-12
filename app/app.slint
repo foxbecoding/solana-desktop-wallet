@@ -11,7 +11,7 @@ export component App inherits Window {
     always-on-top: false;
     title: "Solana Desktop Wallet";
 
-    AppView {}
+    if AppManager.showAppView : AppView {}
 }
 
 export {Account, AccountManager}
