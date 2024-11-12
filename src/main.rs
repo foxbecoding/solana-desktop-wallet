@@ -26,7 +26,7 @@ fn init() -> Result<(), AppError> {
         accounts = get_accounts(&conn)?;
     }
 
-    let app = MainApp { accounts, show_app_view: has_accounts };
+    let app = MainApp { accounts };
     init_app(app)?;
     Ok(())
 }

@@ -10,8 +10,7 @@ use crate::slint_generatedApp::Account as SlintAccount;
 
 #[derive(Debug)]
 pub struct App {
-    pub accounts: Vec<Account>,
-    pub show_app_view: bool,
+    pub accounts: Vec<Account>
 }
 
 impl App {
