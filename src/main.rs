@@ -28,7 +28,6 @@ fn init() -> Result<(), AppError> {
     }
 
     let app = MainApp { accounts, show_app_content: has_accounts };
-    println!("app: {:#?}", app);
     init_app(app)?;
     Ok(())
 }
