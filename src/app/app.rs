@@ -10,8 +10,7 @@ use crate::slint_generatedApp::Account as SlintAccount;
 
 #[derive(Debug)]
 pub struct App {
-    pub accounts: Vec<Account>,
-    pub show_app_content: bool,
+    pub accounts: Vec<Account>
 }
 
 impl App {
@@ -28,36 +27,32 @@ impl App {
     }
 
     fn set_app_globals(&self, app: &crate::App) -> Result<(), AppError> {
-        let selected_account = self.get_selected_account()?;
-        let accounts = self.get_accounts();
-
-        // used to set accounts vector
-        let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(accounts));
-        let model_rc_accounts = ModelRc::from(rc_accounts.clone());
-        crate::AccountManager::get(&app).set_accounts(model_rc_accounts);
-
-        // Set selected account
-        crate::AccountManager::get(app).set_selected_account(selected_account);
+        self.set_selected_account(app)?;
+        self.set_accounts_global(app);
         Ok(())
     }
 
-    fn get_selected_account(&self) -> Result<SlintAccount, AppError> {
-        match self.accounts.first() {
+    fn set_selected_account(&self, app: &crate::App) -> Result<(), AppError> {
+       match self.accounts.first() {
             Some(account) => {
                 let slint_account = slint_account_builder(account);
-                Ok(slint_account)
+                crate::AccountManager::get(app).set_selected_account(slint_account);
+                Ok(())
             },
             None => Err(AppError::NoAccountSelected),
         }
     }
 
-    fn get_accounts(&self) -> Vec<SlintAccount> {
+    fn set_accounts_global(&self, app: &crate::App)  {
         let mut slint_accounts: Vec<SlintAccount> = vec!();
         for account in self.accounts.clone() {
             let slint_account = slint_account_builder(&account);
             slint_accounts.push(slint_account);
         }
-        slint_accounts
+
+        let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
+        let model_rc_accounts = ModelRc::from(rc_accounts.clone());
+        crate::AccountManager::get(app).set_accounts(model_rc_accounts);
     }
 }
 
