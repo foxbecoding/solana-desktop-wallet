@@ -13,4 +13,7 @@ pub enum AppError {
 
     #[error("Other error: {0}")]
     Other(#[from] Box<dyn StdError>),
+
+    #[error("No account selected")]
+    NoAccountSelected,
 }

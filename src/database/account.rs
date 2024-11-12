@@ -47,6 +47,10 @@ impl Account {
 
         SharedString::from(combined_string)
     }
+
+    pub fn seed_to_vec(&self) -> Vec<SharedString> {
+        self.seed.split_whitespace().map(|word| SharedString::from(word)).collect()
+    }
 }
 
 
