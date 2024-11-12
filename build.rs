@@ -17,11 +17,12 @@ pub enum BuildError {
 }
 
 fn main() -> Result<(), BuildError> {
+    println!("cargo:rerun-if-changed=force_rebuild");
     // Load environment variables from a .env file
     dotenv::dotenv().ok();
     build_app_ui()?;
     let conn = database_connection()?;
-    create_wallets_table(&conn)?;
+    create_accounts_table(&conn)?;
     Ok(())
 }
 
@@ -39,14 +40,14 @@ pub fn database_connection() -> Result<Connection, BuildError> {
     Ok(conn)
 }
 
-// Function to create the wallets table if it doesn't exist
-pub fn create_wallets_table(conn: &Connection) -> Result<(), BuildError> {
+// Function to create the accounts table if it doesn't exist
+pub fn create_accounts_table(conn: &Connection) -> Result<(), BuildError> {
     conn.execute(
-        "CREATE TABLE IF NOT EXISTS wallets (
+        "CREATE TABLE IF NOT EXISTS accounts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             seed TEXT NOT NULL,
-            public_key TEXT NOT NULL,
+            pubkey TEXT NOT NULL,
             is_passphrase_protected BOOLEAN NOT NULL
         )",
         [],
