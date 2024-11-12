@@ -7,7 +7,7 @@ mod database;
 use std::error::Error;
 use rusqlite::Connection;
 use slint::{include_modules as include_slint_modules};
-use crate::database::{account::{Account as AccountModel}, errors::DatabaseError};
+use crate::database::{account::{Account as AccountModel, get_accounts}, errors::DatabaseError};
 use crate::app::{app::App as MainApp, errors::AppError};
 
 include_slint_modules!();
@@ -23,8 +23,9 @@ fn init() -> Result<(), AppError> {
 
     if !has_accounts {
         let new_account_name = "Main Account".to_string();
-        let account = AccountModel::new(&conn, new_account_name)?;
-        accounts.push(account);
+        AccountModel::new(&conn, new_account_name)?;
+        let all_accounts = get_accounts(&conn)?;
+        accounts = all_accounts;
     }
 
     let app = MainApp { accounts, show_app_content: has_accounts };
