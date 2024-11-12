@@ -12,7 +12,8 @@ export component App inherits Window {
     always-on-top: false;
     title: "Solana Desktop Wallet";
 
-    if InitAccountGlobals.is_init_account : AppView {}
+    if !InitAccountGlobals.is_init_account : AppView {}
+    if InitAccountGlobals.is_init_account : InitAccountSetup {}
 }
 
 export {Account, AccountManager}
