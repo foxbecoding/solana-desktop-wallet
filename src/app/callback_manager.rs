@@ -11,7 +11,7 @@ impl CallbackManager {
     }
 
     pub fn run(&self) {
-
+        self.handlers_setter();
     }
 
     fn handlers_setter(&self) {
