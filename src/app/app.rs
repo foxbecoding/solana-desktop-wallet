@@ -1,10 +1,11 @@
+use std::rc::Rc;
+use slint::{Global, ComponentHandle, ModelRc, SharedString, VecModel};
+use solana_sdk::msg;
+use webbrowser;
+
 use crate::database::{
     account::{Account},
 };
-
-use std::rc::Rc;
-use slint::{Global, ComponentHandle, ModelRc, SharedString, VecModel};
-
 use crate::app::errors::AppError;
 use crate::slint_generatedApp::Account as SlintAccount;
 use crate::slint_generatedApp::SideNavAccountGlobals;
@@ -25,13 +26,17 @@ impl App {
         self.set_app_globals(&app)?;
 
         app.global::<SideNavAccountGlobals>().on_view_on_solscan(|pubkey| {
-            println!("On button clicked: {}", pubkey);
+            let url = format!("https://solscan.io/account/{}", pubkey);
+
+            //Todo find a better way to display error if it doesn't work
+            // Attempt to open the URL in the default web browser
+            if webbrowser::open(url.as_str()).is_ok() {
+                msg!("Opened '{}' in your default web browser.", pubkey);
+            } else {
+                msg!("Failed to open '{}'.", pubkey);
+            }
         });
-        // let waek_app = app.as_weak();
-        // waek_app.as_ref().on_solscan(move || {
-        //     let sample = waek_app.unwrap();
-        //     sample.as_ref().set_counter(42);
-        // });
+
         app.run()?;
         Ok(())
     }
