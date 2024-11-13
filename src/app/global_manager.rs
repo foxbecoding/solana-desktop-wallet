@@ -1,4 +1,5 @@
-use slint::{Global, ComponentHandle, ModelRc, SharedString, VecModel};
+use std::rc::Rc;
+use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
 use crate::database::account::Account;
 use crate::slint_generatedApp::Account as SlintAccount;
@@ -30,7 +31,15 @@ impl<'a> GlobalManager<'a> {
     }
 
     fn set_accounts_global(&self) {
+        let mut slint_accounts: Vec<SlintAccount> = vec!();
+        for account in self.accounts.clone() {
+            let slint_account = slint_account_builder(&account);
+            slint_accounts.push(slint_account);
+        }
 
+        let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
+        let model_rc_accounts = ModelRc::from(rc_accounts.clone());
+        crate::AccountManager::get(self.app_instance).set_accounts(model_rc_accounts);
     }
 }
 
