@@ -12,7 +12,7 @@ impl<'a> GlobalManager<'a> {
     }
 
     fn init_globals(&self) -> Result<(), AppError> {
-
+        self.set_selected_account()?;
         Ok(())
     }
 
