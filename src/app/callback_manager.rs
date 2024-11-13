@@ -1,7 +1,7 @@
 use slint::ComponentHandle;
 use solana_sdk::msg;
 
-struct CallbackManager<'a>  {
+pub struct CallbackManager<'a>  {
     app_instance: &'a crate::App
 }
 
