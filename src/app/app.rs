@@ -28,8 +28,10 @@ impl App {
         Ok(())
     }
 
-    fn init_managers(&self, app: &crate::App){
-
+    fn init_managers(&self, app: &crate::App) -> Result<(), AppError> {
+        self.set_app_globals(&app)?;
+        CallbackManager::new(&app).run();
+        Ok(())
     }
 
     fn set_app_globals(&self, app: &crate::App) -> Result<(), AppError> {
