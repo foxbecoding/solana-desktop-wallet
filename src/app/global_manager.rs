@@ -1,3 +1,4 @@
+use crate::app::errors::AppError;
 use crate::database::account::Account;
 
 pub struct GlobalManager<'a>  {
@@ -8,5 +9,10 @@ pub struct GlobalManager<'a>  {
 impl<'a> GlobalManager<'a> {
     pub fn new(app_instance: &'a crate::App, accounts: &'a Vec<Account>) -> Self {
         GlobalManager { app_instance, accounts }
+    }
+
+    fn init_globals(&self) -> Result<(), AppError> {
+
+        Ok(())
     }
 }
