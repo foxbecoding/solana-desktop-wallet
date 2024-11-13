@@ -1,12 +1,12 @@
 import {VerticalBox, Button, HorizontalBox, Palette} from "std-widgets.slint";
 import {AccountManager} from "../../utils/account-manager.slint";
 
-component SolScanBtn  inherits Rectangle {
+export component SolScanBtn  inherits Rectangle {
     background: Palette.alternate_background;
     border-radius: 6px;
     property <image> icon: @image-url("../../assets/icons/open.svg");
     property <string> label: "view on Solscan";
-
+    callback solscan;
     HorizontalBox {
         alignment: center;
         Image {source: icon; width: 12px;}
@@ -24,7 +24,7 @@ component SolScanBtn  inherits Rectangle {
     ]
     touch := TouchArea {
         clicked => {
-
+            solscan()
         }
     }
 }
