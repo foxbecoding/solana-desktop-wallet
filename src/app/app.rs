@@ -1,13 +1,8 @@
-use slint::{ComponentHandle, SharedString};
+use slint::{ComponentHandle};
 use webbrowser;
 
-use crate::database::{
-    account::{Account},
-};
+use crate::database::account::Account;
 use crate::app::{callback_manager::CallbackManager, global_manager::GlobalManager, errors::AppError};
-use crate::slint_generatedApp::Account as SlintAccount;
-
-
 #[derive(Debug)]
 pub struct App {
     pub accounts: Vec<Account>
@@ -30,15 +25,5 @@ impl App {
         GlobalManager::new(&app, &self.accounts).run()?;
         CallbackManager::new(&app).run();
         Ok(())
-    }
-}
-
-fn slint_account_builder(account: &Account) -> SlintAccount{
-    SlintAccount {
-        id: account.id.unwrap(),
-        name: SharedString::from(account.name.clone()),
-        seed: SharedString::from(account.seed.clone()),
-        pubkey: SharedString::from(account.pubkey.clone()),
-        pubkey_display: account.pubkey_display(),
     }
 }
