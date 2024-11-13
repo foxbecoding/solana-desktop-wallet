@@ -22,8 +22,7 @@ impl App {
 
     fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
-        self.set_app_globals(&app)?;
-        CallbackManager::new(&app).run();
+        self.init_managers(&app)?;
         app.run()?;
         Ok(())
     }
