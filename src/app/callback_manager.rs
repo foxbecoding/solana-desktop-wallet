@@ -3,5 +3,7 @@ struct CallbackManager {
 }
 
 impl CallbackManager {
-
+    fn new(app_instance: crate::App) -> Self {
+        CallbackManager { app_instance }
+    }
 }
