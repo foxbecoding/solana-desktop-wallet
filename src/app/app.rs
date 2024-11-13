@@ -1,4 +1,4 @@
-use slint::{ComponentHandle};
+use slint::ComponentHandle;
 use webbrowser;
 
 use crate::database::account::Account;
@@ -16,12 +16,12 @@ impl App {
 
     fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
-        self.init_managers(&app)?;
+        self.run_managers(&app)?;
         app.run()?;
         Ok(())
     }
 
-    fn init_managers(&self, app: &crate::App) -> Result<(), AppError> {
+    fn run_managers(&self, app: &crate::App) -> Result<(), AppError> {
         GlobalManager::new(&app, &self.accounts).run()?;
         CallbackManager::new(&app).run();
         Ok(())
