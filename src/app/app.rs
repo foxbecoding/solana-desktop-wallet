@@ -25,7 +25,7 @@ impl App {
         let app = crate::App::new()?;
         self.set_app_globals(&app)?;
 
-        app.global::<SideNavAccountGlobals>().on_view_on_solscan(|pubkey| {
+        app.global::<SideNavAccountGlobals>().on_view_account(|pubkey| {
             let url = format!("https://solscan.io/account/{}", pubkey);
 
             //Todo find a better way to display error if it doesn't work
