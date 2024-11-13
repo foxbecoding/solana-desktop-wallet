@@ -10,6 +10,10 @@ impl CallbackManager {
         CallbackManager { app_instance }
     }
 
+    pub fn run(&self) {
+
+    }
+
     fn view_account_handler(&self) {
         self.app_instance.global::<crate::AccountManager>().on_view_account(|pubkey| {
             let url = format!("https://solscan.io/account/{}", pubkey);
