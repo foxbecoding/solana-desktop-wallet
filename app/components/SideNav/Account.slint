@@ -1,5 +1,18 @@
-import {VerticalBox, Button} from "std-widgets.slint";
+import {VerticalBox, Button, HorizontalBox, Palette} from "std-widgets.slint";
 import {AccountManager} from "../../utils/account-manager.slint";
+
+component SolScanBtn  inherits Rectangle {
+    background: Palette.alternate_background;
+    border-radius: 6px;
+    property <image> icon: @image-url("../../assets/icons/open.svg");
+    property <string> label: "view on Solscan";
+
+    HorizontalBox {
+        alignment: center;
+        Image {source: icon; width: 12px;}
+        Text {text: label; font-size: 12px;}
+    }
+}
 
 export component SideNavAccount {
     height: 120px;
@@ -13,17 +26,20 @@ export component SideNavAccount {
             font-weight: 700;
             text: AccountManager.selected_account.name;
         }
-        HorizontalLayout {
-            property <image> icon: @image-url("../../assets/icons/open.svg");
-            property <string> label: "view on Solscan";
-            Text {
-                text: AccountManager.selected_account.pubkey_display;
-                font-size: 15px;
-                font-weight: 500;
-            }
-            Image{
-                source: icon;
-                width: 18px;
+        
+        VerticalLayout {
+            alignment: center;
+            height: 30px;
+            HorizontalLayout {
+                VerticalLayout {
+                    alignment: center;
+                    Text {
+                        text: AccountManager.selected_account.pubkey_display;
+                        font-size: 15px;
+                        font-weight: 500;
+                    }
+                }
+                SolScanBtn {}
             }
         }
 
