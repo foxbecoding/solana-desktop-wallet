@@ -24,3 +24,7 @@ impl<'a> GlobalManager<'a> {
 
     }
 }
+
+fn slint_account_builder(account: &Account)  {
+
+}
