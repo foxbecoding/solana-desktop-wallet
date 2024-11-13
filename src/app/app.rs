@@ -5,7 +5,7 @@ use webbrowser;
 use crate::database::{
     account::{Account},
 };
-use crate::app::{callback_manager::CallbackManager, errors::AppError};
+use crate::app::{callback_manager::CallbackManager, global_manager::GlobalManager, errors::AppError};
 use crate::slint_generatedApp::Account as SlintAccount;
 
 
@@ -28,7 +28,8 @@ impl App {
     }
 
     fn init_managers(&self, app: &crate::App) -> Result<(), AppError> {
-        self.set_app_globals(&app)?;
+        // self.set_app_globals(&app)?;
+        GlobalManager::new(&app, &self.accounts).run()?;
         CallbackManager::new(&app).run();
         Ok(())
     }
