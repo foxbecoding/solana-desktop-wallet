@@ -1,7 +1,8 @@
-use slint::SharedString;
+use slint::{Global, ComponentHandle, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
 use crate::database::account::Account;
 use crate::slint_generatedApp::Account as SlintAccount;
+
 pub struct GlobalManager<'a>  {
     app_instance: &'a crate::App,
     accounts: &'a Vec<Account>
@@ -18,7 +19,14 @@ impl<'a> GlobalManager<'a> {
     }
 
     fn set_selected_account(&self) -> Result<(), AppError> {
-        Ok(())
+        match self.accounts.first() {
+            Some(account) => {
+                let slint_account = slint_account_builder(account);
+                crate::AccountManager::get(self.app_instance).set_selected_account(slint_account);
+                Ok(())
+            },
+            None => Err(AppError::NoAccountSelected),
+        }
     }
 
     fn set_accounts_global(&self) {
