@@ -1,12 +1,16 @@
 import {VerticalBox, Button, HorizontalBox, Palette} from "std-widgets.slint";
 import {AccountManager} from "../../utils/account-manager.slint";
 
+export global SideNavAccountGlobals {
+    pure callback view_on_solscan(string);
+}
+
 export component SolScanBtn  inherits Rectangle {
     background: Palette.alternate_background;
     border-radius: 6px;
     property <image> icon: @image-url("../../assets/icons/open.svg");
     property <string> label: "view on Solscan";
-    callback solscan;
+
     HorizontalBox {
         alignment: center;
         Image {source: icon; width: 12px;}
@@ -24,7 +28,7 @@ export component SolScanBtn  inherits Rectangle {
     ]
     touch := TouchArea {
         clicked => {
-            solscan()
+            SideNavAccountGlobals.view_on_solscan(AccountManager.selected_account.pubkey)
         }
     }
 }
