@@ -14,7 +14,7 @@ impl<'a> GlobalManager<'a> {
         GlobalManager { app_instance, accounts }
     }
 
-    fn init_globals(&self) -> Result<(), AppError> {
+    pub fn init_globals(&self) -> Result<(), AppError> {
         self.set_selected_account()?;
         self.set_accounts();
         Ok(())
