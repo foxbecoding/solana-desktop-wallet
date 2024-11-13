@@ -1,5 +1,4 @@
-use std::rc::Rc;
-use slint::{Global, ComponentHandle, ModelRc, SharedString, VecModel};
+use slint::{ComponentHandle, SharedString};
 use webbrowser;
 
 use crate::database::{
@@ -31,18 +30,6 @@ impl App {
         GlobalManager::new(&app, &self.accounts).run()?;
         CallbackManager::new(&app).run();
         Ok(())
-    }
-
-    fn set_accounts_global(&self, app: &crate::App)  {
-        let mut slint_accounts: Vec<SlintAccount> = vec!();
-        for account in self.accounts.clone() {
-            let slint_account = slint_account_builder(&account);
-            slint_accounts.push(slint_account);
-        }
-
-        let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
-        let model_rc_accounts = ModelRc::from(rc_accounts.clone());
-        crate::AccountManager::get(app).set_accounts(model_rc_accounts);
     }
 }
 
