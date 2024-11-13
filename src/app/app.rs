@@ -33,17 +33,6 @@ impl App {
         Ok(())
     }
 
-    fn set_selected_account(&self, app: &crate::App) -> Result<(), AppError> {
-       match self.accounts.first() {
-            Some(account) => {
-                let slint_account = slint_account_builder(account);
-                crate::AccountManager::get(app).set_selected_account(slint_account);
-                Ok(())
-            },
-            None => Err(AppError::NoAccountSelected),
-        }
-    }
-
     fn set_accounts_global(&self, app: &crate::App)  {
         let mut slint_accounts: Vec<SlintAccount> = vec!();
         for account in self.accounts.clone() {
