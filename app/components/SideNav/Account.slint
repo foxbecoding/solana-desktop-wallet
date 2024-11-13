@@ -16,7 +16,6 @@ export component SideNavAccount {
         HorizontalLayout {
             property <image> icon: @image-url("../../assets/icons/open.svg");
             property <string> label: "view on Solscan";
-//            property <string> tooltip : @tr("ToolTip" => "ToolTip for {}", name);
             Text {
                 text: AccountManager.selected_account.pubkey_display;
                 font-size: 15px;
