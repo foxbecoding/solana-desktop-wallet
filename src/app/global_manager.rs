@@ -1,4 +1,3 @@
-use crate::app::callback_manager::CallbackManager;
 use crate::database::account::Account;
 
 pub struct GlobalManager<'a>  {
@@ -6,4 +5,4 @@ pub struct GlobalManager<'a>  {
     accounts: Vec<Account>
 }
 
-impl<'a> CallbackManager<'a> {}
+impl<'a> GlobalManager<'a> {}
