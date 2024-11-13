@@ -16,6 +16,7 @@ impl<'a> GlobalManager<'a> {
 
     fn init_globals(&self) -> Result<(), AppError> {
         self.set_selected_account()?;
+        self.set_accounts();
         Ok(())
     }
 
@@ -30,7 +31,7 @@ impl<'a> GlobalManager<'a> {
         }
     }
 
-    fn set_accounts_global(&self) {
+    fn set_accounts(&self) {
         let mut slint_accounts: Vec<SlintAccount> = vec!();
         for account in self.accounts.clone() {
             let slint_account = slint_account_builder(&account);
