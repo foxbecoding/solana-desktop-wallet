@@ -6,7 +6,7 @@ use webbrowser;
 use crate::database::{
     account::{Account},
 };
-use crate::app::{errors::AppError};
+use crate::app::{callback_manager::CallbackManager, errors::AppError};
 use crate::slint_generatedApp::Account as SlintAccount;
 
 
@@ -24,21 +24,9 @@ impl App {
     fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
         self.set_app_globals(&app)?;
-        self.view_account_handler(&app);
+
         app.run()?;
         Ok(())
-    }
-
-    fn view_account_handler(&self, app: &crate::App) {
-        app.global::<crate::AccountManager>().on_view_account(|pubkey| {
-            let url = format!("https://solscan.io/account/{}", pubkey);
-
-            if webbrowser::open(url.as_str()).is_ok() {
-                msg!("Opened '{}' in your default web browser.", pubkey);
-            } else {
-                msg!("Failed to open '{}'.", pubkey);
-            }
-        });
     }
 
     fn set_app_globals(&self, app: &crate::App) -> Result<(), AppError> {
