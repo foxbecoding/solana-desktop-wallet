@@ -9,4 +9,5 @@ export struct Account {
 export global AccountManager {
     in-out property <[Account]> accounts;
     in-out property <Account> selected_account;
+    pure callback view_account(string);
 }

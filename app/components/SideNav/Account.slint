@@ -28,7 +28,7 @@ export component SolScanBtn  inherits Rectangle {
     ]
     touch := TouchArea {
         clicked => {
-            SideNavAccountGlobals.view_account(AccountManager.selected_account.pubkey)
+            AccountManager.view_account(AccountManager.selected_account.pubkey)
         }
     }
 }
