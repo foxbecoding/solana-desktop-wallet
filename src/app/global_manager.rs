@@ -19,4 +19,8 @@ impl<'a> GlobalManager<'a> {
     fn set_selected_account(&self) -> Result<(), AppError> {
         Ok(())
     }
+
+    fn set_accounts_global(&self) {
+
+    }
 }
