@@ -2,7 +2,7 @@ import {VerticalBox, Button, HorizontalBox, Palette} from "std-widgets.slint";
 import {AccountManager} from "../../utils/account-manager.slint";
 
 export global SideNavAccountGlobals {
-    pure callback view_on_solscan(string);
+    pure callback view_account(string);
 }
 
 export component SolScanBtn  inherits Rectangle {
@@ -28,7 +28,7 @@ export component SolScanBtn  inherits Rectangle {
     ]
     touch := TouchArea {
         clicked => {
-            SideNavAccountGlobals.view_on_solscan(AccountManager.selected_account.pubkey)
+            SideNavAccountGlobals.view_account(AccountManager.selected_account.pubkey)
         }
     }
 }
