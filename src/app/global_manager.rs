@@ -5,4 +5,7 @@ pub struct GlobalManager<'a>  {
     accounts: Vec<Account>
 }
 
-impl<'a> GlobalManager<'a> {}
+impl<'a> GlobalManager<'a> {
+    pub fn new(app_instance: &'a crate::App) {
+    }
+}
