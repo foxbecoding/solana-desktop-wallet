@@ -1,6 +1,5 @@
 use std::rc::Rc;
 use slint::{Global, ComponentHandle, ModelRc, SharedString, VecModel};
-use solana_sdk::msg;
 use webbrowser;
 
 use crate::database::{
@@ -24,7 +23,7 @@ impl App {
     fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
         self.set_app_globals(&app)?;
-
+        CallbackManager::new(&app).run();
         app.run()?;
         Ok(())
     }
