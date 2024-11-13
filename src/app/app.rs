@@ -22,9 +22,14 @@ impl App {
 
     fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
+        self.init_managers(&app)?;
+        app.run()?;
+        Ok(())
+    }
+
+    fn init_managers(&self, app: &crate::App) -> Result<(), AppError> {
         self.set_app_globals(&app)?;
         CallbackManager::new(&app).run();
-        app.run()?;
         Ok(())
     }
 

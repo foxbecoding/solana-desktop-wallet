@@ -27,11 +27,11 @@ fn init() -> Result<(), AppError> {
     }
 
     let app = MainApp { accounts };
-    init_app(app)?;
+    start_app(app)?;
     Ok(())
 }
 
-fn init_app(app: MainApp) -> Result<(), AppError> {
+fn start_app(app: MainApp) -> Result<(), AppError> {
     app.start()?;
     Ok(())
 }
