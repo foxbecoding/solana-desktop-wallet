@@ -8,7 +8,6 @@ use crate::database::{
 };
 use crate::app::errors::AppError;
 use crate::slint_generatedApp::Account as SlintAccount;
-use crate::slint_generatedApp::SideNavAccountGlobals;
 
 #[derive(Debug)]
 pub struct App {
@@ -24,21 +23,21 @@ impl App {
     fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
         self.set_app_globals(&app)?;
+        self.view_account_handler(&app);
+        app.run()?;
+        Ok(())
+    }
 
-        app.global::<SideNavAccountGlobals>().on_view_on_solscan(|pubkey| {
+    fn view_account_handler(&self, app: &crate::App) {
+        app.global::<crate::AccountManager>().on_view_account(|pubkey| {
             let url = format!("https://solscan.io/account/{}", pubkey);
 
-            //Todo find a better way to display error if it doesn't work
-            // Attempt to open the URL in the default web browser
             if webbrowser::open(url.as_str()).is_ok() {
                 msg!("Opened '{}' in your default web browser.", pubkey);
             } else {
                 msg!("Failed to open '{}'.", pubkey);
             }
         });
-
-        app.run()?;
-        Ok(())
     }
 
     fn set_app_globals(&self, app: &crate::App) -> Result<(), AppError> {
