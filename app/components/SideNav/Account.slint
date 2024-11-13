@@ -7,15 +7,27 @@ export component SideNavAccount {
     VerticalBox {
         spacing: 3px;
         height: 100px;
+
         Text {
             font-size: 15px;
             font-weight: 700;
             text: AccountManager.selected_account.name;
         }
-        Text {
-            text: AccountManager.selected_account.pubkey_display;
-            font-weight: 500;
+        HorizontalLayout {
+            property <image> icon: @image-url("../../assets/icons/open.svg");
+            property <string> label: "view on Solscan";
+//            property <string> tooltip : @tr("ToolTip" => "ToolTip for {}", name);
+            Text {
+                text: AccountManager.selected_account.pubkey_display;
+                font-size: 15px;
+                font-weight: 500;
+            }
+            Image{
+                source: icon;
+                width: 18px;
+            }
         }
+
         VerticalLayout {
             padding-top: 9px;
             Button { text: "View Accounts"; }
