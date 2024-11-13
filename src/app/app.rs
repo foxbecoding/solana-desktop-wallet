@@ -28,15 +28,8 @@ impl App {
     }
 
     fn init_managers(&self, app: &crate::App) -> Result<(), AppError> {
-        // self.set_app_globals(&app)?;
         GlobalManager::new(&app, &self.accounts).run()?;
         CallbackManager::new(&app).run();
-        Ok(())
-    }
-
-    fn set_app_globals(&self, app: &crate::App) -> Result<(), AppError> {
-        self.set_selected_account(app)?;
-        self.set_accounts_global(app);
         Ok(())
     }
 
