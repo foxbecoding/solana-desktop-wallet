@@ -28,6 +28,10 @@ impl App {
         Ok(())
     }
 
+    fn init_managers(&self, app: &crate::App){
+
+    }
+
     fn set_app_globals(&self, app: &crate::App) -> Result<(), AppError> {
         self.set_selected_account(app)?;
         self.set_accounts_global(app);
