@@ -11,10 +11,10 @@ impl<'a> CallbackManager<'a> {
     }
 
     pub fn run(&self) {
-        self.handlers_setter();
+        self.init_handlers();
     }
 
-    fn handlers_setter(&self) {
+    fn init_handlers(&self) {
         self.view_account_handler();
     }
 
