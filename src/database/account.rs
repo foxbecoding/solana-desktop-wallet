@@ -1,7 +1,7 @@
 use bip39::{Mnemonic};
 use rusqlite::{params, Connection};
 use slint::SharedString;
-use solana_sdk::signature::keypair;
+use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
 use crate::database::errors::DatabaseError;
 
@@ -50,6 +50,8 @@ impl Account {
     pub fn seed_to_vec(&self) -> Vec<SharedString> {
         self.seed.split_whitespace().map(|word| SharedString::from(word)).collect()
     }
+
+    pub fn account_keypair(&self){}
 }
 
 // Function to insert a new account into the accounts table
