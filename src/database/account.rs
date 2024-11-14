@@ -1,8 +1,7 @@
 use bip39::{Mnemonic};
 use rusqlite::{params, Connection};
 use slint::SharedString;
-use solana_sdk::keccak;
-use solana_sdk::signature::keypair;
+use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
 use crate::database::errors::DatabaseError;
 
@@ -12,23 +11,25 @@ pub struct Account {
     pub name: String,
     pub seed: String,
     pub pubkey: String,
+    passphrase: String
 }
 
 impl Account {
     pub fn new(conn: &Connection, name: String) -> Result<Self, DatabaseError> {
-        let mnemonic = Mnemonic::generate(12)?;
-        let seed_phrase = mnemonic.words().collect::<Vec<&str>>().join(" ");
-        let hashed_seed = seed_phrase_hasher(&seed_phrase);
-        let keypair = keypair::keypair_from_seed(hashed_seed.as_bytes())?;
+        let mnemonic_for_seed = Mnemonic::generate(12)?;
+        let mnemonic_for_passphrase = Mnemonic::generate(12)?;
+        let seed_phrase = mnemonic_for_seed.words().collect::<Vec<&str>>().join(" ");
+        let passphrase = mnemonic_for_passphrase.words().collect::<Vec<&str>>().join(" ");
+        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&seed_phrase, &passphrase)?;
         let pubkey = keypair.pubkey().to_string();
         let account = Account {
             id: None,
             name,
             seed: seed_phrase,
             pubkey,
+            passphrase,
         };
         insert_account(conn, &account)?;
-
         Ok(account)
     }
 
@@ -49,31 +50,37 @@ impl Account {
     pub fn seed_to_vec(&self) -> Vec<SharedString> {
         self.seed.split_whitespace().map(|word| SharedString::from(word)).collect()
     }
-}
 
+    pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
+        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
+        Ok(keypair)
+    }
+}
 
 // Function to insert a new account into the accounts table
 pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
     conn.execute(
-        "INSERT INTO accounts (name, seed, pubkey) VALUES (?1, ?2, ?3)",
+        "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
         params![
             &account.name,
             &account.seed,
-            &account.pubkey
+            &account.pubkey,
+            &account.passphrase,
         ],
     ).map_err(DatabaseError::from)
 }
 
 // Function to retrieve all accounts from the accounts table
 pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
-    let query = "SELECT id, name, seed, pubkey FROM accounts";
+    let query = "SELECT id, name, seed, pubkey, passphrase FROM accounts";
     let mut stmt = conn.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
         Ok(Account {
             id: row.get(0)?,
             name: row.get(1)?,
             seed: row.get(2)?,
-            pubkey: row.get(3)?
+            pubkey: row.get(3)?,
+            passphrase: row.get(4)?,
         })
     })?;
 
@@ -82,19 +89,4 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
         accounts.push(account_result?);
     }
     Ok(accounts)
-}
-
-fn seed_phrase_hasher(seed_phrase: &String) -> String {
-
-    // Hash the seed input using Keccak
-    let mut hasher = keccak::Hasher::default();
-    hasher.hash(seed_phrase.as_bytes());
-    let keccak_hash = hasher.result();
-
-    // Convert the hash to an array and take the first 32 bytes
-    let keccak_bytes: [u8; 32] = keccak_hash.to_bytes();
-
-    // Encode the result as hex
-    let seed = &hex::encode(&keccak_bytes)[0..32];
-    seed.to_string()
 }
