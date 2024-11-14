@@ -1,7 +1,7 @@
 import {Accounts, Collections, Explore, Settings, Swap, Wallet} from "../views/index.slint";
 import {ViewManager, View} from "../utils/view-manager.slint";
 
-export component Main inherits Rectangle {
+export component Main {
     if ViewManager.activeView == View.accounts : Accounts {}
     if ViewManager.activeView == View.collections : Collections {}
     if ViewManager.activeView == View.explore : Explore {}
