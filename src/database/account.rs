@@ -52,15 +52,15 @@ impl Account {
     }
 }
 
-
 // Function to insert a new account into the accounts table
 pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
     conn.execute(
-        "INSERT INTO accounts (name, seed, pubkey) VALUES (?1, ?2, ?3)",
+        "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
         params![
             &account.name,
             &account.seed,
-            &account.pubkey
+            &account.pubkey,
+            &account.passphrase,
         ],
     ).map_err(DatabaseError::from)
 }
