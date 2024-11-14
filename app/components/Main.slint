@@ -1,10 +1,11 @@
-import {Wallet, Swap, Collections, Explore, Settings} from "../views/index.slint";
+import {Accounts, Collections, Explore, Settings, Swap, Wallet} from "../views/index.slint";
 import {ViewManager, View} from "../utils/view-manager.slint";
 
 export component Main inherits Rectangle {
-    if ViewManager.activeView == View.wallet : Wallet {}
+    if ViewManager.activeView == View.accounts : Accounts {}
     if ViewManager.activeView == View.collections : Collections {}
-    if ViewManager.activeView == View.swap : Swap {}
     if ViewManager.activeView == View.explore : Explore {}
     if ViewManager.activeView == View.settings : Settings {}
+    if ViewManager.activeView == View.swap : Swap {}
+    if ViewManager.activeView == View.wallet : Wallet {}
 }
