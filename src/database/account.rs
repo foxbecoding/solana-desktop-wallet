@@ -11,6 +11,7 @@ pub struct Account {
     pub name: String,
     pub seed: String,
     pub pubkey: String,
+    passphrase: String
 }
 
 impl Account {
@@ -26,6 +27,7 @@ impl Account {
             name,
             seed: seed_phrase,
             pubkey,
+            passphrase,
         };
         insert_account(conn, &account)?;
         Ok(account)
