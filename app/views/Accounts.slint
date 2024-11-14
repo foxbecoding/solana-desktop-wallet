@@ -1,4 +1,5 @@
-import {VerticalBox, Palette} from "std-widgets.slint";
+import {HorizontalBox, VerticalBox, Palette} from "std-widgets.slint";
+import {AccountManager} from "../utils/account-manager.slint";
 
 export component Accounts inherits HorizontalLayout {
     VerticalBox {
@@ -17,13 +18,24 @@ export component Accounts inherits HorizontalLayout {
         }
 
         Rectangle {
-            background: Colors.blue;
-            Text {
-                text: "List Accounts Here";
-                font-size: 30px;
-                font-weight: 800;
-                color: Palette.foreground.with-alpha(0.85);
-                horizontal-alignment: left;
+            background: Palette.alternate-background;
+            border-radius: 9px;
+            HorizontalBox {
+                VerticalLayout {
+                    for account in AccountManager.accounts : Rectangle {
+                        height: 60px;
+
+                        Text {
+                            text: account.name;
+                        }
+                    }
+                    Rectangle {
+                        height: 60px;
+                        Text {
+                            text: "Cuenta Segundo";
+                        }
+                    }
+                }
             }
         }
     }
