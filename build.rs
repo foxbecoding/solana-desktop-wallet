@@ -57,7 +57,7 @@ pub fn create_accounts_table(conn: &Connection) -> Result<(), BuildError> {
             name TEXT NOT NULL,
             seed TEXT NOT NULL,
             pubkey TEXT NOT NULL,
-            passphrase TEXT NOT NULL,
+            passphrase TEXT NOT NULL
         )",
         [],
     )?;
