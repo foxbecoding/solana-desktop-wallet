@@ -21,12 +21,32 @@ export component Accounts inherits HorizontalLayout {
             background: Palette.alternate-background;
             border-radius: 9px;
             HorizontalBox {
-                VerticalLayout {
+                VerticalBox {
                     for account in AccountManager.accounts : Rectangle {
                         height: 60px;
+                        background: Colors.red;
+                        HorizontalLayout {
+                            alignment: space-between;
+                            VerticalLayout {
+                                alignment: center;
+                                Text {
+                                    text: account.name;
+                                }
+                            }
 
-                        Text {
-                            text: account.name;
+                            VerticalLayout {
+                                alignment: center;
+                                Text {
+                                    text: account.name;
+                                }
+                            }
+
+                            VerticalLayout {
+                                alignment: center;
+                                Text {
+                                    text: "15.56";
+                                }
+                            }
                         }
                     }
                     Rectangle {
