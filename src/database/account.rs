@@ -19,8 +19,8 @@ impl Account {
         let mnemonic_for_seed = Mnemonic::generate(12)?;
         let mnemonic_for_passphrase = Mnemonic::generate(12)?;
         let seed_phrase = mnemonic_for_seed.words().collect::<Vec<&str>>().join(" ");
-        let hashed_seed = seed_phrase_hasher(&seed_phrase);
-        let keypair = keypair::keypair_from_seed(hashed_seed.as_bytes())?;
+        let passphrase = mnemonic_for_passphrase.words().collect::<Vec<&str>>().join(" ");
+        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&seed_phrase, &passphrase)?;
         let pubkey = keypair.pubkey().to_string();
         let account = Account {
             id: None,
@@ -29,7 +29,6 @@ impl Account {
             pubkey,
         };
         insert_account(conn, &account)?;
-
         Ok(account)
     }
 
