@@ -51,7 +51,10 @@ impl Account {
         self.seed.split_whitespace().map(|word| SharedString::from(word)).collect()
     }
 
-    pub fn account_keypair(&self){}
+    pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
+        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
+        Ok(keypair)
+    }
 }
 
 // Function to insert a new account into the accounts table
