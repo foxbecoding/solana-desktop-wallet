@@ -24,12 +24,14 @@ export component Accounts inherits HorizontalLayout {
                 VerticalBox {
                     for account in AccountManager.accounts : Rectangle {
                         height: 60px;
-                        background: Colors.red;
+
                         HorizontalLayout {
                             alignment: space-between;
                             VerticalLayout {
                                 alignment: center;
                                 Text {
+                                    font-weight: 600;
+                                    font-size: 15px;
                                     text: account.name;
                                 }
                             }
@@ -37,22 +39,20 @@ export component Accounts inherits HorizontalLayout {
                             VerticalLayout {
                                 alignment: center;
                                 Text {
-                                    text: account.name;
+                                    font-weight: 600;
+                                    font-size: 15px;
+                                    text: account.pubkey;
                                 }
                             }
 
                             VerticalLayout {
                                 alignment: center;
                                 Text {
+                                    font-weight: 600;
+                                    font-size: 15px;
                                     text: "15.56";
                                 }
                             }
-                        }
-                    }
-                    Rectangle {
-                        height: 60px;
-                        Text {
-                            text: "Cuenta Segundo";
                         }
                     }
                 }
