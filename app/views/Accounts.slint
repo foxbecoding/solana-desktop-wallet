@@ -1,1 +1,13 @@
-export component Accounts {}
+import {VerticalBox, Palette } from "std-widgets.slint";
+
+export component Accounts {
+    VerticalBox {
+        padding: 30px;
+        Text {
+            text: "Accounts";
+            font-size: 30px;
+            font-weight: 800;
+            color: Palette.foreground.with-alpha(0.85);
+        }
+    }
+}
