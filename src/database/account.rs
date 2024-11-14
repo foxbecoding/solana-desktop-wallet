@@ -1,7 +1,6 @@
 use bip39::{Mnemonic};
 use rusqlite::{params, Connection};
 use slint::SharedString;
-use solana_sdk::keccak;
 use solana_sdk::signature::keypair;
 use solana_sdk::signer::Signer;
 use crate::database::errors::DatabaseError;
@@ -82,19 +81,4 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
         accounts.push(account_result?);
     }
     Ok(accounts)
-}
-
-fn seed_phrase_hasher(seed_phrase: &String) -> String {
-
-    // Hash the seed input using Keccak
-    let mut hasher = keccak::Hasher::default();
-    hasher.hash(seed_phrase.as_bytes());
-    let keccak_hash = hasher.result();
-
-    // Convert the hash to an array and take the first 32 bytes
-    let keccak_bytes: [u8; 32] = keccak_hash.to_bytes();
-
-    // Encode the result as hex
-    let seed = &hex::encode(&keccak_bytes)[0..32];
-    seed.to_string()
 }
