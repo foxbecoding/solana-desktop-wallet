@@ -1,4 +1,4 @@
-import {HorizontalBox, VerticalBox, Palette} from "std-widgets.slint";
+import {HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "std-widgets.slint";
 import {AccountManager} from "../utils/account-manager.slint";
 
 export component Accounts inherits HorizontalLayout {
@@ -22,38 +22,85 @@ export component Accounts inherits HorizontalLayout {
             border-radius: 9px;
             HorizontalBox {
                 VerticalBox {
-                    for account in AccountManager.accounts : Rectangle {
-                        height: 60px;
+                    Rectangle {
+                        height: 48px;
 
                         HorizontalLayout {
                             alignment: space-between;
                             VerticalLayout {
                                 alignment: center;
+                                width: 300px;
                                 Text {
-                                    font-weight: 300;
-                                    font-size: 18px;
-                                    text: account.name;
+                                    font-weight: 600;
+                                    font-size: 15px;
+                                    text: "Name";
                                     color: Palette.foreground.with-alpha(0.85);
+                                    horizontal-alignment: left;
                                 }
                             }
 
                             VerticalLayout {
                                 alignment: center;
+                                width: 500px;
                                 Text {
-                                    font-weight: 300;
-                                    font-size: 18px;
-                                    text: account.pubkey;
+                                    font-weight: 600;
+                                    font-size: 15px;
+                                    text: "Pubkey";
                                     color: Palette.foreground.with-alpha(0.85);
+                                    horizontal-alignment: left;
                                 }
                             }
 
                             VerticalLayout {
                                 alignment: center;
+                                width: 100px;
                                 Text {
-                                    font-weight: 300;
-                                    font-size: 18px;
-                                    text: "15.56";
+                                    font-weight: 600;
+                                    font-size: 15px;
+                                    text: "Balance";
                                     color: Palette.foreground.with-alpha(0.85);
+                                    horizontal-alignment: left;
+                                }
+                            }
+                        }
+                    }
+                    ListView {
+                        for account in AccountManager.accounts : Rectangle {
+                            height: 48px;
+
+                            HorizontalLayout {
+                                alignment: space-between;
+                                VerticalLayout {
+                                    alignment: center;
+                                    width: 300px;
+                                    Text {
+                                        font-size: 15px;
+                                        text: account.name;
+                                        color: Palette.foreground.with-alpha(0.85);
+                                        horizontal-alignment: left;
+                                    }
+                                }
+    
+                                VerticalLayout {
+                                    alignment: center;
+                                    width: 500px;
+                                    Text {
+                                        font-size: 15px;
+                                        text: account.pubkey;
+                                        color: Palette.foreground.with-alpha(0.85);
+                                        horizontal-alignment: left;
+                                    }
+                                }
+
+                                VerticalLayout {
+                                    alignment: center;
+                                    width: 100px;
+                                    Text {
+                                        font-size: 15px;
+                                        text: "15.56";
+                                        color: Palette.foreground.with-alpha(0.85);
+                                        horizontal-alignment: left;
+                                    }
                                 }
                             }
                         }
