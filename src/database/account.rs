@@ -67,14 +67,15 @@ pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, Dat
 
 // Function to retrieve all accounts from the accounts table
 pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
-    let query = "SELECT id, name, seed, pubkey FROM accounts";
+    let query = "SELECT id, name, seed, pubkey, passphrase FROM accounts";
     let mut stmt = conn.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
         Ok(Account {
             id: row.get(0)?,
             name: row.get(1)?,
             seed: row.get(2)?,
-            pubkey: row.get(3)?
+            pubkey: row.get(3)?,
+            passphrase: row.get(4)?,
         })
     })?;
 
