@@ -112,9 +112,7 @@ component AccountListItem inherits Rectangle {
 component AccountsList {
     ListView {
         for account in AccountManager.accounts : AccountListItem {
-            name: account.name;
-            pubkey: account.pubkey;
-            balance: "11.11 SOL";
+            account: account;
         }
     }
 }
