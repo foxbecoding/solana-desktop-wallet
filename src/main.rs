@@ -31,7 +31,9 @@ fn init() -> Result<(), AppError> {
 }
 
 fn set_backend_renederer() {
-
+    // Set the backend to `qt` and renderer to `skia`
+    std::env::set_var("SLINT_BACKEND", "qt");
+    std::env::set_var("SLINT_RENDERER", "skia");
 }
 
 fn start_app(app: MainApp) -> Result<(), AppError> {
