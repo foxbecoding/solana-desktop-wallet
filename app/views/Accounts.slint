@@ -50,7 +50,6 @@ component AccountsList {
     ListView {
         for account in AccountManager.accounts : Rectangle {
             height: 48px;
-
             HorizontalLayout {
                 alignment: space-between;
                 VerticalLayout {
@@ -88,6 +87,10 @@ component AccountsList {
             }
         }
     }
+}
+
+component AccountListItem {
+    
 }
 
 export component Accounts inherits HorizontalLayout {
