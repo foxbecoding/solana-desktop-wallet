@@ -15,7 +15,7 @@ fn main() -> Result<(), AppError> {
 }
 
 fn init() -> Result<(), AppError> {
-    set_backend_renederer();
+    set_backend_renderer();
     let conn = database::database_connection()?;
     let mut accounts = get_accounts(&conn)?;
     let has_accounts = !accounts.is_empty();
@@ -31,7 +31,7 @@ fn init() -> Result<(), AppError> {
     Ok(())
 }
 
-fn set_backend_renederer() {
+fn set_backend_renderer() {
     std::env::set_var("SLINT_BACKEND", "winit");
     std::env::set_var("SLINT_RENDERER", "skia");
 }
