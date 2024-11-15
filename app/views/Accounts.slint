@@ -1,0 +1,163 @@
+import {HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "std-widgets.slint";
+import {AccountManager, Account} from "../utils/account-manager.slint";
+
+component AccountsListHeader {
+    VerticalBox {
+        Rectangle {
+            height: 27px;
+            HorizontalLayout {
+                alignment: space-between;
+                VerticalLayout {
+                    alignment: center;
+                    width: 300px;
+                    Text {
+                        font-weight: 600;
+                        font-size: 15px;
+                        text: "Name";
+                        color: Palette.foreground.with-alpha(0.85);
+                        horizontal-alignment: left;
+                    }
+                }
+
+                VerticalLayout {
+                    alignment: center;
+                    width: 500px;
+                    Text {
+                        font-weight: 600;
+                        font-size: 15px;
+                        text: "Pubkey";
+                        color: Palette.foreground.with-alpha(0.85);
+                        horizontal-alignment: left;
+                    }
+                }
+
+                VerticalLayout {
+                    alignment: center;
+                    width: 200px;
+                    Text {
+                        font-weight: 600;
+                        font-size: 15px;
+                        text: "Balance";
+                        color: Palette.foreground.with-alpha(0.85);
+                        horizontal-alignment: left;
+                    }
+                }
+            }
+        }
+    }
+}
+
+component AccountListItem inherits Rectangle {
+    in property <Account> account;
+    border-radius: 9px;
+    VerticalBox {
+        alignment: center;
+        Rectangle {
+            height: 48px;
+            HorizontalLayout {
+                alignment: space-between;
+                VerticalLayout {
+                    alignment: center;
+                    width: 300px;
+                    Text {
+                        font-size: 15px;
+                        text: account.name;
+                        color: Palette.foreground.with-alpha(0.85);
+                        horizontal-alignment: left;
+                    }
+                }
+
+                VerticalLayout {
+                    alignment: center;
+                    width: 500px;
+                    Text {
+                        font-size: 15px;
+                        text: account.pubkey;
+                        color: Palette.foreground.with-alpha(0.85);
+                        horizontal-alignment: left;
+                    }
+                }
+
+                VerticalLayout {
+                    alignment: center;
+                    width: 200px;
+                    HorizontalLayout {
+                        alignment: start;
+                        spacing: 9px;
+                        Image {
+                            source: @image-url("../assets/icons/solana-icon.svg");
+                            width: 18px;
+                            horizontal-alignment: left;
+                        }
+                        Text {
+                            font-size: 15px;
+                            text: "11.11";
+                            color: Palette.foreground.with-alpha(0.85);
+                            horizontal-alignment: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    states [
+        pressed when touch.pressed: {
+            root.opacity: 0.5;
+            root.background: Palette.alternate-background.darker(0.25);
+        }
+        hover when touch.has-hover: {
+            root.opacity: 0.7;
+            root.background: Palette.alternate-background.darker(0.25);
+        }
+    ]
+
+    touch := TouchArea {
+        clicked => {
+            debug("View Account");
+        }
+    }
+}
+
+component AccountsList {
+    ListView {
+        for account in AccountManager.accounts : AccountListItem {
+            account: account;
+        }
+    }
+}
+
+export component Accounts inherits HorizontalLayout {
+    VerticalBox {
+        padding: 30px;
+        Rectangle {
+            height: 60px;
+            VerticalLayout {
+                Text {
+                    text: "Accounts";
+                    font-size: 30px;
+                    font-weight: 800;
+                    color: Palette.foreground.with-alpha(0.85);
+                    horizontal-alignment: left;
+                }
+            }
+        }
+
+        Rectangle {
+            background: Palette.alternate-background;
+            border-radius: 12px;
+            HorizontalBox {
+                VerticalBox {
+                    AccountsListHeader {}
+                    VerticalBox {
+                        Rectangle {
+                            height: 1px;
+                            background: Palette.foreground.darker(0.25);
+                        }
+                    }
+                    AccountsList {}
+                }
+            }
+        }
+    }
+}
