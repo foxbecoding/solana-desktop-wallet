@@ -139,6 +139,12 @@ export component Accounts inherits HorizontalLayout {
             HorizontalBox {
                 VerticalBox {
                     AccountsListHeader {}
+                    VerticalBox {
+                        Rectangle {
+                            height: 1px;
+                            background: Palette.foreground.darker(0.25);
+                        }
+                    }
                     AccountsList {}
                 }
             }
