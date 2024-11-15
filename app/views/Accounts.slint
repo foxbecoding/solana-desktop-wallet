@@ -2,44 +2,45 @@ import {HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "
 import {AccountManager, Account} from "../utils/account-manager.slint";
 
 component AccountsListHeader {
-    Rectangle {
-        height: 48px;
-
-        HorizontalLayout {
-            alignment: space-between;
-            VerticalBox {
-                alignment: center;
-                width: 300px;
-                Text {
-                    font-weight: 600;
-                    font-size: 15px;
-                    text: "Name";
-                    color: Palette.foreground.with-alpha(0.85);
-                    horizontal-alignment: left;
+    VerticalBox {
+        Rectangle {
+            height: 27px;
+            HorizontalLayout {
+                alignment: space-between;
+                VerticalLayout {
+                    alignment: center;
+                    width: 300px;
+                    Text {
+                        font-weight: 600;
+                        font-size: 15px;
+                        text: "Name";
+                        color: Palette.foreground.with-alpha(0.85);
+                        horizontal-alignment: left;
+                    }
                 }
-            }
 
-            VerticalLayout {
-                alignment: center;
-                width: 500px;
-                Text {
-                    font-weight: 600;
-                    font-size: 15px;
-                    text: "Pubkey";
-                    color: Palette.foreground.with-alpha(0.85);
-                    horizontal-alignment: left;
+                VerticalLayout {
+                    alignment: center;
+                    width: 500px;
+                    Text {
+                        font-weight: 600;
+                        font-size: 15px;
+                        text: "Pubkey";
+                        color: Palette.foreground.with-alpha(0.85);
+                        horizontal-alignment: left;
+                    }
                 }
-            }
 
-            VerticalLayout {
-                alignment: center;
-                width: 200px;
-                Text {
-                    font-weight: 600;
-                    font-size: 15px;
-                    text: "Balance";
-                    color: Palette.foreground.with-alpha(0.85);
-                    horizontal-alignment: left;
+                VerticalLayout {
+                    alignment: center;
+                    width: 200px;
+                    Text {
+                        font-weight: 600;
+                        font-size: 15px;
+                        text: "Balance";
+                        color: Palette.foreground.with-alpha(0.85);
+                        horizontal-alignment: left;
+                    }
                 }
             }
         }
