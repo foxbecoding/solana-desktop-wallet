@@ -65,6 +65,7 @@ component AccountListItem inherits Rectangle {
                         text: account.name;
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
+                        overflow: TextOverflow.elide;
                     }
                 }
 
