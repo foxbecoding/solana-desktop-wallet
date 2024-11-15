@@ -81,11 +81,20 @@ component AccountListItem inherits Rectangle {
                 VerticalLayout {
                     alignment: center;
                     width: 200px;
-                    Text {
-                        font-size: 15px;
-                        text: "11.11 SOL";
-                        color: Palette.foreground.with-alpha(0.85);
-                        horizontal-alignment: left;
+                    HorizontalLayout {
+                        alignment: start;
+                        spacing: 9px;
+                        Image {
+                            source: @image-url("../assets/icons/solana-icon.svg");
+                            width: 18px;
+                            horizontal-alignment: left;
+                        }
+                        Text {
+                            font-size: 15px;
+                            text: "11.11";
+                            color: Palette.foreground.with-alpha(0.85);
+                            horizontal-alignment: left;
+                        }
                     }
                 }
             }
