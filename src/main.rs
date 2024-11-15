@@ -4,7 +4,6 @@
 mod app;
 mod database;
 
-use std::error::Error;
 use slint::{include_modules as include_slint_modules};
 use crate::database::{account::{Account as AccountModel, get_accounts}};
 use crate::app::{app::App as MainApp, errors::AppError};

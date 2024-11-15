@@ -47,10 +47,6 @@ impl Account {
         SharedString::from(combined_string)
     }
 
-    pub fn seed_to_vec(&self) -> Vec<SharedString> {
-        self.seed.split_whitespace().map(|word| SharedString::from(word)).collect()
-    }
-
     pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
         let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
         Ok(keypair)

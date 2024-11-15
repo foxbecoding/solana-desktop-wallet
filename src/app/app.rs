@@ -1,5 +1,4 @@
 use slint::ComponentHandle;
-use webbrowser;
 
 use crate::database::account::Account;
 use crate::app::{callback_manager::CallbackManager, global_manager::GlobalManager, errors::AppError};
