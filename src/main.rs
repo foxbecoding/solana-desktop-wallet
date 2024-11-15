@@ -30,6 +30,10 @@ fn init() -> Result<(), AppError> {
     Ok(())
 }
 
+fn set_backend_renederer() {
+
+}
+
 fn start_app(app: MainApp) -> Result<(), AppError> {
     app.start()?;
     Ok(())
