@@ -50,7 +50,7 @@ component AccountListItem inherits Rectangle {
     in property <string> name;
     in property <string> pubkey;
     in property <string> balance;
-    border-radius: 12px;
+    border-radius: 9px;
     VerticalBox {
         alignment: center;
         Rectangle {
@@ -139,7 +139,7 @@ export component Accounts inherits HorizontalLayout {
 
         Rectangle {
             background: Palette.alternate-background;
-            border-radius: 9px;
+            border-radius: 12px;
             HorizontalBox {
                 VerticalBox {
                     AccountsListHeader {}
