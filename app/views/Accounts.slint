@@ -46,10 +46,11 @@ component AccountsListHeader {
     }
 }
 
-component AccountListItem {
+component AccountListItem inherits VerticalLayout {
     in property <string> name;
     in property <string> pubkey;
     in property <string> balance;
+    alignment: center;
 
     Rectangle {
         height: 48px;
