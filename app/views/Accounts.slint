@@ -51,38 +51,41 @@ component AccountListItem {
     in property <string> pubkey;
     in property <string> balance;
 
-    HorizontalLayout {
-        alignment: space-between;
-        VerticalLayout {
-            alignment: center;
-            width: 300px;
-            Text {
-                font-size: 15px;
-                text: name;
-                color: Palette.foreground.with-alpha(0.85);
-                horizontal-alignment: left;
+    Rectangle {
+        height: 48px;
+        HorizontalLayout {
+            alignment: space-between;
+            VerticalLayout {
+                alignment: center;
+                width: 300px;
+                Text {
+                    font-size: 15px;
+                    text: name;
+                    color: Palette.foreground.with-alpha(0.85);
+                    horizontal-alignment: left;
+                }
             }
-        }
-
-        VerticalLayout {
-            alignment: center;
-            width: 500px;
-            Text {
-                font-size: 15px;
-                text: pubkey;
-                color: Palette.foreground.with-alpha(0.85);
-                horizontal-alignment: left;
+    
+            VerticalLayout {
+                alignment: center;
+                width: 500px;
+                Text {
+                    font-size: 15px;
+                    text: pubkey;
+                    color: Palette.foreground.with-alpha(0.85);
+                    horizontal-alignment: left;
+                }
             }
-        }
-
-        VerticalLayout {
-            alignment: center;
-            width: 100px;
-            Text {
-                font-size: 15px;
-                text: balance;
-                color: Palette.foreground.with-alpha(0.85);
-                horizontal-alignment: left;
+    
+            VerticalLayout {
+                alignment: center;
+                width: 100px;
+                Text {
+                    font-size: 15px;
+                    text: balance;
+                    color: Palette.foreground.with-alpha(0.85);
+                    horizontal-alignment: left;
+                }
             }
         }
     }
@@ -90,14 +93,13 @@ component AccountListItem {
 
 component AccountsList {
     ListView {
-        for account in AccountManager.accounts : Rectangle {
-            height: 48px;
-            AccountListItem {name: account.name; pubkey: account.pubkey; balance: "11.11 SOL";}
+        for account in AccountManager.accounts : AccountListItem {
+            name: account.name;
+            pubkey: account.pubkey;
+            balance: "11.11 SOL";
         }
     }
 }
-
-
 
 export component Accounts inherits HorizontalLayout {
     VerticalBox {
