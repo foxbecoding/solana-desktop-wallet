@@ -15,6 +15,7 @@ fn main() -> Result<(), AppError> {
 }
 
 fn init() -> Result<(), AppError> {
+    set_backend_renederer();
     let conn = database::database_connection()?;
     let mut accounts = get_accounts(&conn)?;
     let has_accounts = !accounts.is_empty();
