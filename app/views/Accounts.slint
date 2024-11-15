@@ -90,7 +90,9 @@ component AccountsList {
 }
 
 component AccountListItem {
-    
+    in property <string> name;
+    in property <string> pubkey;
+    in property <string> balance;
 }
 
 export component Accounts inherits HorizontalLayout {
