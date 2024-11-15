@@ -46,53 +46,63 @@ component AccountsListHeader {
     }
 }
 
-component AccountListItem inherits VerticalLayout {
+component AccountListItem inherits Rectangle {
     in property <string> name;
     in property <string> pubkey;
     in property <string> balance;
-    alignment: center;
+    VerticalLayout {
+        alignment: center;
+        Rectangle {
+                height: 48px;
+                border-radius: 9px;
+                HorizontalLayout {
+                    alignment: space-between;
+                    VerticalLayout {
+                        alignment: center;
+                        width: 300px;
+                        Text {
+                            font-size: 15px;
+                            text: name;
+                            color: Palette.foreground.with-alpha(0.85);
+                            horizontal-alignment: left;
+                        }
+                    }
 
-    Rectangle {
-        height: 48px;
-        border-radius: 9px;
-        HorizontalLayout {
-            alignment: space-between;
-            VerticalLayout {
-                alignment: center;
-                width: 300px;
-                Text {
-                    font-size: 15px;
-                    text: name;
-                    color: Palette.foreground.with-alpha(0.85);
-                    horizontal-alignment: left;
+                    VerticalLayout {
+                        alignment: center;
+                        width: 500px;
+                        Text {
+                            font-size: 15px;
+                            text: pubkey;
+                            color: Palette.foreground.with-alpha(0.85);
+                            horizontal-alignment: left;
+                        }
+                    }
+
+                    VerticalLayout {
+                        alignment: center;
+                        width: 200px;
+                        Text {
+                            font-size: 15px;
+                            text: balance;
+                            color: Palette.foreground.with-alpha(0.85);
+                            horizontal-alignment: left;
+                        }
+                    }
                 }
             }
-    
-            VerticalLayout {
-                alignment: center;
-                width: 500px;
-                Text {
-                    font-size: 15px;
-                    text: pubkey;
-                    color: Palette.foreground.with-alpha(0.85);
-                    horizontal-alignment: left;
-                }
-            }
-    
-            VerticalLayout {
-                alignment: center;
-                width: 200px;
-                Text {
-                    font-size: 15px;
-                    text: balance;
-                    color: Palette.foreground.with-alpha(0.85);
-                    horizontal-alignment: left;
-                }
-            }
-        }
     }
 
-    states []
+    states [
+        pressed when touch.pressed: {
+            root.opacity: 0.5;
+            root.background: Palette.alternate-background;
+        }
+        hover when touch.has-hover: {
+            root.opacity: 0.7;
+            root.background: Palette.alternate-background;
+        }
+    ]
 
     touch := TouchArea {
         clicked => {
