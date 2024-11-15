@@ -1,5 +1,5 @@
 import {HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "std-widgets.slint";
-import {AccountManager} from "../utils/account-manager.slint";
+import {AccountManager, Account} from "../utils/account-manager.slint";
 
 component AccountsListHeader {
     Rectangle {
@@ -47,9 +47,7 @@ component AccountsListHeader {
 }
 
 component AccountListItem inherits Rectangle {
-    in property <string> name;
-    in property <string> pubkey;
-    in property <string> balance;
+    in property <Account> account;
     border-radius: 9px;
     VerticalBox {
         alignment: center;
@@ -62,7 +60,7 @@ component AccountListItem inherits Rectangle {
                     width: 300px;
                     Text {
                         font-size: 15px;
-                        text: name;
+                        text: account.name;
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
                     }
@@ -73,7 +71,7 @@ component AccountListItem inherits Rectangle {
                     width: 500px;
                     Text {
                         font-size: 15px;
-                        text: pubkey;
+                        text: account.pubkey;
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
                     }
@@ -84,7 +82,7 @@ component AccountListItem inherits Rectangle {
                     width: 200px;
                     Text {
                         font-size: 15px;
-                        text: balance;
+                        text: "11.11 SOL";
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
                     }
