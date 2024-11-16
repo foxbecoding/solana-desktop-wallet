@@ -57,8 +57,8 @@ impl Account {
         Ok(pubkey)
     }
 
-    pub fn balance(&self) -> f32 {
-        lamports_to_sol(self.balance.unwrap_or_else(|| 0u64)) as f32
+    pub fn balance(&self) -> f64 {
+        lamports_to_sol(self.balance.unwrap_or_else(|| 0u64))
     }
 
     pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
