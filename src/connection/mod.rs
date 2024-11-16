@@ -1,14 +1,14 @@
 use std::env;
 use solana_rpc_client::rpc_client::RpcClient;
 
-pub enum ConnectionType {
+pub enum ConnectionNetwork {
     MAINNET,
     DEVNET,
     TESTNET
 }
 
 pub struct Connection {
-    pub connection_type: ConnectionType,
+    pub network: ConnectionNetwork,
 }
 
 impl Connection {
