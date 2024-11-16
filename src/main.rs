@@ -3,6 +3,7 @@
 
 mod app;
 mod database;
+mod connection;
 
 use slint::{include_modules as include_slint_modules};
 use crate::database::{account::{Account as AccountModel, get_accounts}};
