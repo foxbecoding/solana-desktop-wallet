@@ -4,7 +4,7 @@ import {AccountManager, Account} from "../utils/account-manager.slint";
 component AccountsListHeader {
     VerticalBox {
         Rectangle {
-            height: 27px;
+            height: 30px;
             HorizontalLayout {
                 alignment: space-between;
                 VerticalLayout {
@@ -12,7 +12,7 @@ component AccountsListHeader {
                     width: 300px;
                     Text {
                         font-weight: 600;
-                        font-size: 15px;
+                        font-size: 21px;
                         text: "Name";
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
@@ -21,10 +21,10 @@ component AccountsListHeader {
 
                 VerticalLayout {
                     alignment: center;
-                    width: 500px;
+                    width: 300px;
                     Text {
                         font-weight: 600;
-                        font-size: 15px;
+                        font-size: 21px;
                         text: "Pubkey";
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
@@ -36,7 +36,7 @@ component AccountsListHeader {
                     width: 200px;
                     Text {
                         font-weight: 600;
-                        font-size: 15px;
+                        font-size: 21px;
                         text: "Balance";
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
@@ -60,19 +60,22 @@ component AccountListItem inherits Rectangle {
                     alignment: center;
                     width: 300px;
                     Text {
-                        font-size: 15px;
+                        font-size: 21px;
+                        font-weight: 500;
                         text: account.name;
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
+                        overflow: TextOverflow.elide;
                     }
                 }
 
                 VerticalLayout {
                     alignment: center;
-                    width: 500px;
+                    width: 300px;
                     Text {
-                        font-size: 15px;
-                        text: account.pubkey;
+                        font-size: 21px;
+                        font-weight: 500;
+                        text: account.pubkey_display;
                         color: Palette.foreground.with-alpha(0.85);
                         horizontal-alignment: left;
                     }
@@ -86,12 +89,13 @@ component AccountListItem inherits Rectangle {
                         spacing: 9px;
                         Image {
                             source: @image-url("../assets/icons/solana-icon.svg");
-                            width: 18px;
+                            width: 21px;
                             horizontal-alignment: left;
                         }
                         Text {
-                            font-size: 15px;
-                            text: "11.11";
+                            font-size: 21px;
+                            font-weight: 500;
+                            text: "\{account.balance}";
                             color: Palette.foreground.with-alpha(0.85);
                             horizontal-alignment: left;
                         }
@@ -128,8 +132,8 @@ component AccountsList {
 }
 
 export component Accounts inherits HorizontalLayout {
+    padding: 18px;
     VerticalBox {
-        padding: 30px;
         Rectangle {
             height: 60px;
             VerticalLayout {
