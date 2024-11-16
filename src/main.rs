@@ -7,7 +7,7 @@ mod connection;
 
 use std::error::Error;
 use slint::{include_modules as include_slint_modules};
-use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
+use solana_sdk::pubkey::{Pubkey};
 use crate::database::{account::{Account as AccountModel, get_accounts}};
 use crate::app::{app::App as MainApp, errors::AppError};
 
@@ -31,7 +31,7 @@ fn init() -> Result<(), AppError> {
     }
 
     let app = MainApp { accounts };
-    // start_app(app)?;
+    start_app(app)?;
     Ok(())
 }
 
