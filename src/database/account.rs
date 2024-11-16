@@ -50,7 +50,8 @@ impl Account {
     }
 
     pub fn format_pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
-
+        let pubkey = Pubkey::from_str(&self.pubkey)?;
+        Ok(pubkey)
     }
 
     pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
