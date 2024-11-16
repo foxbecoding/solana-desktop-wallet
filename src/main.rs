@@ -60,8 +60,6 @@ fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel
         }
     }
 
-    println!("updated_accounts: {:#?}", &updated_accounts);
-
     Ok(updated_accounts)
 }
 
