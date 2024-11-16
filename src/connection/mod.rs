@@ -8,7 +8,7 @@ pub enum ConnectionType {
 }
 
 pub struct Connection {
-
+    pub connection_type: ConnectionType,
 }
 
 impl Connection {
