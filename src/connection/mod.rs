@@ -1,7 +1,15 @@
 use std::env;
 use solana_rpc_client::rpc_client::RpcClient;
 
-pub struct Connection {}
+pub enum ConnectionType {
+    MAINNET,
+    DEVNET,
+    TESTNET
+}
+
+pub struct Connection {
+
+}
 
 impl Connection {
     fn solana_url() -> String {
