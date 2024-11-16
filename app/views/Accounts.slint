@@ -1,5 +1,6 @@
 import {HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "std-widgets.slint";
 import {AccountManager, Account} from "../utils/account-manager.slint";
+import { IconButton} from "../components/IconButton.slint";
 
 component AccountsListHeader {
     VerticalBox {
@@ -72,12 +73,15 @@ component AccountListItem inherits Rectangle {
                 VerticalLayout {
                     alignment: center;
                     width: 300px;
-                    Text {
-                        font-size: 21px;
-                        font-weight: 500;
-                        text: account.pubkey_display;
-                        color: Palette.foreground.with-alpha(0.85);
-                        horizontal-alignment: left;
+                    HorizontalLayout {
+                        Text {
+                            font-size: 21px;
+                            font-weight: 500;
+                            text: account.pubkey_display;
+                            color: Palette.foreground.with-alpha(0.85);
+                            horizontal-alignment: left;
+                        }
+                        IconButton { icon: @image-url("../assets/icons/open-icon.svg"); }
                     }
                 }
 
