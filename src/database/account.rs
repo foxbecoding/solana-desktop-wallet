@@ -69,7 +69,7 @@ impl Account {
 // Function to insert a new account into the accounts table
 pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
     conn.execute(
-        "INSERT INTO accounts (name, seed, pubkey, passphrase, balance) VALUES (?1, ?2, ?3, ?4)",
+        "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
         params![
             &account.name,
             &account.seed,
@@ -81,7 +81,7 @@ pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, Dat
 
 // Function to retrieve all accounts from the accounts table
 pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
-    let query = "SELECT id, name, seed, pubkey, passphrase FROM accounts";
+    let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
     let mut stmt = conn.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
         Ok(Account {
@@ -90,6 +90,7 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
             seed: row.get(2)?,
             pubkey: row.get(3)?,
             passphrase: row.get(4)?,
+            balance: row.get(5)?,
         })
     })?;
 
