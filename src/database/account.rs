@@ -1,9 +1,10 @@
+use std::str::FromStr;
 use bip39::{Mnemonic};
 use rusqlite::{params, Connection};
 use slint::SharedString;
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
-use solana_sdk::pubkey::Pubkey;
+use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use crate::database::errors::DatabaseError;
 
 #[derive(Debug, Clone)]
@@ -46,6 +47,10 @@ impl Account {
         let combined_string = format!("{}...{}", first_part, last_part);
 
         SharedString::from(combined_string)
+    }
+
+    pub fn format_pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
+
     }
 
     pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
