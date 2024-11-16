@@ -5,9 +5,11 @@ export component IconButton inherits Rectangle {
     in property <physical-length> iccn_size: 15px;
     in property <physical-length> button_height: 24px;
     in property <physical-length> button_width: 48px;
+    in property <physical-length> button_radius: 9px;
     height: button_height;
     width: button_width;
     background: Palette.alternate_background;
+    border-radius: button_radius;
     
     Image { source: icon; width: iccn_size; }
 }
