@@ -57,7 +57,7 @@ impl Account {
         Ok(pubkey)
     }
 
-    pub fn balance(&self) -> f64 {
+    pub fn balance_in_sol(&self) -> f64 {
         lamports_to_sol(self.balance.unwrap_or_else(|| 0u64))
     }
 
