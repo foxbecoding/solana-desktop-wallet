@@ -38,7 +38,7 @@ fn set_backend_renderer() {
     std::env::set_var("SLINT_RENDERER", "skia");
 }
 
-fn set_accounts_balances(accounts: &Vec<AccountModel>) -> Result<Vec<AccountModel>, ParsePubkeyError> {
+fn set_accounts_balances(accounts: &Vec<AccountModel>) -> Result<Vec<AccountModel>,  Box<dyn std::error::Error>> {
     let new_connection = connection::Connection::new();
     let connection = new_connection.connection();
     let mut accounts_pubkeys: Vec<Pubkey> = vec![];
