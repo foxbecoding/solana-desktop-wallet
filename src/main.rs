@@ -29,7 +29,7 @@ fn init() -> Result<(), AppError> {
     }
 
     let app = MainApp { accounts };
-    start_app(app)?;
+    // start_app(app)?;
     Ok(())
 }
 
@@ -46,7 +46,8 @@ fn set_accounts_balances(accounts: &Vec<AccountModel>) -> Result<Vec<AccountMode
         let pubkey = account.format_pubkey()?;
         accounts_pubkeys.push(pubkey)
     }
-    // connection.get_multiple_accounts();
+    let sol_accounts = connection.get_multiple_accounts(&accounts_pubkeys)?;
+    println!("{:#?}", sol_accounts);
     Ok(vec![])
 }
 
