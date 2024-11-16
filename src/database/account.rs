@@ -2,6 +2,7 @@ use std::str::FromStr;
 use bip39::{Mnemonic};
 use rusqlite::{params, Connection};
 use slint::SharedString;
+use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
 use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
@@ -54,6 +55,10 @@ impl Account {
     pub fn format_pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
         let pubkey = Pubkey::from_str(&self.pubkey)?;
         Ok(pubkey)
+    }
+
+    pub fn sol_balance(&self) -> f32 {
+        lamports_to_sol(self.balance.unwrap_or_else(|| 0u64)) as f32
     }
 
     pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
