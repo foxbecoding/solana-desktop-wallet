@@ -6,6 +6,7 @@ mod database;
 mod connection;
 
 use slint::{include_modules as include_slint_modules};
+use solana_sdk::pubkey::Pubkey;
 use crate::database::{account::{Account as AccountModel, get_accounts}};
 use crate::app::{app::App as MainApp, errors::AppError};
 
@@ -38,6 +39,13 @@ fn set_backend_renderer() {
 }
 
 fn set_accounts_balances(accounts: &Vec<AccountModel>) -> Vec<AccountModel> {
+    let new_connection = connection::Connection::new();
+    let connection = new_connection.connection();
+    let mut accounts_pubkeys: Vec<Pubkey> = vec![];
+    for account in accounts {
+        accounts_pubkeys.push(account.pubkey)
+    }
+    connection.get_multiple_accounts();
     vec![]
 }
 

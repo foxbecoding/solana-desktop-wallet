@@ -23,7 +23,7 @@ pub struct Connection {
 }
 
 impl Connection {
-    pub fn new(&self) -> Self {
+    pub fn new() -> Self {
         let network_env = env::var("NETWORK").unwrap_or_else(|_| "devnet".to_string());
         let network = ConnectionNetwork::from_str(&network_env).expect("invalid network");
         Self { network }

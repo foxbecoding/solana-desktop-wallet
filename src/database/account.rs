@@ -3,6 +3,7 @@ use rusqlite::{params, Connection};
 use slint::SharedString;
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
+use solana_sdk::pubkey::Pubkey;
 use crate::database::errors::DatabaseError;
 
 #[derive(Debug, Clone)]
