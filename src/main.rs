@@ -21,7 +21,7 @@ fn init() -> Result<(), AppError> {
     set_backend_renderer();
     let conn = database::database_connection()?;
     let mut accounts = get_accounts(&conn)?;
-    set_accounts_balances(accounts.clone())?;
+    accounts = set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
@@ -59,6 +59,8 @@ fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel
             account.balance = None;
         }
     }
+
+    println!("updated_accounts: {:#?}", &updated_accounts);
 
     Ok(updated_accounts)
 }
