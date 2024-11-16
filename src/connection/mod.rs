@@ -37,3 +37,18 @@ impl Connection {
 
     pub fn connection(&self) -> RpcClient {}
 }
+
+fn get_network() -> ConnectionNetwork {
+    let network = env::var("NETWORK").unwrap_or_else(|_| "devnet".to_string());
+
+    match network.as_str() {
+        "mainnet" => ConnectionNetwork::MAINNET,
+        "devnet" => ConnectionNetwork::DEVNET,
+        "testnet" => ConnectionNetwork::TESTNET,
+        _ => {
+            eprintln!("Unknown network: {}", network);
+            std::process::exit(1);
+        }
+    }
+}
+
