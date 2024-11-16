@@ -37,6 +37,10 @@ fn set_backend_renderer() {
     std::env::set_var("SLINT_RENDERER", "skia");
 }
 
+fn set_accounts_balances(accounts: &Vec<AccountModel>) -> Vec<AccountModel> {
+    vec![]
+}
+
 fn start_app(app: MainApp) -> Result<(), AppError> {
     app.start()?;
     Ok(())
