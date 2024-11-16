@@ -11,7 +11,8 @@ pub struct Account {
     pub name: String,
     pub seed: String,
     pub pubkey: String,
-    passphrase: String
+    passphrase: String,
+    pub balance: u64
 }
 
 impl Account {
