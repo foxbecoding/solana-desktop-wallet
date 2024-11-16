@@ -52,7 +52,7 @@ impl Account {
         SharedString::from(combined_string)
     }
 
-    pub fn format_pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
+    pub fn pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
         let pubkey = Pubkey::from_str(&self.pubkey)?;
         Ok(pubkey)
     }
