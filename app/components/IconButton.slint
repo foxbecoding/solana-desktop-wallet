@@ -2,8 +2,12 @@ import { Palette } from "std-widgets.slint";
 
 export component IconButton inherits Rectangle {
     in property <image> icon;
-    height: 24px;
-    width: 36px;
+    in property <physical-length> iccn_size: 15px;
+    in property <physical-length> iccn_height: 24px;
+    in property <physical-length> iccn_width: 48px;
+    height: iccn_height;
+    width: iccn_width;
+    background: Palette.alternate_background;
     
-    Image { source: icon; width: 24px; }
+    Image { source: icon; width: iccn_size; }
 }
