@@ -43,5 +43,8 @@ impl Connection {
         }
     }
 
-    pub fn connection(&self) -> RpcClient {}
+    pub fn connection(&self) -> RpcClient {
+        let url = self.solana_url();
+        RpcClient::new(url)
+    }
 }
