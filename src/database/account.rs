@@ -65,10 +65,6 @@ impl Account {
         let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
         Ok(keypair)
     }
-
-    pub fn balance(&self) -> Result<u64, Box<dyn std::error::Error>> {
-        Ok(10u64)
-    }
 }
 
 // Function to insert a new account into the accounts table
