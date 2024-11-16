@@ -29,6 +29,7 @@ impl Account {
             seed: seed_phrase,
             pubkey,
             passphrase,
+            balance: 0u64
         };
         insert_account(conn, &account)?;
         Ok(account)
