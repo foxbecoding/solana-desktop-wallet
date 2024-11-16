@@ -5,6 +5,7 @@ mod app;
 mod database;
 mod connection;
 
+use std::error::Error;
 use slint::{include_modules as include_slint_modules};
 use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use crate::database::{account::{Account as AccountModel, get_accounts}};
@@ -20,6 +21,7 @@ fn init() -> Result<(), AppError> {
     set_backend_renderer();
     let conn = database::database_connection()?;
     let mut accounts = get_accounts(&conn)?;
+    set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
@@ -38,17 +40,27 @@ fn set_backend_renderer() {
     std::env::set_var("SLINT_RENDERER", "skia");
 }
 
-fn set_accounts_balances(accounts: &Vec<AccountModel>) -> Result<Vec<AccountModel>,  Box<dyn std::error::Error>> {
+fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel>, Box<dyn Error>> {
     let new_connection = connection::Connection::new();
     let connection = new_connection.connection();
-    let mut accounts_pubkeys: Vec<Pubkey> = vec![];
-    for account in accounts {
-        let pubkey = account.format_pubkey()?;
-        accounts_pubkeys.push(pubkey)
-    }
+
+    let accounts_pubkeys: Vec<Pubkey> = accounts.iter()
+        .map(|account| account.format_pubkey())
+        .collect::<Result<Vec<_>, _>>()?;
+
     let sol_accounts = connection.get_multiple_accounts(&accounts_pubkeys)?;
-    println!("{:#?}", sol_accounts);
-    Ok(vec![])
+
+    let mut updated_accounts = accounts;
+
+    for (account, sol_account) in updated_accounts.iter_mut().zip(sol_accounts.iter()) {
+        if let Some(sol_account) = sol_account {
+            account.balance = Some(sol_account.lamports);
+        } else {
+            account.balance = None;
+        }
+    }
+
+    Ok(updated_accounts)
 }
 
 fn start_app(app: MainApp) -> Result<(), AppError> {
