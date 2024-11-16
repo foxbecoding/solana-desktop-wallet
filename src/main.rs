@@ -6,7 +6,7 @@ mod database;
 mod connection;
 
 use slint::{include_modules as include_slint_modules};
-use solana_sdk::pubkey::Pubkey;
+use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use crate::database::{account::{Account as AccountModel, get_accounts}};
 use crate::app::{app::App as MainApp, errors::AppError};
 
@@ -38,15 +38,16 @@ fn set_backend_renderer() {
     std::env::set_var("SLINT_RENDERER", "skia");
 }
 
-fn set_accounts_balances(accounts: &Vec<AccountModel>) -> Vec<AccountModel> {
+fn set_accounts_balances(accounts: &Vec<AccountModel>) -> Result<Vec<AccountModel>, ParsePubkeyError> {
     let new_connection = connection::Connection::new();
     let connection = new_connection.connection();
     let mut accounts_pubkeys: Vec<Pubkey> = vec![];
     for account in accounts {
-        accounts_pubkeys.push(account.pubkey)
+        let pubkey = account.format_pubkey()?;
+        accounts_pubkeys.push(pubkey)
     }
-    connection.get_multiple_accounts();
-    vec![]
+    // connection.get_multiple_accounts();
+    Ok(vec![])
 }
 
 fn start_app(app: MainApp) -> Result<(), AppError> {
