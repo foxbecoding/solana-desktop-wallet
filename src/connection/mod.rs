@@ -12,6 +12,8 @@ pub struct Connection {
 }
 
 impl Connection {
+    pub fn new(&self) -> Self {}
+
     fn solana_url() -> String {
         // Retrieve the NETWORK environment variable
         let network = env::var("NETWORK").unwrap_or_else(|_| "devnet".to_string());
