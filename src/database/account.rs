@@ -1,8 +1,11 @@
+use std::str::FromStr;
 use bip39::{Mnemonic};
 use rusqlite::{params, Connection};
 use slint::SharedString;
+use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
+use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use crate::database::errors::DatabaseError;
 
 #[derive(Debug, Clone)]
@@ -11,7 +14,8 @@ pub struct Account {
     pub name: String,
     pub seed: String,
     pub pubkey: String,
-    passphrase: String
+    passphrase: String,
+    pub balance: Option<u64>
 }
 
 impl Account {
@@ -28,6 +32,7 @@ impl Account {
             seed: seed_phrase,
             pubkey,
             passphrase,
+            balance: None
         };
         insert_account(conn, &account)?;
         Ok(account)
@@ -47,9 +52,22 @@ impl Account {
         SharedString::from(combined_string)
     }
 
+    pub fn format_pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
+        let pubkey = Pubkey::from_str(&self.pubkey)?;
+        Ok(pubkey)
+    }
+
+    pub fn sol_balance(&self) -> f32 {
+        lamports_to_sol(self.balance.unwrap_or_else(|| 0u64)) as f32
+    }
+
     pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
         let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
         Ok(keypair)
+    }
+
+    pub fn balance(&self) -> Result<u64, Box<dyn std::error::Error>> {
+        Ok(10u64)
     }
 }
 
@@ -68,7 +86,7 @@ pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, Dat
 
 // Function to retrieve all accounts from the accounts table
 pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
-    let query = "SELECT id, name, seed, pubkey, passphrase FROM accounts";
+    let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
     let mut stmt = conn.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
         Ok(Account {
@@ -77,6 +95,7 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
             seed: row.get(2)?,
             pubkey: row.get(3)?,
             passphrase: row.get(4)?,
+            balance: row.get(5)?,
         })
     })?;
 

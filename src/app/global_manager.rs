@@ -56,5 +56,6 @@ fn slint_account_builder(account: &Account) -> SlintAccount{
         seed: SharedString::from(account.seed.clone()),
         pubkey: SharedString::from(account.pubkey.clone()),
         pubkey_display: account.pubkey_display(),
+        balance: account.sol_balance()
     }
 }
