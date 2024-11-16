@@ -84,7 +84,7 @@ component AccountListItem inherits Rectangle {
                         IconButton {
                             icon: @image-url("../assets/icons/open-icon.svg");
                             clicked => {
-                                debug("IconButton clicked from MainApp!");
+                                AccountManager.view_account(account.pubkey)
                             }
                         }
                     }

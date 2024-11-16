@@ -24,9 +24,6 @@ export component IconButton inherits Rectangle {
     ]
 
     touch := TouchArea {
-        clicked => {
-            // Call the clicked callback
-            root.clicked();
-        }
+        clicked => { root.clicked(); }
     }
 }
