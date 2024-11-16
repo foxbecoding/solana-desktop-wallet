@@ -109,22 +109,22 @@ component AccountListItem inherits Rectangle {
         }
     }
 
-    states [
-        pressed when touch.pressed: {
-            root.opacity: 0.5;
-            root.background: Palette.alternate-background.darker(0.25);
-        }
-        hover when touch.has-hover: {
-            root.opacity: 0.7;
-            root.background: Palette.alternate-background.darker(0.25);
-        }
-    ]
-
-    touch := TouchArea {
-        clicked => {
-            debug("View Account");
-        }
-    }
+//    states [
+//        pressed when touch.pressed: {
+//            root.opacity: 0.5;
+//            root.background: Palette.alternate-background.darker(0.25);
+//        }
+//        hover when touch.has-hover: {
+//            root.opacity: 0.7;
+//            root.background: Palette.alternate-background.darker(0.25);
+//        }
+//    ]
+//
+//    touch := TouchArea {
+//        clicked => {
+//            debug("View Account");
+//        }
+//    }
 }
 
 component AccountsList {
