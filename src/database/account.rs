@@ -52,22 +52,18 @@ impl Account {
         SharedString::from(combined_string)
     }
 
-    pub fn format_pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
+    pub fn pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
         let pubkey = Pubkey::from_str(&self.pubkey)?;
         Ok(pubkey)
     }
 
-    pub fn sol_balance(&self) -> f32 {
-        lamports_to_sol(self.balance.unwrap_or_else(|| 0u64)) as f32
+    pub fn balance_in_sol(&self) -> f64 {
+        lamports_to_sol(self.balance.unwrap_or_else(|| 0u64))
     }
 
     pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
         let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
         Ok(keypair)
-    }
-
-    pub fn balance(&self) -> Result<u64, Box<dyn std::error::Error>> {
-        Ok(10u64)
     }
 }
 

@@ -45,7 +45,7 @@ fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel
     let connection = new_connection.connection();
 
     let accounts_pubkeys: Vec<Pubkey> = accounts.iter()
-        .map(|account| account.format_pubkey())
+        .map(|account| account.pubkey())
         .collect::<Result<Vec<_>, _>>()?;
 
     let sol_accounts = connection.get_multiple_accounts(&accounts_pubkeys)?;
