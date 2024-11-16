@@ -81,7 +81,12 @@ component AccountListItem inherits Rectangle {
                             color: Palette.foreground.with-alpha(0.85);
                             horizontal-alignment: left;
                         }
-                        IconButton { icon: @image-url("../assets/icons/open-icon.svg"); }
+                        IconButton {
+                            icon: @image-url("../assets/icons/open-icon.svg");
+                            clicked => {
+                                debug("IconButton clicked from MainApp!");
+                            }
+                        }
                     }
                 }
 
