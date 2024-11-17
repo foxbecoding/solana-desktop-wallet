@@ -1,5 +1,6 @@
-import {HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "std-widgets.slint";
+import {Button, HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "std-widgets.slint";
 import {AccountManager, Account} from "../utils/account-manager.slint";
+import { IconButton} from "../components/IconButton.slint";
 
 component AccountsListHeader {
     VerticalBox {
@@ -72,12 +73,22 @@ component AccountListItem inherits Rectangle {
                 VerticalLayout {
                     alignment: center;
                     width: 300px;
-                    Text {
-                        font-size: 21px;
-                        font-weight: 500;
-                        text: account.pubkey_display;
-                        color: Palette.foreground.with-alpha(0.85);
-                        horizontal-alignment: left;
+                    HorizontalLayout {
+                        alignment: start;
+                        spacing: 9px;
+                        Text {
+                            font-size: 21px;
+                            font-weight: 500;
+                            text: account.pubkey_display;
+                            color: Palette.foreground.with-alpha(0.85);
+                            horizontal-alignment: left;
+                        }
+                        IconButton {
+                            icon: @image-url("../assets/icons/open-icon.svg");
+                            clicked => {
+                                AccountManager.view_account(account.pubkey)
+                            }
+                        }
                     }
                 }
 
@@ -105,22 +116,21 @@ component AccountListItem inherits Rectangle {
         }
     }
 
-    states [
-        pressed when touch.pressed: {
-            root.opacity: 0.5;
-            root.background: Palette.alternate-background.darker(0.25);
-        }
-        hover when touch.has-hover: {
-            root.opacity: 0.7;
-            root.background: Palette.alternate-background.darker(0.25);
-        }
-    ]
+//    states [
+//        pressed when main.pressed: {
+//            root.opacity: 0.5;
+//            root.background: Palette.alternate-background.darker(0.25);
+//        }
+//        hover when main.has-hover: {
+//            root.opacity: 0.7;
+//            root.background: Palette.alternate-background.darker(0.25);
+//        }
+//    ]
+//
+//    main := TouchArea {
+//        clicked => {}
+//    }
 
-    touch := TouchArea {
-        clicked => {
-            debug("View Account");
-        }
-    }
 }
 
 component AccountsList {

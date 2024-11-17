@@ -29,6 +29,11 @@ impl Connection {
         Self { network }
     }
 
+    pub fn connection(&self) -> RpcClient {
+        let url = self.solana_url();
+        RpcClient::new(url)
+    }
+
     fn solana_url(&self) -> String {
         // Define the URLs
         let solana_mainnet = env::var("SOLANA_MAINNET").unwrap_or_else(|_| "https://api.mainnet-beta.solana.com".to_string());
@@ -41,10 +46,5 @@ impl Connection {
             ConnectionNetwork::DEVNET => solana_devnet,
             ConnectionNetwork::TESTNET => solana_testnet,
         }
-    }
-
-    pub fn connection(&self) -> RpcClient {
-        let url = self.solana_url();
-        RpcClient::new(url)
     }
 }

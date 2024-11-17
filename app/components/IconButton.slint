@@ -1,0 +1,33 @@
+import { Palette } from "std-widgets.slint";
+
+export component IconButton inherits Rectangle {
+    in property <image> icon;
+    in property <physical-length> iccn_size: 15px;
+    in property <physical-length> button_height: 24px;
+    in property <physical-length> button_width: 48px;
+    in property <physical-length> button_radius: 6px;
+
+    callback clicked();
+
+    height: button_height;
+    width: button_width;
+    border-radius: button_radius;
+    background: transparent;
+    
+    Image { source: icon; width: iccn_size; }
+
+    states [
+        pressed when touch.pressed: {
+            root.opacity: 0.5;
+            root.background: Palette.alternate-background.brighter(0.80);
+        }
+        hover when touch.has-hover: {
+            root.opacity: 0.7;
+            root.background: Palette.alternate-background.brighter(0.80);
+        }
+    ]
+
+    touch := TouchArea {
+        clicked => { root.clicked(); }
+    }
+}
