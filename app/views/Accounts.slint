@@ -1,4 +1,4 @@
-import {HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "std-widgets.slint";
+import {Button, HorizontalBox, VerticalBox, StandardTableView, Palette, ListView} from "std-widgets.slint";
 import {AccountManager, Account} from "../utils/account-manager.slint";
 import { IconButton} from "../components/IconButton.slint";
 
@@ -74,6 +74,8 @@ component AccountListItem inherits Rectangle {
                     alignment: center;
                     width: 300px;
                     HorizontalLayout {
+                        alignment: start;
+                        spacing: 9px;
                         Text {
                             font-size: 21px;
                             font-weight: 500;
@@ -115,21 +117,20 @@ component AccountListItem inherits Rectangle {
     }
 
 //    states [
-//        pressed when touch.pressed: {
+//        pressed when main.pressed: {
 //            root.opacity: 0.5;
 //            root.background: Palette.alternate-background.darker(0.25);
 //        }
-//        hover when touch.has-hover: {
+//        hover when main.has-hover: {
 //            root.opacity: 0.7;
 //            root.background: Palette.alternate-background.darker(0.25);
 //        }
 //    ]
 //
-//    touch := TouchArea {
-//        clicked => {
-//            debug("View Account");
-//        }
+//    main := TouchArea {
+//        clicked => {}
 //    }
+
 }
 
 component AccountsList {
