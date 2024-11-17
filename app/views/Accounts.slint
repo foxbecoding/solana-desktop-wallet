@@ -48,67 +48,69 @@ component AccountsListHeader {
     }
 }
 
-component AccountListItem inherits Rectangle {
+component AccountListItem inherits TouchArea {
     in property <Account> account;
-    border-radius: 9px;
-    VerticalBox {
-        alignment: center;
-        Rectangle {
-            height: 48px;
-            HorizontalLayout {
-                alignment: space-between;
-                VerticalLayout {
-                    alignment: center;
-                    width: 300px;
-                    Text {
-                        font-size: 21px;
-                        font-weight: 500;
-                        text: account.name;
-                        color: Palette.foreground.with-alpha(0.85);
-                        horizontal-alignment: left;
-                        overflow: TextOverflow.elide;
-                    }
-                }
-
-                VerticalLayout {
-                    alignment: center;
-                    width: 300px;
-                    HorizontalLayout {
-                        alignment: start;
-                        spacing: 9px;
+    item := Rectangle {
+        border-radius: 9px;
+        VerticalBox {
+            alignment: center;
+            Rectangle {
+                height: 48px;
+                HorizontalLayout {
+                    alignment: space-between;
+                    VerticalLayout {
+                        alignment: center;
+                        width: 300px;
                         Text {
                             font-size: 21px;
                             font-weight: 500;
-                            text: account.pubkey_display;
+                            text: account.name;
                             color: Palette.foreground.with-alpha(0.85);
                             horizontal-alignment: left;
+                            overflow: TextOverflow.elide;
                         }
-                        IconButton {
-                            icon: @image-url("../assets/icons/open-icon.svg");
-                            clicked => {
-                                AccountManager.view_account(account.pubkey)
+                    }
+
+                    VerticalLayout {
+                        alignment: center;
+                        width: 300px;
+                        HorizontalLayout {
+                            alignment: start;
+                            spacing: 9px;
+                            Text {
+                                font-size: 21px;
+                                font-weight: 500;
+                                text: account.pubkey_display;
+                                color: Palette.foreground.with-alpha(0.85);
+                                horizontal-alignment: left;
+                            }
+                            IconButton {
+                                icon: @image-url("../assets/icons/open-icon.svg");
+                                clicked => {
+                                    AccountManager.view_account(account.pubkey)
+                                }
                             }
                         }
                     }
-                }
 
-                VerticalLayout {
-                    alignment: center;
-                    width: 200px;
-                    HorizontalLayout {
-                        alignment: start;
-                        spacing: 9px;
-                        Image {
-                            source: @image-url("../assets/icons/solana-icon.svg");
-                            width: 21px;
-                            horizontal-alignment: left;
-                        }
-                        Text {
-                            font-size: 21px;
-                            font-weight: 500;
-                            text: "\{account.balance}";
-                            color: Palette.foreground.with-alpha(0.85);
-                            horizontal-alignment: left;
+                    VerticalLayout {
+                        alignment: center;
+                        width: 200px;
+                        HorizontalLayout {
+                            alignment: start;
+                            spacing: 9px;
+                            Image {
+                                source: @image-url("../assets/icons/solana-icon.svg");
+                                width: 21px;
+                                horizontal-alignment: left;
+                            }
+                            Text {
+                                font-size: 21px;
+                                font-weight: 500;
+                                text: "\{account.balance}";
+                                color: Palette.foreground.with-alpha(0.85);
+                                horizontal-alignment: left;
+                            }
                         }
                     }
                 }
@@ -116,20 +118,12 @@ component AccountListItem inherits Rectangle {
         }
     }
 
-//    states [
-//        pressed when main.pressed: {
-//            root.opacity: 0.5;
-//            root.background: Palette.alternate-background.darker(0.25);
-//        }
-//        hover when main.has-hover: {
-//            root.opacity: 0.7;
-//            root.background: Palette.alternate-background.darker(0.25);
-//        }
-//    ]
-//
-//    main := TouchArea {
-//        clicked => {}
-//    }
+    states [
+        hover when root.has-hover: {
+            item.opacity: 0.7;
+            item.background: Palette.alternate-background.brighter(0.80);
+        }
+    ]
 
 }
 
