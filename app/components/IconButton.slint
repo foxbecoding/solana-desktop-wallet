@@ -17,6 +17,10 @@ export component IconButton inherits Rectangle {
     Image { source: icon; width: iccn_size; }
 
     states [
+        pressed when touch.pressed: {
+            root.opacity: 0.5;
+            root.background: Palette.alternate-background.brighter(0.80);
+        }
         hover when touch.has-hover: {
             root.opacity: 0.7;
             root.background: Palette.alternate-background.brighter(0.80);
