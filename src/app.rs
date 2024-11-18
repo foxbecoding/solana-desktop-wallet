@@ -5,7 +5,7 @@ pub(crate) mod global_manager;
 use slint::ComponentHandle;
 
 use crate::database::account::Account;
-use crate::app::{callback_manager::CallbackManager, global_manager::GlobalManager, errors::AppError};
+use crate::app::{errors::AppError};
 #[derive(Debug)]
 pub struct App {
     pub accounts: Vec<Account>
@@ -17,7 +17,7 @@ impl App {
         Ok(())
     }
 
-    fn run_app(&self) -> Result<(), AppError> {
+    fn run_app(&self) -> Result<(), errors::AppError> {
         let app = crate::App::new()?;
         self.run_managers(&app)?;
         app.run()?;
