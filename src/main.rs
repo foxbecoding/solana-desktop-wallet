@@ -9,7 +9,7 @@ use std::error::Error;
 use slint::{include_modules as include_slint_modules};
 use solana_sdk::pubkey::{Pubkey};
 use crate::database::{account::{Account as AccountModel, get_accounts}};
-use crate::app::{app::App as MainApp, errors::AppError};
+use app::errors::AppError;
 
 include_slint_modules!();
 fn main() -> Result<(), AppError> {
@@ -30,7 +30,7 @@ fn init() -> Result<(), AppError> {
         accounts = get_accounts(&conn)?;
     }
 
-    let app = MainApp { accounts };
+    let app = app::App { accounts };
     start_app(app)?;
     Ok(())
 }
@@ -63,7 +63,7 @@ fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel
     Ok(updated_accounts)
 }
 
-fn start_app(app: MainApp) -> Result<(), AppError> {
+fn start_app(app: app::App) -> Result<(), AppError> {
     app.start()?;
     Ok(())
 }
