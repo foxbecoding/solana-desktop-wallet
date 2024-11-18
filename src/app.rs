@@ -1,10 +1,9 @@
 pub(crate) mod errors;
 pub(crate) mod callback_manager;
 pub(crate) mod global_manager;
-
 use slint::ComponentHandle;
-
 use crate::database::account::Account;
+
 #[derive(Debug)]
 pub struct App {
     pub accounts: Vec<Account>
