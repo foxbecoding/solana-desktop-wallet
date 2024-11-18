@@ -1,0 +1,14 @@
+export struct Account {
+    id: int,
+    name: string,
+    seed: string,
+    pubkey: string,
+    pubkey_display: string,
+    balance: float
+}
+
+export global AccountManager {
+    in-out property <[Account]> accounts;
+    in-out property <Account> selected_account;
+    pure callback view_account(string);
+}
