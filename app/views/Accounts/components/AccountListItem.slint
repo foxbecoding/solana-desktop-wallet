@@ -1,0 +1,82 @@
+import {VerticalBox, Palette} from "std-widgets.slint";
+import {AccountManager, Account} from "../../../managers/account-manager.slint";
+import {IconButton} from "../../../components/IconButton.slint";
+
+export component AccountListItem inherits TouchArea {
+    in property <Account> account;
+    item := Rectangle {
+        border-radius: 9px;
+        VerticalBox {
+            alignment: center;
+            Rectangle {
+                height: 48px;
+                HorizontalLayout {
+                    alignment: space-between;
+                    VerticalLayout {
+                        alignment: center;
+                        width: 300px;
+                        Text {
+                            font-size: 21px;
+                            font-weight: 500;
+                            text: account.name;
+                            color: Palette.foreground.with-alpha(0.85);
+                            horizontal-alignment: left;
+                            overflow: TextOverflow.elide;
+                        }
+                    }
+
+                    VerticalLayout {
+                        alignment: center;
+                        width: 300px;
+                        HorizontalLayout {
+                            alignment: start;
+                            spacing: 9px;
+                            Text {
+                                font-size: 21px;
+                                font-weight: 500;
+                                text: account.pubkey_display;
+                                color: Palette.foreground.with-alpha(0.85);
+                                horizontal-alignment: left;
+                            }
+                            IconButton {
+                                icon: @image-url("../assets/icons/open-icon.svg");
+                                clicked => {
+                                    AccountManager.view_account(account.pubkey)
+                                }
+                            }
+                        }
+                    }
+
+                    VerticalLayout {
+                        alignment: center;
+                        width: 200px;
+                        HorizontalLayout {
+                            alignment: start;
+                            spacing: 9px;
+                            Image {
+                                source: @image-url("../assets/icons/solana-icon.svg");
+                                width: 21px;
+                                horizontal-alignment: left;
+                            }
+                            Text {
+                                font-size: 21px;
+                                font-weight: 500;
+                                text: "\{account.balance}";
+                                color: Palette.foreground.with-alpha(0.85);
+                                horizontal-alignment: left;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    states [
+        hover when root.has-hover: {
+            item.opacity: 0.7;
+            item.background: Palette.alternate-background.brighter(0.80);
+        }
+    ]
+
+}
