@@ -1,0 +1,37 @@
+import {HorizontalBox, VerticalBox, Palette} from "std-widgets.slint";
+import {AccountsList, AccountListItem, AccountsListHeader} from "components/index.slint";
+
+export component Accounts inherits HorizontalLayout {
+    padding: 18px;
+    VerticalBox {
+        Rectangle {
+            height: 60px;
+            VerticalLayout {
+                Text {
+                    text: "Accounts";
+                    font-size: 30px;
+                    font-weight: 800;
+                    color: Palette.foreground.with-alpha(0.85);
+                    horizontal-alignment: left;
+                }
+            }
+        }
+
+        Rectangle {
+            background: Palette.alternate-background;
+            border-radius: 12px;
+            HorizontalBox {
+                VerticalBox {
+                    AccountsListHeader {}
+                    VerticalBox {
+                        Rectangle {
+                            height: 1px;
+                            background: Palette.foreground.darker(0.30);
+                        }
+                    }
+                    AccountsList {}
+                }
+            }
+        }
+    }
+}
