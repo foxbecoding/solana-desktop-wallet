@@ -1,6 +1,6 @@
 import {Palette, HorizontalBox}  from "std-widgets.slint";
 import {ViewManager, View} from "../../managers/view-manager.slint";
-import {CustomTheme} from "../../theme.slint";
+import {Theme} from "../../theme.slint";
 
 export struct ListItem {
     view: View,
@@ -22,7 +22,7 @@ export component SideNavListItem inherits Rectangle {
         Image{
             source: icon;
             width: 21px;
-            colorize: root.is_view ? CustomTheme.primary.brighter(0.50) : Palette.foreground;
+            colorize: root.is_view ? Theme.primary.brighter(0.50) : Palette.foreground;
         }
 
         Text {
