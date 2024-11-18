@@ -5,7 +5,6 @@ pub(crate) mod global_manager;
 use slint::ComponentHandle;
 
 use crate::database::account::Account;
-use crate::app::{errors::AppError};
 #[derive(Debug)]
 pub struct App {
     pub accounts: Vec<Account>
