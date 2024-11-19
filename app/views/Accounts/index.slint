@@ -6,7 +6,7 @@ export component Accounts inherits HorizontalLayout {
     VerticalBox {
         Rectangle {
             height: 60px;
-            VerticalLayout {
+            VerticalBox {
                 Text {
                     text: "Accounts";
                     font-size: 30px;
@@ -18,17 +18,9 @@ export component Accounts inherits HorizontalLayout {
         }
 
         Rectangle {
-            background: Palette.alternate-background;
-            border-radius: 12px;
-            HorizontalBox {
-                VerticalBox {
+            HorizontalLayout {
+                VerticalLayout {
                     AccountsListHeader {}
-                    VerticalBox {
-                        Rectangle {
-                            height: 1px;
-                            background: Palette.foreground.darker(0.30);
-                        }
-                    }
                     AccountsList {}
                 }
             }
