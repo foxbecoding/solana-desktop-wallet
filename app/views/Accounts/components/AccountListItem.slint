@@ -4,7 +4,9 @@ import {IconButton} from "../../../components/IconButton.slint";
 
 export component AccountListItem inherits TouchArea {
     in property <Account> account;
+    in property <color> background_color;
     item := Rectangle {
+        background: background_color;
         border-radius: 9px;
         VerticalBox {
             alignment: center;
