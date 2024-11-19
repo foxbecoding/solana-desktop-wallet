@@ -38,8 +38,12 @@ component AddAccountButton inherits Rectangle {
 }
 
 export component AccountsToolbar inherits Rectangle {
+    height: 80px;
     HorizontalBox {
         alignment: space-between;
-        AddAccountButton {}
+        VerticalLayout {
+            alignment: center;
+            AddAccountButton {}
+        }
     }
 }
