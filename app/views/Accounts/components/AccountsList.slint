@@ -1,11 +1,12 @@
-import {ListView} from "std-widgets.slint";
+import {ListView, Palette} from "std-widgets.slint";
 import {AccountManager} from "../../../managers/account-manager.slint";
 import {AccountListItem} from "AccountListItem.slint";
 
 export component AccountsList {
     ListView {
-        for account in AccountManager.accounts : AccountListItem {
+        for account[index] in AccountManager.accounts : AccountListItem {
             account: account;
+            background_color: Math.mod(index, 2) == 0 ?  Palette.alternate-background.darker(0.25): Palette.background;
         }
     }
 }
