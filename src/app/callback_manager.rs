@@ -38,22 +38,26 @@ impl CallbackManager {
 
     fn add_account_handler(&self) -> Result<(), DatabaseError> {
         let app_instance = Arc::clone(&self.app_instance);
-        app_instance.lock().unwrap().global::<crate::AccountManager>().on_add_account(move || {
+        app_instance.lock().unwrap().global::<crate::AccountManager>().on_add_account({
             let app_instance = Arc::clone(&app_instance);
-            if let Err(e) = (|| -> Result<(), DatabaseError> {
-                // Establish db connection
-                let db_conn = database_connection()?;
-                // get accounts count
-                let accounts_count = get_accounts(&db_conn)?.len();
-                // set new account name
-                let new_account_name = format!("Account {}", accounts_count + 1);
-                // let new_account = Account::new(&db_conn, new_account_name)?;
-                // insert_account(&db_conn, &new_account)?;
-                println!("{}", new_account_name);
+            move || {
+                let result = (|| -> Result<(), DatabaseError> {
+                    // Establish db connection
+                    let db_conn = database_connection()?;
+                    // get accounts count
+                    let accounts_count = get_accounts(&db_conn)?.len();
+                    // set new account name
+                    let new_account_name = format!("Account {}", accounts_count + 1);
+                    // Uncomment the below lines if your context has these implementations
+                    // let new_account = Account::new(&db_conn, new_account_name)?;
+                    // insert_account(&db_conn, &new_account)?;
+                    println!("{}", new_account_name);
+                    Ok(())
+                })();
 
-                Ok(())
-            })() {
-                eprintln!("Error in add_account_handler: {}", e);
+                if let Err(e) = result {
+                    eprintln!("Error in add_account_handler: {}", e);
+                }
             }
         });
         Ok(())
