@@ -1,4 +1,5 @@
 import {HorizontalBox, VerticalBox, Palette} from "std-widgets.slint";
+import {AccountManager} from "../../../managers/account-manager.slint";
 
 component AddAccountButton inherits Rectangle {
     in property <image> icon: @image-url("../../../assets/icons/add-icon.svg");
@@ -49,7 +50,7 @@ export component AccountsToolbar inherits Rectangle {
             alignment: center;
             AddAccountButton {
                 clicked => {
-                    debug("Handle add account here")
+                    AccountManager.add_account()
                 }
             }
         }
