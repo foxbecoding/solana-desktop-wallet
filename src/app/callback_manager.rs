@@ -29,4 +29,6 @@ impl<'a> CallbackManager<'a> {
             }
         });
     }
+
+    fn add_account_handler(&self) {}
 }
