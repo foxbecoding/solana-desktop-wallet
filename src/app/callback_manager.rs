@@ -12,8 +12,9 @@ impl<'a> CallbackManager<'a> {
         CallbackManager { app_instance }
     }
 
-    pub fn run(&self) {
-        self.init_handlers();
+    pub fn run(&self) -> Result<(), DatabaseError> {
+        self.init_handlers()?;
+        Ok(())
     }
 
     fn init_handlers(&self) -> Result<(), DatabaseError> {
