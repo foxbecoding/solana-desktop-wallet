@@ -26,7 +26,7 @@ impl App {
     }
 
     fn run_managers(&self, app_instance: crate::App) -> Result<(), errors::AppError> {
-        global_manager::GlobalManager::new(Arc::clone(&arc_app_instance), &self.accounts).run()?;
+        global_manager::GlobalManager::new(app_instance, &self.accounts).run()?;
         callback_manager::CallbackManager::new(Arc::clone(&arc_app_instance)).run()?;
         Ok(())
     }
