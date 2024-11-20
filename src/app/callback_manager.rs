@@ -2,6 +2,7 @@ use slint::ComponentHandle;
 use solana_sdk::msg;
 use std::sync::{Arc, Mutex};
 use crate::database::{database_connection, errors::DatabaseError, account::{Account, get_accounts, insert_account}};
+use crate::app::global_manager::GlobalManager;
 
 pub struct CallbackManager {
     app_instance: Arc<Mutex<crate::App>>,
@@ -40,18 +41,22 @@ impl CallbackManager {
         let app_instance = Arc::clone(&self.app_instance);
         app_instance.lock().unwrap().global::<crate::AccountManager>().on_add_account({
             let app_instance = Arc::clone(&app_instance);
+            let db_conn = database_connection()?;
             move || {
                 let result = (|| -> Result<(), DatabaseError> {
                     // Establish db connection
-                    let db_conn = database_connection()?;
+
                     // get accounts count
                     let accounts_count = get_accounts(&db_conn)?.len();
                     // set new account name
                     let new_account_name = format!("Account {}", accounts_count + 1);
-                    // Uncomment the below lines if your context has these implementations
-                    // let new_account = Account::new(&db_conn, new_account_name)?;
-                    // insert_account(&db_conn, &new_account)?;
-                    println!("{}", new_account_name);
+                    // insert into DB
+                    let new_account = Account::new(&db_conn, new_account_name)?;
+                    insert_account(&db_conn, &new_account)?;
+                    // set accounts in app
+                    let accounts = get_accounts(&db_conn)?;
+                    let global_manager = GlobalManager::new(Arc::clone(&app_instance), &accounts);
+                    global_manager.set_accounts();
                     Ok(())
                 })();
 
