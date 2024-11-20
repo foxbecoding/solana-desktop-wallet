@@ -46,7 +46,7 @@ impl<'a> GlobalManager<'a> {
 
         let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
         let model_rc_accounts = ModelRc::from(rc_accounts.clone());
-        crate::AccountManager::get(&*self.app_instance.lock().unwrap()).set_accounts(model_rc_accounts);
+        crate::AccountManager::get(&*self.app_instance).set_accounts(model_rc_accounts);
     }
 }
 
