@@ -24,7 +24,7 @@ impl App {
 
     fn run_managers(&self, app: &crate::App) -> Result<(), errors::AppError> {
         global_manager::GlobalManager::new(&app, &self.accounts).run()?;
-        callback_manager::CallbackManager::new(&app).run();
+        callback_manager::CallbackManager::new(&app).run()?;
         Ok(())
     }
 }
