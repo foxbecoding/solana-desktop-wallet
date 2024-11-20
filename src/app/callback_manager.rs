@@ -39,8 +39,8 @@ impl CallbackManager {
 
     fn add_account_handler(&self) -> Result<(), DatabaseError> {
         let app_instance = Arc::clone(&self.app_instance);
-        let weak_app = &self.app_instance.lock().unwrap().as_weak().unwrap();
-        let weak_app_dos = Arc::new(Mutex::new(self.app_instance.lock().unwrap().as_weak().unwrap()));
+        let weak_app = &self.app_instance;
+        let weak_app_dos = Arc::new(Mutex::new(&self.app_instance));
         let app_instance_clone = Arc::clone(&self.app_instance).clone();
         // app_instance_clone.lock().unwrap().global::<crate::AccountManager>().on_add_account(move || {
         weak_app.global::<crate::AccountManager>().on_add_account(move || {
@@ -58,7 +58,8 @@ impl CallbackManager {
                 // set accounts in app With Global Manager
                 let accounts = get_accounts(&db_conn)?;
                 // TODO FIX bug
-                let global_manager = GlobalManager::new(Arc::clone(&app_instance), &accounts);
+                let weak_app = app_instance.lock().unwrap().as_weak().unwrap();
+                let global_manager = GlobalManager::new(weak_app, &accounts);
                 global_manager.set_accounts();
                 Ok(())
             })();
