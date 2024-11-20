@@ -17,7 +17,7 @@ impl App {
     }
 
     fn run_app(&self) -> Result<(), errors::AppError> {
-        let mut app = crate::App::new()?;
+        let app = crate::App::new()?;
 
         // Wrapping the mutable reference in Arc and Mutex
         let arc_app_instance = Arc::new(Mutex::new(app));
