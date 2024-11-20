@@ -31,5 +31,9 @@ impl<'a> CallbackManager<'a> {
         });
     }
 
-    fn add_account_handler(&self) {}
+    fn add_account_handler(&self) {
+        self.app_instance.global::<crate::AccountManager>().on_add_account(|| {
+            msg!("ADD ACCOUNT");
+        });
+    }
 }

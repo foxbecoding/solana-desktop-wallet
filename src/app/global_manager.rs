@@ -49,7 +49,7 @@ impl<'a> GlobalManager<'a> {
     }
 }
 
-fn slint_account_builder(account: &Account) -> SlintAccount{
+pub fn slint_account_builder(account: &Account) -> SlintAccount{
     SlintAccount {
         id: account.id.unwrap(),
         name: SharedString::from(account.name.clone()),
