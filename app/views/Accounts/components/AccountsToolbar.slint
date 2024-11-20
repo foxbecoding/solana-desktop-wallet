@@ -3,8 +3,8 @@ import {HorizontalBox, VerticalBox, Palette} from "std-widgets.slint";
 component AddAccountButton inherits Rectangle {
     in property <image> icon;
     in property <physical-length> iccn_size: 15px;
-    in property <physical-length> button_height: 48px;
-    in property <physical-length> button_width: 72px;
+    in property <physical-length> button_height: 32px;
+    in property <physical-length> button_width: 120px;
     in property <physical-length> button_radius: 6px;
 
     callback clicked();
@@ -12,23 +12,21 @@ component AddAccountButton inherits Rectangle {
     height: button_height;
     width: button_width;
     border-radius: button_radius;
-    background: Palette.foreground;
+    background: Palette.foreground.with-alpha(0.90);
 
 
     HorizontalBox {
         alignment: center;
-        Image { source: icon; width: iccn_size; }
-        Text {text: "Add Account"; font-size: 12px;}
+//        Image { visible: false; source: icon; width: iccn_size; }
+        Text {text: "Add Account"; font-size: 12px; font-weight: 600; color: Palette.background;}
     }
 
     states [
         pressed when touch.pressed: {
-//            root.opacity: 0.5;
-            root.background: Palette.foreground.with-alpha(0.50);
+            root.background: Palette.foreground.with-alpha(0.70);
         }
         hover when touch.has-hover: {
-//            root.opacity: 0.7;
-            root.background: Palette.foreground.with-alpha(0.70);
+            root.background: Palette.foreground.with-alpha(0.85);
         }
     ]
 
