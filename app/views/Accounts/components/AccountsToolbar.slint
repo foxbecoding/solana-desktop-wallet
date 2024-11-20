@@ -1,10 +1,10 @@
 import {HorizontalBox, VerticalBox, Palette} from "std-widgets.slint";
 
 component AddAccountButton inherits Rectangle {
-    in property <image> icon;
-    in property <physical-length> iccn_size: 15px;
+    in property <image> icon: @image-url("../../../assets/icons/open-icon.svg");
+    in property <physical-length> iccn_size: 12px;
     in property <physical-length> button_height: 32px;
-    in property <physical-length> button_width: 120px;
+    in property <physical-length> button_width: 132px;
     in property <physical-length> button_radius: 6px;
 
     callback clicked();
@@ -17,8 +17,14 @@ component AddAccountButton inherits Rectangle {
 
     HorizontalBox {
         alignment: center;
-//        Image { visible: false; source: icon; width: iccn_size; }
-        Text {text: "Add Account"; font-size: 12px; font-weight: 600; color: Palette.background;}
+        VerticalLayout {
+            alignment: center;
+            Image {source: icon; width: iccn_size; colorize: Palette.background.darker(0.9);}
+        }
+        VerticalLayout {
+            alignment: center;
+            Text {text: "Add Account"; font-size: 12px; font-weight: 600; color: Palette.background;}
+        }
     }
 
     states [
