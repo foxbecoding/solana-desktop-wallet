@@ -41,11 +41,10 @@ impl CallbackManager {
         let app_instance = Arc::clone(&self.app_instance);
         app_instance.lock().unwrap().global::<crate::AccountManager>().on_add_account({
             let app_instance = Arc::clone(&app_instance);
+            // Establish db connection
             let db_conn = database_connection()?;
             move || {
                 let result = (|| -> Result<(), DatabaseError> {
-                    // Establish db connection
-
                     // get accounts count
                     let accounts_count = get_accounts(&db_conn)?.len();
                     // set new account name
@@ -53,7 +52,7 @@ impl CallbackManager {
                     // insert into DB
                     let new_account = Account::new(&db_conn, new_account_name)?;
                     insert_account(&db_conn, &new_account)?;
-                    // set accounts in app
+                    // set accounts in app With Global Manager
                     let accounts = get_accounts(&db_conn)?;
                     let global_manager = GlobalManager::new(Arc::clone(&app_instance), &accounts);
                     global_manager.set_accounts();
