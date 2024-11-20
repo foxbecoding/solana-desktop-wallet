@@ -6,7 +6,7 @@ use crate::database::account::Account;
 use crate::slint_generatedApp::Account as SlintAccount;
 
 pub struct GlobalManager<'a>  {
-    app_instance: Arc<Mutex<crate::App>>,
+    app_instance: crate::App,
     accounts: &'a Vec<Account>
 }
 
