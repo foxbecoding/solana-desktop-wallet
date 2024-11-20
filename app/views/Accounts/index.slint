@@ -1,5 +1,5 @@
 import {HorizontalBox, VerticalBox, Palette} from "std-widgets.slint";
-import {AccountsList, AccountListItem, AccountsListHeader} from "components/index.slint";
+import {AccountsList, AccountListItem, AccountsListHeader, AccountsToolbar} from "components/index.slint";
 
 export component Accounts inherits HorizontalLayout {
     padding: 18px;
@@ -20,6 +20,7 @@ export component Accounts inherits HorizontalLayout {
         Rectangle {
             HorizontalLayout {
                 VerticalLayout {
+                    AccountsToolbar {}
                     AccountsListHeader {}
                     AccountsList {}
                 }
