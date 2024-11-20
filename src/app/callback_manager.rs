@@ -53,7 +53,7 @@ impl CallbackManager {
 
                 // set accounts in app With Global Manager
                 let accounts = get_accounts(&db_conn)?;
-                let global_manager = GlobalManager::new(weak_app.clone_strong(), &accounts);
+                let global_manager = GlobalManager::new(weak_app.clone_strong(), accounts);
                 global_manager.set_accounts();
                 Ok(())
             })();
