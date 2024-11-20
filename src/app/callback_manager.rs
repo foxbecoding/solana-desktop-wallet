@@ -5,7 +5,7 @@ use crate::database::{database_connection, errors::DatabaseError, account::{Acco
 use crate::app::global_manager::GlobalManager;
 
 pub struct CallbackManager {
-    app_instance: Arc<Mutex<crate::App>>,
+    app_instance: crate::App,
 }
 
 impl CallbackManager {
