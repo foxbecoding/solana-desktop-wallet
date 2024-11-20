@@ -19,13 +19,13 @@ impl App {
         let app = crate::App::new()?;
         let weak_app = app.as_weak().unwrap();
 
-        self.run_managers(&weak_app)?;
+        self.run_managers(weak_app)?;
         app.run()?;
         Ok(())
     }
 
-    fn run_managers(&self, app_instance: &crate::App) -> Result<(), errors::AppError> {
-        global_manager::GlobalManager::new(app_instance, &self.accounts).run()?;
+    fn run_managers(&self, app_instance: crate::App) -> Result<(), errors::AppError> {
+        global_manager::GlobalManager::new(app_instance.clone_strong(), &self.accounts).run()?;
         callback_manager::CallbackManager::new(app_instance).run()?;
         Ok(())
     }
