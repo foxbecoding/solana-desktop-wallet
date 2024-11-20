@@ -5,12 +5,12 @@ use crate::database::account::Account;
 use crate::slint_generatedApp::Account as SlintAccount;
 
 pub struct GlobalManager<'a>  {
-    app_instance: crate::App,
+    app_instance: &'a crate::App,
     accounts: &'a Vec<Account>
 }
 
 impl<'a> GlobalManager<'a> {
-    pub fn new(app_instance: crate::App, accounts: &'a Vec<Account>) -> Self {
+    pub fn new(app_instance: &'a crate::App, accounts: &'a Vec<Account>) -> Self {
         GlobalManager { app_instance, accounts }
     }
 
