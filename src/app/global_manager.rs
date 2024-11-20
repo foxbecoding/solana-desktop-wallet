@@ -1,5 +1,4 @@
 use std::rc::Rc;
-use std::sync::{Arc, Mutex};
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
 use crate::database::account::Account;
@@ -30,7 +29,7 @@ impl<'a> GlobalManager<'a> {
         match self.accounts.first() {
             Some(account) => {
                 let slint_account = slint_account_builder(account);
-                crate::AccountManager::get(&*self.app_instance.lock().unwrap()).set_selected_account(slint_account);
+                crate::AccountManager::get(&*self.app_instance).set_selected_account(slint_account);
                 Ok(())
             },
             None => Err(AppError::NoAccountSelected),
