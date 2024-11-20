@@ -4,12 +4,12 @@ use std::sync::{Arc, Mutex};
 use crate::database::{database_connection, errors::DatabaseError, account::{Account, get_accounts, insert_account}};
 use crate::app::global_manager::GlobalManager;
 
-pub struct CallbackManager {
-    app_instance: crate::App,
+pub struct CallbackManager<'a> {
+    app_instance: &'a crate::App,
 }
 
-impl CallbackManager {
-    pub fn new(app_instance: crate::App) -> Self {
+impl<'a> CallbackManager<'a> {
+    pub fn new(app_instance: &'a crate::App) -> Self {
         CallbackManager { app_instance }
     }
 
@@ -59,7 +59,7 @@ impl CallbackManager {
                 let accounts = get_accounts(&db_conn)?;
                 // TODO FIX bug
                 let weak_app = app_instance.lock().unwrap().as_weak().unwrap();
-                let global_manager = GlobalManager::new(weak_app, &accounts);
+                let global_manager = GlobalManager::new(&weak_app, &accounts);
                 global_manager.set_accounts();
                 Ok(())
             })();
