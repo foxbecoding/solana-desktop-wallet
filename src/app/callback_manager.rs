@@ -9,7 +9,7 @@ pub struct CallbackManager {
 }
 
 impl CallbackManager {
-    pub fn new(app_instance: Arc<Mutex<crate::App>>) -> Self {
+    pub fn new(app_instance: crate::App) -> Self {
         CallbackManager { app_instance }
     }
 
@@ -39,10 +39,14 @@ impl CallbackManager {
 
     fn add_account_handler(&self) -> Result<(), DatabaseError> {
         let app_instance = Arc::clone(&self.app_instance);
+        let weak_app = &self.app_instance.lock().unwrap().as_weak().unwrap();
+        let weak_app_dos = Arc::new(Mutex::new(self.app_instance.lock().unwrap().as_weak().unwrap()));
         let app_instance_clone = Arc::clone(&self.app_instance).clone();
-        app_instance_clone.lock().unwrap().global::<crate::AccountManager>().on_add_account(move || {
+        // app_instance_clone.lock().unwrap().global::<crate::AccountManager>().on_add_account(move || {
+        weak_app.global::<crate::AccountManager>().on_add_account(move || {
             let result = (|| -> Result<(), DatabaseError> {
-                let app_instance = Arc::clone(&app_instance.clone());
+                // let app_instance = Arc::clone(&app_instance.clone());
+                let app_instance = Arc::clone(&weak_app_dos.clone());
                 // Establish db connection
                 let db_conn = database_connection()?;
                 // get accounts count
@@ -54,8 +58,8 @@ impl CallbackManager {
                 // set accounts in app With Global Manager
                 let accounts = get_accounts(&db_conn)?;
                 // TODO FIX bug
-                // let global_manager = GlobalManager::new(Arc::clone(&app_instance), &accounts);
-                // global_manager.set_accounts();
+                let global_manager = GlobalManager::new(Arc::clone(&app_instance), &accounts);
+                global_manager.set_accounts();
                 Ok(())
             })();
 
