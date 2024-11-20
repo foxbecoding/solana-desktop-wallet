@@ -16,6 +16,7 @@ impl<'a> CallbackManager<'a> {
 
     fn init_handlers(&self) {
         self.view_account_handler();
+        self.add_account_handler();
     }
 
     fn view_account_handler(&self) {
