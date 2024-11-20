@@ -2,7 +2,6 @@ pub(crate) mod errors;
 pub(crate) mod callback_manager;
 pub(crate) mod global_manager;
 use slint::ComponentHandle;
-use std::sync::{Arc, Mutex};
 use crate::database::account::Account;
 
 #[derive(Debug)]
@@ -18,18 +17,16 @@ impl App {
 
     fn run_app(&self) -> Result<(), errors::AppError> {
         let app = crate::App::new()?;
+        let weak_app = app.as_weak().unwrap();
 
-        // Wrapping the mutable reference in Arc and Mutex
-        let arc_app_instance = Arc::new(Mutex::new(app));
-
-        self.run_managers(Arc::clone(&arc_app_instance))?;
-        arc_app_instance.lock().unwrap().run()?;
+        self.run_managers(weak_app)?;
+        app.run()?;
         Ok(())
     }
 
-    fn run_managers(&self, arc_app_instance: Arc<Mutex<crate::App>>) -> Result<(), errors::AppError> {
-        global_manager::GlobalManager::new(Arc::clone(&arc_app_instance), &self.accounts).run()?;
-        callback_manager::CallbackManager::new(Arc::clone(&arc_app_instance)).run()?;
+    fn run_managers(&self, app_instance: crate::App) -> Result<(), errors::AppError> {
+        global_manager::GlobalManager::new(app_instance.clone_strong(), self.accounts.clone()).run()?;
+        callback_manager::CallbackManager::new(app_instance).run()?;
         Ok(())
     }
 }
