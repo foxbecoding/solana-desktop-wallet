@@ -11,7 +11,7 @@ pub struct GlobalManager<'a>  {
 }
 
 impl<'a> GlobalManager<'a> {
-    pub fn new(app_instance: Arc<Mutex<crate::App>>, accounts: &'a Vec<Account>) -> Self {
+    pub fn new(app_instance: crate::App, accounts: &'a Vec<Account>) -> Self {
         GlobalManager { app_instance, accounts }
     }
 
