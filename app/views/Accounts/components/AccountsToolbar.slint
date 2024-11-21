@@ -1,46 +1,6 @@
 import {HorizontalBox, VerticalBox, Palette} from "std-widgets.slint";
 import {AccountManager} from "../../../managers/account-manager.slint";
-
-component AddAccountButton inherits Rectangle {
-    in property <image> icon: @image-url("../../../assets/icons/add-icon.svg");
-    in property <physical-length> iccn_size: 16px;
-    in property <physical-length> button_height: 32px;
-    in property <physical-length> button_width: 132px;
-    in property <physical-length> button_radius: 6px;
-
-    callback clicked();
-
-    height: button_height;
-    width: button_width;
-    border-radius: button_radius;
-    background: Palette.foreground.with-alpha(0.90);
-
-
-    HorizontalBox {
-        alignment: center;
-        VerticalLayout {
-            alignment: center;
-            Image {source: icon; width: iccn_size; colorize: Palette.background;}
-        }
-        VerticalLayout {
-            alignment: center;
-            Text {text: "Add Account"; font-size: 12px; font-weight: 600; color: Palette.background;}
-        }
-    }
-
-    states [
-        pressed when touch.pressed: {
-            root.background: Palette.foreground.with-alpha(0.7);
-        }
-        hover when touch.has-hover: {
-            root.background: Palette.foreground.with-alpha(0.8);
-        }
-    ]
-
-    touch := TouchArea {
-        clicked => { root.clicked(); }
-    }
-}
+import {AppButton, AppButtonType} from "../../../components/AppButton.slint";
 
 export component AccountsToolbar inherits Rectangle {
     height: 80px;
@@ -48,7 +8,10 @@ export component AccountsToolbar inherits Rectangle {
         alignment: space-between;
         VerticalLayout {
             alignment: center;
-            AddAccountButton {
+            AppButton {
+                type: AppButtonType.SECONDARY;
+                label: "Add Account";
+                icon: @image-url("../../../assets/icons/add-icon.svg");
                 clicked => {
                     AccountManager.add_account()
                 }
