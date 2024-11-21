@@ -6,7 +6,7 @@ export component AccountsList {
     ListView {
         for account[index] in AccountManager.accounts : AccountListItem {
             account: account;
-            background_color: Math.mod(index, 2) == 0 ?  Palette.alternate-background.darker(0.25): Palette.background;
+            background_color: Math.mod(index, 2) == 0 ?  Palette.alternate-background.darker(0.25) : Palette.background;
         }
     }
 }

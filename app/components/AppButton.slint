@@ -5,6 +5,7 @@ export component AppButton inherits Rectangle {
     in property <physical-length> button_height: 32px;
     in property <physical-length> button_width: 132px;
     in property <physical-length> button_radius: 6px;
+    in property <brush> background_color: Palette.alternate-background.darker(0.25);
     in property <image> icon;
 
     callback clicked();
