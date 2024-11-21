@@ -22,7 +22,9 @@ export component AppButton inherits Rectangle {
 
     callback clicked();
 
-
+    pure function get_background_color() -> brush {
+        return background_color;
+    }
 
     height: button_height;
     width: button_width;
