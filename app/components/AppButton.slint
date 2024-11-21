@@ -43,6 +43,15 @@ export component AppButton inherits Rectangle {
         return label_color;
     }
 
+    pure function get_icon_color() -> brush {
+        if (type == AppButtonType.PRIMARY) {
+            return Palette.foreground;
+        } else if (type == AppButtonType.SECONDARY) {
+            return Palette.background;
+        }
+        return icon_color;
+    }
+
     height: button_height;
     width: button_width;
     border-radius: button_radius;
@@ -52,7 +61,7 @@ export component AppButton inherits Rectangle {
         alignment: center;
         if icon.width > 0 : VerticalLayout {
             alignment: center;
-            Image {source: icon; width: icon_size; colorize: icon_color;}
+            Image {source: icon; width: icon_size; colorize: get_icon_color();}
         }
         VerticalLayout {
             alignment: center;
