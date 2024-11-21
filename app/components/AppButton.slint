@@ -28,16 +28,16 @@ export component AppButton inherits Rectangle {
         }
         VerticalLayout {
             alignment: center;
-            Text {text: label; font-size: label_size; font-weight: label_font_weight; color: label_color;}
+            Text {text: label; font-size: label_size; font-weight: label_font_weight; color: label_color.with-alpha(0.9);}
         }
     }
 
     states [
         pressed when touch.pressed: {
-            root.background: Palette.foreground.with-alpha(0.7);
+            root.background: background_color.with-alpha(0.65);
         }
         hover when touch.has-hover: {
-            root.background: Palette.foreground.with-alpha(0.8);
+            root.background: background_color.with-alpha(0.8);
         }
     ]
 
