@@ -9,6 +9,7 @@ export component AccountsToolbar inherits Rectangle {
         VerticalLayout {
             alignment: center;
             AppButton {
+                type: AppButtonType.SECONDARY;
                 label: "Add Account";
                 icon: @image-url("../../../assets/icons/add-icon.svg");
                 clicked => {
