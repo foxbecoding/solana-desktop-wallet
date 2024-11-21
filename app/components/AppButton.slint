@@ -6,6 +6,7 @@ export component AppButton inherits Rectangle {
     in property <physical-length> button_width: 132px;
     in property <physical-length> button_radius: 6px;
     in property <brush> background_color: Palette.alternate-background.darker(0.25);
+    in property <string> label;
     in property <image> icon;
 
     callback clicked();
@@ -19,11 +20,11 @@ export component AppButton inherits Rectangle {
         alignment: center;
         VerticalLayout {
             alignment: center;
-            Image {source: icon; width: iccn_size; colorize: Palette.background;}
+            Image {source: icon; width: iccn_size; colorize: Palette.foreground;}
         }
         VerticalLayout {
             alignment: center;
-            Text {text: "Add Account"; font-size: 12px; font-weight: 600; color: Palette.background;}
+            Text {text: label; font-size: 12px; font-weight: 600; color: Palette.foreground;}
         }
     }
 
