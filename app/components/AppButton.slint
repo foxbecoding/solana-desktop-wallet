@@ -9,6 +9,7 @@ export component AppButton inherits Rectangle {
     in property <brush> label_color: Palette.foreground;
     in property <physical-length> label_size: button_height / 2;
     in property <image> icon;
+    in property <brush> icon_color: Palette.foreground;
     in property <physical-length> icon_size: 16px;
 
     callback clicked();
@@ -22,7 +23,7 @@ export component AppButton inherits Rectangle {
         alignment: center;
         VerticalLayout {
             alignment: center;
-            Image {source: icon; width: icon_size; colorize: Palette.foreground;}
+            Image {source: icon; width: icon_size; colorize: icon_color;}
         }
         VerticalLayout {
             alignment: center;
