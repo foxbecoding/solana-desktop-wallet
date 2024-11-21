@@ -1,10 +1,13 @@
 import {HorizontalBox, Palette} from "std-widgets.slint";
+import {Theme} from "../theme.slint";
 
 export enum AppButtonType {
     DEFAULT,
     PRIMARY,
     SECONDARY
 }
+
+
 
 export component AppButton inherits Rectangle {
     in property <AppButtonType> type: AppButtonType.DEFAULT;
@@ -23,6 +26,11 @@ export component AppButton inherits Rectangle {
     callback clicked();
 
     pure function get_background_color() -> brush {
+        if (type == AppButtonType.PRIMARY) {
+            return Theme.primary;
+        } else if (type == AppButtonType.SECONDARY) {
+            return Theme.secondary;
+        }
         return background_color;
     }
 
