@@ -28,6 +28,12 @@ export component AppButton inherits Rectangle {
     }
 
     states [
+        pressed when touch.pressed: {
+            root.background: Palette.foreground.with-alpha(0.7);
+        }
+        hover when touch.has-hover: {
+            root.background: Palette.foreground.with-alpha(0.8);
+        }
     ]
 
     touch := TouchArea {
