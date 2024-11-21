@@ -35,7 +35,12 @@ export component AppButton inherits Rectangle {
     }
 
     pure function get_label_color() -> brush {
-
+        if (type == AppButtonType.PRIMARY) {
+            return Palette.foreground;
+        } else if (type == AppButtonType.SECONDARY) {
+            return Palette.background;
+        }
+        return label_color;
     }
 
     height: button_height;
@@ -51,7 +56,7 @@ export component AppButton inherits Rectangle {
         }
         VerticalLayout {
             alignment: center;
-            Text {text: label; font-size: label_size; font-weight: label_font_weight; color: label_color;}
+            Text {text: label; font-size: label_size; font-weight: label_font_weight; color: get_label_color();}
         }
     }
 
