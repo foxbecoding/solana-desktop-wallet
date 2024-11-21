@@ -1,13 +1,14 @@
 import {HorizontalBox, Palette} from "std-widgets.slint";
 
 export component AppButton inherits Rectangle {
-    in property <physical-length> iccn_size: 16px;
     in property <physical-length> button_height: 32px;
     in property <physical-length> button_width: 132px;
     in property <physical-length> button_radius: 6px;
     in property <brush> background_color: Palette.alternate-background.darker(0.25);
     in property <string> label;
+    in property <physical-length> label_size: button_height / 2;
     in property <image> icon;
+    in property <physical-length> icon_size: 16px;
 
     callback clicked();
 
@@ -20,11 +21,11 @@ export component AppButton inherits Rectangle {
         alignment: center;
         VerticalLayout {
             alignment: center;
-            Image {source: icon; width: iccn_size; colorize: Palette.foreground;}
+            Image {source: icon; width: icon_size; colorize: Palette.foreground;}
         }
         VerticalLayout {
             alignment: center;
-            Text {text: label; font-size: 12px; font-weight: 600; color: Palette.foreground;}
+            Text {text: label; font-size: label_size; font-weight: 600; color: Palette.foreground;}
         }
     }
 
