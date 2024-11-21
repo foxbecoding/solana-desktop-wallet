@@ -1,6 +1,13 @@
 import {HorizontalBox, Palette} from "std-widgets.slint";
 
+export enum AppButtonType {
+    DEFAULT,
+    PRIMARY,
+    SECONDARY
+}
+
 export component AppButton inherits Rectangle {
+
     in property <physical-length> button_height: 32px;
     in property <physical-length> button_width: 150px;
     in property <physical-length> button_radius: 6px;
@@ -14,6 +21,8 @@ export component AppButton inherits Rectangle {
     in property <physical-length> icon_size: 16px;
 
     callback clicked();
+
+
 
     height: button_height;
     width: button_width;
