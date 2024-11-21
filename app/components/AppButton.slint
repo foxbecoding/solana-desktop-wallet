@@ -1,4 +1,4 @@
-import {Palette} from "std-widgets.slint";
+import {HorizontalBox, Palette} from "std-widgets.slint";
 
 export component AppButton inherits Rectangle {
     in property <physical-length> iccn_size: 16px;
@@ -14,5 +14,17 @@ export component AppButton inherits Rectangle {
     width: button_width;
     border-radius: button_radius;
     background: background_color;
+
+    HorizontalBox {
+        alignment: center;
+        VerticalLayout {
+            alignment: center;
+            Image {source: icon; width: iccn_size; colorize: Palette.background;}
+        }
+        VerticalLayout {
+            alignment: center;
+            Text {text: "Add Account"; font-size: 12px; font-weight: 600; color: Palette.background;}
+        }
+    }
 
 }
