@@ -7,8 +7,6 @@ export enum AppButtonType {
     SECONDARY
 }
 
-
-
 export component AppButton inherits Rectangle {
     in property <AppButtonType> type: AppButtonType.DEFAULT;
     in property <physical-length> button_height: 32px;
@@ -61,6 +59,15 @@ export component AppButton inherits Rectangle {
         return background_color.with-alpha(0.65);
     }
 
+    pure function get_hovered_state() -> brush {
+        if (type == AppButtonType.PRIMARY) {
+            return Theme.primary.with-alpha(0.8);
+        } else if (type == AppButtonType.SECONDARY) {
+            return Theme.secondary.with-alpha(0.8);
+        }
+        return background_color.with-alpha(0.8);
+    }
+
     height: button_height;
     width: button_width;
     border-radius: button_radius;
@@ -83,7 +90,7 @@ export component AppButton inherits Rectangle {
             root.background: get_pressed_state();
         }
         hover when touch.has-hover: {
-            root.background: get_background_color();
+            root.background: get_hovered_state();
         }
     ]
 
