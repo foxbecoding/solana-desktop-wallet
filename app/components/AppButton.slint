@@ -22,7 +22,7 @@ export component AppButton inherits Rectangle {
 
     HorizontalBox {
         alignment: center;
-        VerticalLayout {
+        if icon.width > 0 : VerticalLayout {
             alignment: center;
             Image {source: icon; width: icon_size; colorize: icon_color;}
         }
