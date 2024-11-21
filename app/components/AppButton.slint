@@ -7,7 +7,7 @@ export enum AppButtonType {
 }
 
 export component AppButton inherits Rectangle {
-
+    in property <AppButtonType> type: AppButtonType.DEFAULT;
     in property <physical-length> button_height: 32px;
     in property <physical-length> button_width: 150px;
     in property <physical-length> button_radius: 6px;
