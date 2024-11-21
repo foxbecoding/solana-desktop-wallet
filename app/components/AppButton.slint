@@ -6,6 +6,7 @@ export component AppButton inherits Rectangle {
     in property <physical-length> button_radius: 6px;
     in property <brush> background_color: Palette.alternate-background.darker(0.25);
     in property <string> label;
+    in property <brush> label_color: Palette.foreground;
     in property <physical-length> label_size: button_height / 2;
     in property <image> icon;
     in property <physical-length> icon_size: 16px;
@@ -25,7 +26,7 @@ export component AppButton inherits Rectangle {
         }
         VerticalLayout {
             alignment: center;
-            Text {text: label; font-size: label_size; font-weight: 600; color: Palette.foreground;}
+            Text {text: label; font-size: label_size; font-weight: 600; color: label_color;}
         }
     }
 
