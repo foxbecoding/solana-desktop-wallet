@@ -7,7 +7,7 @@ export component AppButton inherits Rectangle {
     in property <brush> background_color: Palette.alternate-background.darker(0.25);
     in property <string> label;
     in property <brush> label_color: Palette.foreground;
-    in property <physical-length> label_size: button_height / 2;
+    private property <physical-length> label_size: button_height / 2;
     in property <image> icon;
     in property <brush> icon_color: Palette.foreground;
     in property <physical-length> icon_size: 16px;
