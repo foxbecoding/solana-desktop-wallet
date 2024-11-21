@@ -10,7 +10,6 @@ export enum AppButtonType {
 export component AppButton inherits Rectangle {
     in property <AppButtonType> type: AppButtonType.DEFAULT;
     in property <physical-length> button_height: 32px;
-    in property <physical-length> button_width: 150px;
     in property <physical-length> button_radius: 6px;
     in property <brush> background_color: Palette.alternate-background;
     in property <string> label;
@@ -69,7 +68,6 @@ export component AppButton inherits Rectangle {
     }
 
     height: button_height;
-    width: button_width;
     border-radius: button_radius;
     background: get_background_color();
 
