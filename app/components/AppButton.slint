@@ -52,6 +52,15 @@ export component AppButton inherits Rectangle {
         return icon_color;
     }
 
+    pure function get_pressed_state() -> brush {
+        if (type == AppButtonType.PRIMARY) {
+            return Theme.primary.with-alpha(0.65);
+        } else if (type == AppButtonType.SECONDARY) {
+            return Theme.secondary.with-alpha(0.65);
+        }
+        return background_color.with-alpha(0.65);
+    }
+
     height: button_height;
     width: button_width;
     border-radius: button_radius;
@@ -71,7 +80,7 @@ export component AppButton inherits Rectangle {
 
     states [
         pressed when touch.pressed: {
-            root.background: get_background_color();
+            root.background: get_pressed_state();
         }
         hover when touch.has-hover: {
             root.background: get_background_color();
