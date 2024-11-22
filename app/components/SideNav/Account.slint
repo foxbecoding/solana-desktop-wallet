@@ -1,7 +1,7 @@
 import {VerticalBox, Button, HorizontalBox, Palette} from "std-widgets.slint";
 import {AccountManager} from "../../managers/account-manager.slint";
 import {View, ViewManager} from "../../managers/view-manager.slint";
-import {AppButton} from "../AppButton.slint";
+import {AppButton, AppButtonType} from "../AppButton.slint";
 
 export component SolScanBtn inherits Rectangle {
     background: Palette.alternate_background;
@@ -70,6 +70,7 @@ export component SideNavAccount {
         VerticalLayout {
             padding-top: 9px;
             AppButton {
+                type: AppButtonType.SECONDARY;
                 label: "View Accounts";
                 clicked => {
                     ViewManager.activeView = View.accounts
