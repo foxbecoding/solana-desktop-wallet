@@ -72,6 +72,7 @@ export component SideNavAccount {
             AppButton {
                 type: AppButtonType.SECONDARY;
                 label: "View Accounts";
+                icon: @image-url("../../assets/icons/eye-icon.svg");
                 clicked => {
                     ViewManager.activeView = View.accounts
                 }
