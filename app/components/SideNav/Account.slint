@@ -1,10 +1,7 @@
 import {VerticalBox, Button, HorizontalBox, Palette} from "std-widgets.slint";
 import {AccountManager} from "../../managers/account-manager.slint";
 import {View, ViewManager} from "../../managers/view-manager.slint";
-
-export global SideNavAccountGlobals {
-    pure callback view_account(string);
-}
+import {AppButton, AppButtonType} from "../AppButton.slint";
 
 export component SolScanBtn inherits Rectangle {
     background: Palette.alternate_background;
@@ -60,14 +57,22 @@ export component SideNavAccount {
                         font-weight: 500;
                     }
                 }
-                SolScanBtn {}
+                AppButton {
+                    label: "View On Solscan";
+                    icon: @image-url("../../assets/icons/open-icon.svg");
+                    clicked => {
+                        AccountManager.view_account(AccountManager.selected_account.pubkey)
+                    }
+                }
             }
         }
 
         VerticalLayout {
             padding-top: 9px;
-            Button {
-                text: "View Accounts";
+            AppButton {
+                type: AppButtonType.SECONDARY;
+                label: "View Accounts";
+                icon: @image-url("../../assets/icons/eye-icon.svg");
                 clicked => {
                     ViewManager.activeView = View.accounts
                 }
