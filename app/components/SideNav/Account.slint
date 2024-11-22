@@ -61,7 +61,7 @@ export component SideNavAccount {
                     label: "View On Solscan";
                     icon: @image-url("../../assets/icons/open-icon.svg");
                     clicked => {
-
+                        AccountManager.view_account(AccountManager.selected_account.pubkey)
                     }
                 }
             }
