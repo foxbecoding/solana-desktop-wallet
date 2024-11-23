@@ -1,4 +1,4 @@
-import {HorizontalBox, Palette} from "std-widgets.slint";
+import {HorizontalBox} from "std-widgets.slint";
 import {Theme} from "../theme.slint";
 
 export enum AppButtonType {
@@ -11,13 +11,13 @@ export component AppButton inherits Rectangle {
     in property <AppButtonType> type: AppButtonType.DEFAULT;
     in property <physical-length> button_height: 32px;
     in property <physical-length> button_radius: 6px;
-    in property <brush> background_color: Palette.alternate-background;
+    in property <color> background_color: Theme.surface;
     in property <string> label;
-    in property <brush> label_color: Palette.foreground.with-alpha(0.9);
+    in property <color> label_color: Theme.on_surface;
     in property <physical-length> label_size: 12px;
     in property <int> label_font_weight: 600;
     in property <image> icon;
-    in property <brush> icon_color: Palette.foreground;
+    in property <color> icon_color: Theme.on_surface;
     in property <physical-length> icon_size: 16px;
 
     callback clicked();
@@ -33,18 +33,18 @@ export component AppButton inherits Rectangle {
 
     pure function get_label_color() -> brush {
         if (type == AppButtonType.PRIMARY) {
-            return Palette.foreground;
+            return Theme.on_primary;
         } else if (type == AppButtonType.SECONDARY) {
-            return Palette.background;
+            return Theme.on_secondary;
         }
         return label_color;
     }
 
     pure function get_icon_color() -> brush {
         if (type == AppButtonType.PRIMARY) {
-            return Palette.foreground;
+            return Theme.on_primary;
         } else if (type == AppButtonType.SECONDARY) {
-            return Palette.background;
+            return Theme.on_secondary;
         }
         return icon_color;
     }

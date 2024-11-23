@@ -1,6 +1,7 @@
-import {VerticalBox, Palette} from "std-widgets.slint";
+import {VerticalBox} from "std-widgets.slint";
 import {AccountManager, Account} from "../../../managers/account-manager.slint";
 import {IconButton} from "../../../components/IconButton.slint";
+import {Theme} from "../../../theme.slint";
 
 export component AccountListItem inherits TouchArea {
     in property <Account> account;
@@ -21,7 +22,7 @@ export component AccountListItem inherits TouchArea {
                             font-size: 21px;
                             font-weight: 500;
                             text: account.name;
-                            color: Palette.foreground.with-alpha(0.85);
+                            color: Theme.on_background;
                             horizontal-alignment: left;
                             overflow: TextOverflow.elide;
                         }
@@ -37,7 +38,7 @@ export component AccountListItem inherits TouchArea {
                                 font-size: 21px;
                                 font-weight: 500;
                                 text: account.pubkey_display;
-                                color: Palette.foreground.with-alpha(0.85);
+                                color: Theme.on_background;
                                 horizontal-alignment: left;
                             }
                             IconButton {
@@ -64,7 +65,7 @@ export component AccountListItem inherits TouchArea {
                                 font-size: 21px;
                                 font-weight: 500;
                                 text: "\{account.balance}";
-                                color: Palette.foreground.with-alpha(0.85);
+                                color: Theme.on_background;
                                 horizontal-alignment: left;
                             }
                         }
@@ -77,7 +78,7 @@ export component AccountListItem inherits TouchArea {
     states [
         hover when root.has-hover: {
             item.opacity: 0.7;
-            item.background: Palette.alternate-background.brighter(0.10);
+            item.background: Theme.surface.brighter(0.10);
         }
     ]
 
