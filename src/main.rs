@@ -1,15 +1,15 @@
 // Prevent console window in addition to Slint window in Windows release builds when, e.g., starting the app via file manager. Ignored on other platforms.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod database;
-mod connection;
-mod app;
-
 use std::error::Error;
 use slint::{include_modules as include_slint_modules};
 use solana_sdk::pubkey::{Pubkey};
+
+mod database;
+mod connection;
+mod app;
 use crate::database::{account::{Account as AccountModel, get_accounts}};
-use app::errors::AppError;
+use crate::app::errors::AppError;
 
 include_slint_modules!();
 fn main() -> Result<(), AppError> {
