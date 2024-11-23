@@ -25,7 +25,7 @@ impl CallbackManager {
     }
 
     fn view_account_handler(&self) {
-        self.app_instance.global::<crate::AccountManager>().on_view_account(move |pubkey| {
+        self.app_instance.global::<AccountManager>().on_view_account(move |pubkey| {
             let url = format!("https://solscan.io/account/{}", pubkey);
 
             if webbrowser::open(url.as_str()).is_ok() {
