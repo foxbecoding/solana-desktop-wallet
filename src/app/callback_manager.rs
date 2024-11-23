@@ -2,14 +2,14 @@ use slint::{ComponentHandle};
 use solana_sdk::msg;
 use crate::database::{database_connection, errors::DatabaseError, account::{Account, get_accounts}};
 use crate::app::global_manager::GlobalManager;
-use crate::slint_generatedApp::{App as SlintApp, Account as SlintAccount, AccountManager};
+use crate::slint_generatedApp::{App as SlintApp, AccountManager};
 
 pub struct CallbackManager {
     app_instance: SlintApp,
 }
 
 impl CallbackManager {
-    pub fn new(app_instance: crate::App) -> Self {
+    pub fn new(app_instance: SlintApp) -> Self {
         CallbackManager { app_instance }
     }
 
