@@ -18,7 +18,7 @@ impl App {
         Ok(())
     }
 
-    fn run_app(&self) -> Result<(), errors::AppError> {
+    fn run_app(&self) -> Result<(), AppError> {
         let app = crate::App::new()?;
         let weak_app = app.as_weak().unwrap();
 
