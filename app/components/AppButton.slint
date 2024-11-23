@@ -42,7 +42,7 @@ export component AppButton inherits Rectangle {
 
     pure function get_icon_color() -> brush {
         if (type == AppButtonType.PRIMARY) {
-            return Palette.foreground;
+            return Theme.on_primary;
         } else if (type == AppButtonType.SECONDARY) {
             return Palette.background;
         }
