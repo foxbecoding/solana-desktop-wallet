@@ -1,5 +1,3 @@
-extern crate thiserror;
-
 use thiserror::Error;
 use rusqlite::{Error as RusqliteError};
 use bip39::{Error as MnemonicError};
