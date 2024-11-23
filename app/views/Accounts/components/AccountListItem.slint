@@ -38,7 +38,7 @@ export component AccountListItem inherits TouchArea {
                                 font-size: 21px;
                                 font-weight: 500;
                                 text: account.pubkey_display;
-                                color: Palette.foreground.with-alpha(0.85);
+                                color: Theme.on_background;
                                 horizontal-alignment: left;
                             }
                             IconButton {
@@ -65,7 +65,7 @@ export component AccountListItem inherits TouchArea {
                                 font-size: 21px;
                                 font-weight: 500;
                                 text: "\{account.balance}";
-                                color: Palette.foreground.with-alpha(0.85);
+                                color: Theme.on_background;
                                 horizontal-alignment: left;
                             }
                         }
