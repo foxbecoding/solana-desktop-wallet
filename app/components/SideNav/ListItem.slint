@@ -35,10 +35,10 @@ export component SideNavListItem inherits Rectangle {
     }
     states [
         pressed when touch.pressed: {
-            root.background: Theme.surface.with-alpha(0.65);
+            root.background: Theme.surface.with-alpha(0.60);
         }
         hover when touch.has-hover: {
-            root.background: Theme.surface.with-alpha(0.8);
+            root.background: Theme.surface.with-alpha(0.75);
         }
     ]
     touch := TouchArea {
