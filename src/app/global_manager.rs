@@ -2,15 +2,15 @@ use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
 use crate::database::account::Account;
-use crate::slint_generatedApp::Account as SlintAccount;
+use crate::slint_generatedApp::{App as SlintApp, Account as SlintAccount};
 
 pub struct GlobalManager {
-    app_instance: crate::App,
+    app_instance: SlintApp,
     accounts: Vec<Account>
 }
 
 impl GlobalManager {
-    pub fn new(app_instance: crate::App, accounts: Vec<Account>) -> Self {
+    pub fn new(app_instance: App, accounts: Vec<Account>) -> Self {
         GlobalManager { app_instance, accounts }
     }
 
