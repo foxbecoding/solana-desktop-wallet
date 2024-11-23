@@ -26,7 +26,7 @@ impl App {
         Ok(())
     }
 
-    fn run_managers(&self, app_instance: crate::App) -> Result<(), AppError> {
+    fn run_managers(&self, app_instance: SlintApp) -> Result<(), AppError> {
         global_manager::GlobalManager::new(app_instance.clone_strong(), self.accounts.clone()).run()?;
         callback_manager::CallbackManager::new(app_instance).run()?;
         Ok(())
