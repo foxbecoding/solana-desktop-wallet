@@ -21,13 +21,12 @@ impl App {
     fn run_app(&self) -> Result<(), AppError> {
         let app = SlintApp::new()?;
         let weak_app = app.as_weak().unwrap();
-
         self.run_managers(weak_app)?;
         app.run()?;
         Ok(())
     }
 
-    fn run_managers(&self, app_instance: crate::App) -> Result<(), errors::AppError> {
+    fn run_managers(&self, app_instance: crate::App) -> Result<(), AppError> {
         global_manager::GlobalManager::new(app_instance.clone_strong(), self.accounts.clone()).run()?;
         callback_manager::CallbackManager::new(app_instance).run()?;
         Ok(())
