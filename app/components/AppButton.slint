@@ -1,4 +1,4 @@
-import {HorizontalBox, Palette} from "std-widgets.slint";
+import {HorizontalBox} from "std-widgets.slint";
 import {Theme} from "../theme.slint";
 
 export enum AppButtonType {
@@ -17,7 +17,7 @@ export component AppButton inherits Rectangle {
     in property <physical-length> label_size: 12px;
     in property <int> label_font_weight: 600;
     in property <image> icon;
-    in property <color> icon_color: Palette.foreground;
+    in property <color> icon_color: Theme.on_surface;
     in property <physical-length> icon_size: 16px;
 
     callback clicked();
