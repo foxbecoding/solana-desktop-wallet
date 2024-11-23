@@ -2,15 +2,15 @@ use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
 use crate::database::account::Account;
-use crate::slint_generatedApp::Account as SlintAccount;
+use crate::slint_generatedApp::{App as SlintApp, Account as SlintAccount, AccountManager};
 
 pub struct GlobalManager {
-    app_instance: crate::App,
+    app_instance: SlintApp,
     accounts: Vec<Account>
 }
 
 impl GlobalManager {
-    pub fn new(app_instance: crate::App, accounts: Vec<Account>) -> Self {
+    pub fn new(app_instance: SlintApp, accounts: Vec<Account>) -> Self {
         GlobalManager { app_instance, accounts }
     }
 
@@ -29,7 +29,7 @@ impl GlobalManager {
         match self.accounts.first() {
             Some(account) => {
                 let slint_account = slint_account_builder(account);
-                crate::AccountManager::get(&self.app_instance).set_selected_account(slint_account);
+                AccountManager::get(&self.app_instance).set_selected_account(slint_account);
                 Ok(())
             },
             None => Err(AppError::NoAccountSelected),
@@ -45,7 +45,7 @@ impl GlobalManager {
 
         let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
         let model_rc_accounts = ModelRc::from(rc_accounts.clone());
-        crate::AccountManager::get(&self.app_instance).set_accounts(model_rc_accounts);
+        AccountManager::get(&self.app_instance).set_accounts(model_rc_accounts);
     }
 }
 
