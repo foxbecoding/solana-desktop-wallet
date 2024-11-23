@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{error::Error, str::FromStr};
 use bip39::{Mnemonic};
 use rusqlite::{params, Connection};
 use slint::SharedString;
@@ -61,7 +61,7 @@ impl Account {
         lamports_to_sol(self.balance.unwrap_or_else(|| 0u64))
     }
 
-    pub fn account_keypair(&self) -> Result<Keypair, Box <dyn std::error::Error>> {
+    pub fn account_keypair(&self) -> Result<Keypair, Box <dyn Error>> {
         let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
         Ok(keypair)
     }
