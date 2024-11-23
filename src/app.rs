@@ -19,7 +19,7 @@ impl App {
     }
 
     fn run_app(&self) -> Result<(), AppError> {
-        let app = crate::App::new()?;
+        let app = SlintApp::new()?;
         let weak_app = app.as_weak().unwrap();
 
         self.run_managers(weak_app)?;
