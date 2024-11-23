@@ -1,4 +1,4 @@
-import {Palette, HorizontalBox}  from "std-widgets.slint";
+import {HorizontalBox}  from "std-widgets.slint";
 import {ViewManager, View} from "../../managers/view-manager.slint";
 import {Theme} from "../../theme.slint";
 
@@ -9,7 +9,7 @@ export struct ListItem {
 }
 
 export component SideNavListItem inherits Rectangle {
-    background: root.is_view ? Palette.alternate-background : Palette.background;
+    background: root.is_view ? Theme.surface : Theme.background;
     height: 36px;
     border-radius: 6px;
     in-out property<View> view;
