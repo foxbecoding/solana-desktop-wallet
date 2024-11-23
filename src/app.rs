@@ -13,7 +13,7 @@ pub struct App {
 }
 
 impl App {
-    pub fn start(&self) -> Result<(), errors::AppError> {
+    pub fn start(&self) -> Result<(), AppError> {
         self.run_app()?;
         Ok(())
     }
