@@ -2,7 +2,7 @@ use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
 use crate::database::account::Account;
-use crate::slint_generatedApp::{App as SlintApp, Account as SlintAccount};
+use crate::slint_generatedApp::{App as SlintApp, Account as SlintAccount, AccountManager};
 
 pub struct GlobalManager {
     app_instance: SlintApp,
@@ -29,7 +29,7 @@ impl GlobalManager {
         match self.accounts.first() {
             Some(account) => {
                 let slint_account = slint_account_builder(account);
-                crate::AccountManager::get(&self.app_instance).set_selected_account(slint_account);
+                AccountManager::get(&self.app_instance).set_selected_account(slint_account);
                 Ok(())
             },
             None => Err(AppError::NoAccountSelected),
