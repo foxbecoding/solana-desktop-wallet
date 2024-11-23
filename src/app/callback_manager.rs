@@ -39,7 +39,7 @@ impl CallbackManager {
     fn add_account_handler(&self) -> Result<(), DatabaseError> {
         let app = self.app_instance.clone_strong();
         let weak_app = app.as_weak().unwrap();
-        app.global::<crate::AccountManager>().on_add_account(move || {
+        app.global::<AccountManager>().on_add_account(move || {
             let result = (|| -> Result<(), DatabaseError> { // Establish db connection
                 let db_conn = database_connection()?;
 
