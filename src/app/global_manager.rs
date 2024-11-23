@@ -10,7 +10,7 @@ pub struct GlobalManager {
 }
 
 impl GlobalManager {
-    pub fn new(app_instance: App, accounts: Vec<Account>) -> Self {
+    pub fn new(app_instance: SlintApp, accounts: Vec<Account>) -> Self {
         GlobalManager { app_instance, accounts }
     }
 
