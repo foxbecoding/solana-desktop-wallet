@@ -1,8 +1,10 @@
 import {Palette} from "std-widgets.slint";
 
 export global Theme  {
-    out property <color> background: #121212;
-    out property<color> primary: #2979FF;
-    out property<color> accent: #9C27B0;
-    out property<color> secondary: Palette.foreground.with-alpha(0.9);
+    private property <color> off_white: rgba(255,255,255,0.85);
+    out property <color> background: rgb(18,18,18);
+
+    out property <color> primary: #2979FF;
+    out property <color> accent: #9C27B0;
+    out property <color> secondary: Palette.foreground.with-alpha(0.9);
 }
