@@ -1,35 +1,7 @@
-import {VerticalBox, Button, HorizontalBox, Palette} from "std-widgets.slint";
+import {VerticalBox, Button, HorizontalBox} from "std-widgets.slint";
 import {AccountManager} from "../../managers/account-manager.slint";
 import {View, ViewManager} from "../../managers/view-manager.slint";
 import {AppButton, AppButtonType} from "../AppButton.slint";
-
-export component SolScanBtn inherits Rectangle {
-    background: Palette.alternate_background;
-    border-radius: 6px;
-    property <image> icon: @image-url("../../assets/icons/open-icon.svg");
-    property <string> label: "view on Solscan";
-
-    HorizontalBox {
-        alignment: center;
-        Image {source: icon; width: 12px;}
-        Text {text: label; font-size: 12px;}
-    }
-    states [
-        pressed when touch.pressed: {
-            root.opacity: 0.5;
-            root.background: Palette.alternate-background;
-        }
-        hover when touch.has-hover: {
-            root.opacity: 0.7;
-            root.background: Palette.alternate-background;
-        }
-    ]
-    touch := TouchArea {
-        clicked => {
-            AccountManager.view_account(AccountManager.selected_account.pubkey)
-        }
-    }
-}
 
 export component SideNavAccount {
     height: 120px;

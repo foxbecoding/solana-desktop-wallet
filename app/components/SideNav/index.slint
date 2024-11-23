@@ -1,8 +1,9 @@
-import {Palette, HorizontalBox} from "std-widgets.slint";
+import {HorizontalBox} from "std-widgets.slint";
 import {SideNavAccount, SideNavList} from "components.slint";
+import {Theme} from "../../theme.slint";
 
 export component SideNav inherits Rectangle {
-    background: Palette.background;
+    background: Theme.background;
     width: 300px;
 
     HorizontalBox {

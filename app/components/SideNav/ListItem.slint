@@ -1,4 +1,4 @@
-import {Palette, HorizontalBox}  from "std-widgets.slint";
+import {HorizontalBox}  from "std-widgets.slint";
 import {ViewManager, View} from "../../managers/view-manager.slint";
 import {Theme} from "../../theme.slint";
 
@@ -9,7 +9,7 @@ export struct ListItem {
 }
 
 export component SideNavListItem inherits Rectangle {
-    background: root.is_view ? Palette.alternate-background : Palette.background;
+    background: root.is_view ? Theme.surface : Theme.background;
     height: 36px;
     border-radius: 6px;
     in-out property<View> view;
@@ -22,7 +22,7 @@ export component SideNavListItem inherits Rectangle {
         Image{
             source: icon;
             width: 21px;
-            colorize: root.is_view ? Theme.primary.brighter(0.50) : Palette.foreground;
+            colorize: root.is_view ? Theme.primary.brighter(0.50) : Theme.on_background;
         }
 
         Text {
@@ -30,17 +30,15 @@ export component SideNavListItem inherits Rectangle {
             font-size: 15px;
             font-weight: 600;
             text: label;
-            color: Palette.foreground.with-alpha(0.85);
+            color: Theme.on_background;
         }
     }
     states [
         pressed when touch.pressed: {
-            root.opacity: 0.5;
-            root.background: Palette.alternate-background;
+            root.background: Theme.surface.with-alpha(0.60);
         }
         hover when touch.has-hover: {
-            root.opacity: 0.7;
-            root.background: Palette.alternate-background;
+            root.background: Theme.surface.with-alpha(0.75);
         }
     ]
     touch := TouchArea {
