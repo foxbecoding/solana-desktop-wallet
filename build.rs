@@ -78,5 +78,7 @@ pub fn create_cache_table(conn: &Connection) -> Result<(), BuildError> {
 }
 
 pub fn create_db_tables(conn: &Connection) -> Result<(), BuildError> {
+    create_accounts_table(conn)?;
+    create_cache_table(conn)?;
     Ok(())
 }
