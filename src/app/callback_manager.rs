@@ -65,4 +65,8 @@ impl CallbackManager {
         });
         Ok(())
     }
+
+    fn change_account_handler(&self) {
+
+    }
 }
