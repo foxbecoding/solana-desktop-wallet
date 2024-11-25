@@ -82,6 +82,9 @@ export component AccountListItem inherits TouchArea {
     }
 
     states [
+        pressed when root.pressed: {
+            item.background: Theme.surface.with-alpha(0.90);
+        }
         hover when root.has-hover: {
             item.background: Theme.surface.brighter(0.10);
         }
