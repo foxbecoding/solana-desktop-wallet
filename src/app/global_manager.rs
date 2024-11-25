@@ -26,16 +26,13 @@ impl GlobalManager {
     }
 
     fn set_selected_account(&self) -> Result<(), AppError> {
+        // Initialize first account by default
         let mut account = self.accounts.first();
 
-        //Check cache first
-        let cache = Cache::new()?;
-        if let Some(value) = cache.get("selected_account")? {
-            let value = value.value;
-            for acc in  self.accounts.iter() {
-                if acc.id.unwrap().to_string() == value {
-                    account = Some(acc);
-                }
+        // Check cache for selected account
+        if let Some(selected_account_id) = self.get_selected_account_from_cache()? {
+            if let Some(acc) = self.find_account_by_id(&selected_account_id) {
+                account = Some(acc);
             }
         }
 
@@ -47,6 +44,19 @@ impl GlobalManager {
             },
             None => Err(AppError::NoAccountSelected),
         }
+    }
+
+    fn get_selected_account_from_cache(&self) -> Result<Option<String>, AppError> {
+        let cache = Cache::new()?;
+        if let Some(value) = cache.get("selected_account")? {
+            Ok(Some(value.value))
+        } else {
+            Ok(None)
+        }
+    }
+
+    fn find_account_by_id(&self, id: &str) -> Option<&Account> {
+        self.accounts.iter().find(|acc| acc.id.unwrap().to_string() == id)
     }
 
     pub fn set_accounts(&self) {
