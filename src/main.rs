@@ -5,9 +5,10 @@ use std::error::Error;
 use slint::{include_modules as include_slint_modules};
 use solana_sdk::pubkey::{Pubkey};
 
-mod database;
-mod connection;
 mod app;
+mod connection;
+mod database;
+
 use crate::database::{account::{Account as AccountModel, get_accounts}};
 use crate::app::errors::AppError;
 
