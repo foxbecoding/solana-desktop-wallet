@@ -81,8 +81,11 @@ export component AccountListItem inherits TouchArea {
         }
     }
     
-    pure function item_hover_state() {
-        
+    pure function item_hover_state() -> brush {
+        if (AccountManager.selected_account.id == account.id) {
+            return item.background;
+        }
+        return Theme.surface.brighter(0.10);
     }
 
     states [
