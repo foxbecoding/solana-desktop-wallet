@@ -5,7 +5,7 @@ import {Theme} from "../../../theme.slint";
 
 export component AccountListItem inherits TouchArea {
     in property <Account> account;
-    in property <color> background_color;
+    in property <brush> background_color;
 
     clicked => {
         AccountManager.selected_account = account;
