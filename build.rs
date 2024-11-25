@@ -64,3 +64,7 @@ pub fn create_accounts_table(conn: &Connection) -> Result<(), BuildError> {
     )?;
     Ok(())
 }
+
+pub fn create_cache_table(conn: &Connection) -> Result<(), BuildError> {
+    Ok(())
+}
