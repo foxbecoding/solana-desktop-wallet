@@ -12,12 +12,12 @@ pub struct Cache {
 }
 
 impl Cache {
-    fn new() -> Result<Self, DatabaseError> {
+    pub fn new() -> Result<Self, DatabaseError> {
         let conn = database_connection()?;
         Ok(Cache { conn })
     }
 
-    fn insert(&self, key: &str, value: &CacheValue) -> Result<(), DatabaseError> {
+    pub fn insert(&self, key: &str, value: &CacheValue) -> Result<(), DatabaseError> {
         let value = serde_json::to_string(value).unwrap();
         self.conn.execute(
             "INSERT OR REPLACE INTO cache (key, value) VALUES (?1, ?2)",
@@ -26,7 +26,7 @@ impl Cache {
         Ok(())
     }
 
-    fn get(&self, key: &str) -> Result<Option<CacheValue>, DatabaseError> {
+    pub fn get(&self, key: &str) -> Result<Option<CacheValue>, DatabaseError> {
         let mut stmt = self.conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
         let mut rows = stmt.query(params![key])?;
 
@@ -39,7 +39,7 @@ impl Cache {
         }
     }
 
-    fn remove(&self, key: &str) -> Result<(), DatabaseError> {
+    pub fn remove(&self, key: &str) -> Result<(), DatabaseError> {
         self.conn.execute("DELETE FROM cache WHERE key = ?1", params![key])?;
         Ok(())
     }
