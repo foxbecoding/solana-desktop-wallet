@@ -8,7 +8,8 @@ export component AccountListItem inherits TouchArea {
     in property <color> background_color;
 
     clicked => {
-
+        AccountManager.selected_account = account;
+        AccountManager.change_account(account.id);
     }
 
     item := Rectangle {
