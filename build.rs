@@ -66,5 +66,13 @@ pub fn create_accounts_table(conn: &Connection) -> Result<(), BuildError> {
 }
 
 pub fn create_cache_table(conn: &Connection) -> Result<(), BuildError> {
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS cache (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                key TEXT PRIMARY KEY,
+                value TEXT NOT NULL
+            )",
+        [],
+    )?;
     Ok(())
 }
