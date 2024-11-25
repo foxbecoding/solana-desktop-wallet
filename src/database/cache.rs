@@ -20,4 +20,6 @@ impl Cache {
     fn insert() -> Result<(), DatabaseError> {Ok(())}
 
     fn get() -> Result<(), DatabaseError> {Ok(())}
+
+    fn remove() -> Result<(), DatabaseError> {Ok(())}
 }
