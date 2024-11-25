@@ -6,8 +6,7 @@ use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
 use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
-use crate::database::database_connection;
-use crate::database::errors::DatabaseError;
+use crate::database::{database_connection, errors::DatabaseError};
 
 #[derive(Debug, Clone)]
 pub struct Account {
