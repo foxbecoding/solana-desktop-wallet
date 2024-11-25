@@ -7,8 +7,8 @@ export component AccountListItem inherits TouchArea {
     in property <Account> account;
     in property <brush> background_color;
     private property <bool> is_selected_item: AccountManager.selected_account.id == account.id;
-    private property <brush> item_hover_state: is_selected_item ? background_color.brighter(0.10) : Theme.surface.brighter(0.10);
-    private property <brush> item_pressed_state: is_selected_item ? background_color.with-alpha(0.90) : Theme.surface.with-alpha(0.90);
+    private property <brush> item_hover_state: is_selected_item ? background_color.brighter(0.20) : Theme.surface.brighter(0.10);
+    private property <brush> item_pressed_state: is_selected_item ? background_color.darker(0.10) : Theme.surface.with-alpha(0.90);
 
     clicked => {
         AccountManager.selected_account = account;
