@@ -7,7 +7,7 @@ export component AccountsList {
     private property <int> selected_account_id: AccountManager.selected_account.id;
     pure function set_item_bg_color(id: int, index: int) -> brush {
         if (id == selected_account_id) {
-            return @linear-gradient(20deg, Theme.primary.with-alpha(0.5) 0%, Theme.accent.with-alpha(0.5) 50%, Theme.surface 100%);
+            return @linear-gradient(20deg, Theme.primary.with-alpha(0.5) 0%, Theme.accent.with-alpha(0.5) 50%, Theme.surface.with-alpha(0.5) 100%);
         }
         return Math.mod(index, 2) == 0 ?  Theme.surface.darker(0.25) : Theme.background;
     }
