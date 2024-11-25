@@ -5,16 +5,16 @@ import {Theme} from "../../../theme.slint";
 
 export component AccountsList {
     private property <int> selected_account_id: AccountManager.selected_account.id;
-    pure function set_item_bg_color(id: int, index: int) -> color {
+    pure function set_item_bg_color(id: int, index: int) -> brush {
         if (id == selected_account_id) {
-            return Theme.alternate_background;
+            return @linear-gradient(20deg, Theme.primary.with-alpha(0.5) 0%, Theme.accent.with-alpha(0.5) 50%, Theme.surface 100%);
         }
         return Math.mod(index, 2) == 0 ?  Theme.surface.darker(0.25) : Theme.background;
     }
     ListView {
         for account[index] in AccountManager.accounts : AccountListItem {
             account: account;
-            background_color: Math.mod(index, 2) == 0 ?  Theme.surface.darker(0.25) : Theme.background;
+            background_color: set_item_bg_color(account.id, index);
         }
     }
 }
