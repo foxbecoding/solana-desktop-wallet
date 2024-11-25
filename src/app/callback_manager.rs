@@ -1,6 +1,6 @@
 use slint::{ComponentHandle};
 use solana_sdk::msg;
-use crate::database::{database_connection, cache::{Cache, CacheValue}, errors::DatabaseError, account::{Account, get_accounts}};
+use crate::database::{cache::{Cache, CacheValue}, errors::DatabaseError, account::{add_new_account, get_accounts}};
 use crate::app::global_manager::GlobalManager;
 use crate::slint_generatedApp::{App as SlintApp, AccountManager};
 
@@ -42,19 +42,8 @@ impl CallbackManager {
         let weak_app = app.as_weak().unwrap();
         app.global::<AccountManager>().on_add_account(move || {
             let result = (|| -> Result<(), DatabaseError> {
-                let db_conn = database_connection()?;
-
-                // get accounts count
-                let accounts_count = get_accounts(&db_conn)?.len();
-
-                // set new account name
-                let new_account_name = format!("Account {}", accounts_count + 1);
-
-                // insert into DB
-                Account::new(&db_conn, new_account_name)?;
-
-                // set accounts in app With Global Manager
-                let accounts = get_accounts(&db_conn)?;
+                add_new_account()?;
+                let accounts = get_accounts()?;
                 let global_manager = GlobalManager::new(weak_app.clone_strong(), accounts);
                 global_manager.set_accounts();
                 Ok(())

@@ -20,15 +20,14 @@ fn main() -> Result<(), AppError> {
 
 fn init() -> Result<(), AppError> {
     set_backend_renderer();
-    let conn = database::database_connection()?;
-    let mut accounts = get_accounts(&conn)?;
+    let mut accounts = get_accounts()?;
     accounts = set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
         let new_account_name = "Main Account".to_string();
-        AccountModel::new(&conn, new_account_name)?;
-        accounts = get_accounts(&conn)?;
+        AccountModel::new(new_account_name)?;
+        accounts = get_accounts()?;
     }
 
     let app = app::App { accounts };
