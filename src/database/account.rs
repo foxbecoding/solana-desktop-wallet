@@ -1,6 +1,6 @@
 use std::{error::Error, str::FromStr};
 use bip39::{Mnemonic};
-use rusqlite::{params, Connection};
+use rusqlite::{params};
 use slint::SharedString;
 use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::signature::{keypair, Keypair};
@@ -19,7 +19,7 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(conn: &Connection, name: String) -> Result<Self, DatabaseError> {
+    pub fn new(name: String) -> Result<Self, DatabaseError> {
         let mnemonic_for_seed = Mnemonic::generate(12)?;
         let mnemonic_for_passphrase = Mnemonic::generate(12)?;
         let seed_phrase = mnemonic_for_seed.words().collect::<Vec<&str>>().join(" ");
@@ -34,7 +34,7 @@ impl Account {
             passphrase,
             balance: None
         };
-        insert_account(conn, &account)?;
+        insert_account(&account)?;
         Ok(account)
     }
 
@@ -68,7 +68,8 @@ impl Account {
 }
 
 // Function to insert a new account into the accounts table
-pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
+pub fn insert_account(account: &Account) -> Result<usize, DatabaseError> {
+    let conn = database_connection()?;
     conn.execute(
         "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
         params![
@@ -81,7 +82,8 @@ pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, Dat
 }
 
 // Function to retrieve all accounts from the accounts table
-pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
+pub fn get_accounts() -> Result<Vec<Account>, DatabaseError> {
+    let conn = database_connection()?;
     let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
     let mut stmt = conn.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
@@ -103,15 +105,8 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
 }
 
 pub fn add_new_account() -> Result<(), DatabaseError>{
-    let db_conn = database_connection()?;
-
-    // get accounts count
-    let accounts_count = get_accounts(&db_conn)?.len();
-
-    // set new account name
+    let accounts_count = get_accounts()?.len();
     let new_account_name = format!("Account {}", accounts_count + 1);
-
-    // insert into DB
-    Account::new(&db_conn, new_account_name)?;
+    Account::new(new_account_name)?;
     Ok(())
 }
