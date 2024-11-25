@@ -4,6 +4,9 @@ import {AccountListItem} from "AccountListItem.slint";
 import {Theme} from "../../../theme.slint";
 
 export component AccountsList {
+    pure function set_item_bg_color(id: int, index: int) {
+
+    }
     ListView {
         for account[index] in AccountManager.accounts : AccountListItem {
             account: account;
