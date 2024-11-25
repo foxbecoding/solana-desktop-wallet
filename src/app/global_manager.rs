@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
-use crate::database::account::Account;
+use crate::database::{cache::Cache, account::Account};
 use crate::slint_generatedApp::{App as SlintApp, Account as SlintAccount, AccountManager};
 
 pub struct GlobalManager {
@@ -26,7 +26,20 @@ impl GlobalManager {
     }
 
     fn set_selected_account(&self) -> Result<(), AppError> {
-        match self.accounts.first() {
+        let mut account = self.accounts.first();
+
+        //Check cache first
+        let cache = Cache::new()?;
+        if let Some(value) = cache.get("selected_account")? {
+            let value = value.value;
+            for acc in  self.accounts.iter() {
+                if acc.id.unwrap().to_string() == value {
+                    account = Some(acc);
+                }
+            }
+        }
+
+        match account {
             Some(account) => {
                 let slint_account = slint_account_builder(account);
                 AccountManager::get(&self.app_instance).set_selected_account(slint_account);
