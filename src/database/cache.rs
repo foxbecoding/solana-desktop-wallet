@@ -4,7 +4,7 @@ use crate::database::{database_connection, errors::DatabaseError};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CacheValue {
-    value: String,
+    pub value: String,
 }
 
 struct Cache {
