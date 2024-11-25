@@ -10,7 +10,7 @@ export component AccountListItem inherits TouchArea {
 
     pure function item_hover_state() -> brush {
         if (is_selected_item) {
-            return item.background;
+            return background_color.brighter(0.10);
         }
         return Theme.surface.brighter(0.10);
     }
@@ -94,7 +94,7 @@ export component AccountListItem inherits TouchArea {
             item.background: Theme.surface.with-alpha(0.90);
         }
         hover when root.has-hover: {
-            item.background: Theme.surface.brighter(0.10);
+            item.background: item_hover_state();
         }
     ]
 }
