@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::database::{database_connection, errors::DatabaseError};
 
 #[derive(Serialize, Deserialize, Debug)]
-struct CacheValue {
+pub struct CacheValue {
     value: String,
 }
 
