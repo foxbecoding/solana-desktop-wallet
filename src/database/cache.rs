@@ -26,7 +26,18 @@ impl Cache {
         Ok(())
     }
 
-    fn get() -> Result<(), DatabaseError> {Ok(())}
+    fn get(&self, key: &str) -> Result<Option<CacheValue>, DatabaseError> {
+        let mut stmt = self.conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
+        let mut rows = stmt.query(params![key])?;
+
+        if let Some(row) = rows.next()? {
+            let value: String = row.get(0)?;
+            let cache_value: CacheValue = serde_json::from_str(&value).unwrap();
+            Ok(Some(cache_value))
+        } else {
+            Ok(None)
+        }
+    }
 
     fn remove() -> Result<(), DatabaseError> {Ok(())}
 }
