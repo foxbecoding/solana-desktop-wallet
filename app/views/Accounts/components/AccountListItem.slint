@@ -6,6 +6,14 @@ import {Theme} from "../../../theme.slint";
 export component AccountListItem inherits TouchArea {
     in property <Account> account;
     in property <brush> background_color;
+    private property <bool> is_selected_item: AccountManager.selected_account.id == account.id;
+
+    pure function item_hover_state() -> brush {
+        if (is_selected_item) {
+            return item.background;
+        }
+        return Theme.surface.brighter(0.10);
+    }
 
     clicked => {
         AccountManager.selected_account = account;
@@ -79,13 +87,6 @@ export component AccountListItem inherits TouchArea {
                 }
             }
         }
-    }
-    
-    pure function item_hover_state() -> brush {
-        if (AccountManager.selected_account.id == account.id) {
-            return item.background;
-        }
-        return Theme.surface.brighter(0.10);
     }
 
     states [
