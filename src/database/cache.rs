@@ -39,5 +39,8 @@ impl Cache {
         }
     }
 
-    fn remove() -> Result<(), DatabaseError> {Ok(())}
+    fn remove(&self, key: &str) -> Result<(), DatabaseError> {
+        self.conn.execute("DELETE FROM cache WHERE key = ?1", params![key])?;
+        Ok(())
+    }
 }
