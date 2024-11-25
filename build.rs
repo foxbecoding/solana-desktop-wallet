@@ -23,8 +23,7 @@ fn main() -> Result<(), BuildError> {
     dotenv::dotenv().ok();
     force_rebuild();
     build_app_ui()?;
-    let conn = database_connection()?;
-    create_accounts_table(&conn)?;
+    create_db_tables()?;
     Ok(())
 }
 
@@ -62,5 +61,23 @@ pub fn create_accounts_table(conn: &Connection) -> Result<(), BuildError> {
         )",
         [],
     )?;
+    Ok(())
+}
+
+pub fn create_cache_table(conn: &Connection) -> Result<(), BuildError> {
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS cache (
+                key TEXT PRIMARY KEY,
+                value TEXT NOT NULL
+            )",
+        [],
+    )?;
+    Ok(())
+}
+
+pub fn create_db_tables() -> Result<(), BuildError> {
+    let conn = database_connection()?;
+    create_accounts_table(&conn)?;
+    create_cache_table(&conn)?;
     Ok(())
 }

@@ -11,5 +11,6 @@ export global AccountManager {
     in-out property <[Account]> accounts;
     in-out property <Account> selected_account;
     pure callback view_account(string);
+    pure callback change_account(int);
     pure callback add_account();
 }

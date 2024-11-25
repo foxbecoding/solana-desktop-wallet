@@ -1,13 +1,16 @@
 export global Theme  {
+    private property <color> background_color: rgb(27,27,27);
+    private property <color> primary_color: rgb(41,121,255);
+    private property <color> accent_color: rgb(156,39,176);
     private property <color> off_white: rgba(255,255,255,0.85);
-    out property <color> background_color: rgb(27,27,27);
+
     out property <color> background: background_color;
     out property <color> on_background: off_white;
     out property <color> surface: rgb(42,42,42);
     out property <color> on_surface: off_white;
-    out property <color> primary: rgb(41,121,255);
+    out property <color> primary: primary_color;
     out property <color> on_primary: off_white;
-    out property <color> accent: rgb(156,39,176);
+    out property <color> accent: accent_color;
     out property <color> on_accent: off_white;
     out property <color> secondary: off_white;
     out property <color> on_secondary: background_color;
