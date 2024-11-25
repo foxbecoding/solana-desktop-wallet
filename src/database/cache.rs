@@ -7,8 +7,8 @@ pub struct CacheValue {
     pub value: String,
 }
 
-struct Cache {
-    conn: Connection,
+pub struct Cache {
+    pub conn: Connection,
 }
 
 impl Cache {
