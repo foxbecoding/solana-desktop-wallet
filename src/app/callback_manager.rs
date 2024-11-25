@@ -21,6 +21,7 @@ impl CallbackManager {
     fn init_handlers(&self) -> Result<(), DatabaseError> {
         self.view_account_handler();
         self.add_account_handler()?;
+        self.change_account_handler();
         Ok(())
     }
 
@@ -67,6 +68,8 @@ impl CallbackManager {
     }
 
     fn change_account_handler(&self) {
-
+        self.app_instance.global::<AccountManager>().on_change_account(move |account_id| {
+            println!("{account_id}");
+        });
     }
 }
