@@ -12,7 +12,8 @@ struct Cache {
 }
 
 impl Cache {
-    fn new() -> Self {
-
+    fn new() -> Result<Self, DatabaseError> {
+        let conn = database_connection()?;
+        Ok(Cache { conn })
     }
 }
