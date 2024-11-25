@@ -16,4 +16,6 @@ impl Cache {
         let conn = database_connection()?;
         Ok(Cache { conn })
     }
+
+    fn insert() -> Result<(), DatabaseError> {Ok(())}
 }
