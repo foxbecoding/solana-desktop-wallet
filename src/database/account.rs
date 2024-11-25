@@ -6,6 +6,7 @@ use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
 use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
+use crate::database::database_connection;
 use crate::database::errors::DatabaseError;
 
 #[derive(Debug, Clone)]
@@ -102,6 +103,16 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
     Ok(accounts)
 }
 
-pub fn add_new_account() {
+pub fn add_new_account() -> Result<(), DatabaseError>{
+    let db_conn = database_connection()?;
 
+    // get accounts count
+    let accounts_count = get_accounts(&db_conn)?.len();
+
+    // set new account name
+    let new_account_name = format!("Account {}", accounts_count + 1);
+
+    // insert into DB
+    Account::new(&db_conn, new_account_name)?;
+    Ok(())
 }
