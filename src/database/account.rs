@@ -101,3 +101,7 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
     }
     Ok(accounts)
 }
+
+pub fn add_new_account() {
+
+}
