@@ -1,6 +1,6 @@
 use slint::{ComponentHandle};
 use solana_sdk::msg;
-use crate::database::{database_connection, errors::DatabaseError, account::{Account, get_accounts}};
+use crate::database::{database_connection, cache::{Cache, CacheValue}, errors::DatabaseError, account::{Account, get_accounts}};
 use crate::app::global_manager::GlobalManager;
 use crate::slint_generatedApp::{App as SlintApp, AccountManager};
 
@@ -21,7 +21,7 @@ impl CallbackManager {
     fn init_handlers(&self) -> Result<(), DatabaseError> {
         self.view_account_handler();
         self.add_account_handler()?;
-        self.change_account_handler();
+        self.change_account_handler()?;
         Ok(())
     }
 
@@ -41,7 +41,7 @@ impl CallbackManager {
         let app = self.app_instance.clone_strong();
         let weak_app = app.as_weak().unwrap();
         app.global::<AccountManager>().on_add_account(move || {
-            let result = (|| -> Result<(), DatabaseError> { // Establish db connection
+            let result = (|| -> Result<(), DatabaseError> {
                 let db_conn = database_connection()?;
 
                 // get accounts count
@@ -67,9 +67,22 @@ impl CallbackManager {
         Ok(())
     }
 
-    fn change_account_handler(&self) {
+    fn change_account_handler(&self) -> Result<(), DatabaseError> {
+        let cache = Cache::new()?;
         self.app_instance.global::<AccountManager>().on_change_account(move |account_id| {
-            println!("{account_id}");
+            let result = (|| -> Result<(), DatabaseError> {
+                // Insert value into cache
+                let cache_value = CacheValue {
+                    value: account_id.to_string(),
+                };
+                cache.insert("selected_account", &cache_value)?;
+                Ok(())
+            })();
+
+            if let Err(e) = result {
+                eprintln!("Error in change_account_handler: {}", e);
+            }
         });
+        Ok(())
     }
 }
