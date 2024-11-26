@@ -19,7 +19,8 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(name: String) -> Result<Self, DatabaseError> {
+    pub fn new() -> Result<Self, DatabaseError> {
+        let name = account_name_generator()?;
         let mnemonic_for_seed = Mnemonic::generate(12)?;
         let mnemonic_for_passphrase = Mnemonic::generate(12)?;
         let seed_phrase = mnemonic_for_seed.words().collect::<Vec<&str>>().join(" ");
@@ -111,7 +112,7 @@ pub fn add_new_account() -> Result<(), DatabaseError> {
     Ok(())
 }
 
-pub fn account_name_generator() -> Result<String, DatabaseError> {
+fn account_name_generator() -> Result<String, DatabaseError> {
     let accounts_count = get_accounts()?.len();
     let name = if accounts_count > 0 {
         format!("Account {}", accounts_count + 1)
