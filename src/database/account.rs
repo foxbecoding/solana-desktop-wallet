@@ -1,6 +1,7 @@
 use std::{error::Error, str::FromStr};
 use bip39::{Mnemonic, Error as MnemonicError};
 use rusqlite::{params};
+use serde::de::StdError;
 use slint::SharedString;
 use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::signature::{keypair, Keypair};
@@ -119,4 +120,8 @@ fn secure_phrase_generator() -> Result<String, MnemonicError>{
     Ok(secure_phrase)
 }
 
-fn pubkey_from_keypair_generator() {}
+fn pubkey_from_keypair_generator(seed_phrase: &String, passphrase: &String) -> Result<String, Box<dyn StdError>> {
+    let keypair = keypair::keypair_from_seed_phrase_and_passphrase(seed_phrase, passphrase)?;
+    let pubkey = keypair.pubkey().to_string();
+    Ok(pubkey)
+}
