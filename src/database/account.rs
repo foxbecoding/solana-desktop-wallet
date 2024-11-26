@@ -104,11 +104,19 @@ pub fn get_accounts() -> Result<Vec<Account>, DatabaseError> {
     Ok(accounts)
 }
 
-pub fn add_new_account() -> Result<(), DatabaseError>{
+pub fn add_new_account() -> Result<(), DatabaseError> {
     let accounts_count = get_accounts()?.len();
     let new_account_name = format!("Account {}", accounts_count + 1);
     Account::new(new_account_name)?;
     Ok(())
 }
 
-pub fn account_name_generator() {}
+pub fn account_name_generator() -> Result<String, DatabaseError> {
+    let accounts_count = get_accounts()?.len();
+    let name = if accounts_count > 0 {
+        format!("Account {}", accounts_count + 1)
+    } else {
+        "Main Account".to_string()
+    };
+    Ok(name)
+}
