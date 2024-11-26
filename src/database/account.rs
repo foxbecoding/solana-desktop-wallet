@@ -1,6 +1,7 @@
 use std::{error::Error, str::FromStr};
-use bip39::{Mnemonic};
+use bip39::{Mnemonic, Error as MnemonicError};
 use rusqlite::{params};
+use serde::de::StdError;
 use slint::SharedString;
 use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::signature::{keypair, Keypair};
@@ -19,13 +20,11 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(name: String) -> Result<Self, DatabaseError> {
-        let mnemonic_for_seed = Mnemonic::generate(12)?;
-        let mnemonic_for_passphrase = Mnemonic::generate(12)?;
-        let seed_phrase = mnemonic_for_seed.words().collect::<Vec<&str>>().join(" ");
-        let passphrase = mnemonic_for_passphrase.words().collect::<Vec<&str>>().join(" ");
-        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&seed_phrase, &passphrase)?;
-        let pubkey = keypair.pubkey().to_string();
+    pub fn new() -> Result<Self, DatabaseError> {
+        let name = account_name_generator()?;
+        let seed_phrase = secure_phrase_generator()?;
+        let passphrase = secure_phrase_generator()?;
+        let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase)?;
         let account = Account {
             id: None,
             name,
@@ -104,9 +103,24 @@ pub fn get_accounts() -> Result<Vec<Account>, DatabaseError> {
     Ok(accounts)
 }
 
-pub fn add_new_account() -> Result<(), DatabaseError>{
+fn account_name_generator() -> Result<String, DatabaseError> {
     let accounts_count = get_accounts()?.len();
-    let new_account_name = format!("Account {}", accounts_count + 1);
-    Account::new(new_account_name)?;
-    Ok(())
+    let name = if accounts_count > 0 {
+        format!("Account {}", accounts_count + 1)
+    } else {
+        "Main Account".to_string()
+    };
+    Ok(name)
+}
+
+fn secure_phrase_generator() -> Result<String, MnemonicError>{
+    let mnemonic_phrase = Mnemonic::generate(12)?;
+    let secure_phrase = mnemonic_phrase.words().collect::<Vec<&str>>().join(" ");
+    Ok(secure_phrase)
+}
+
+fn pubkey_from_keypair_generator(seed_phrase: &String, passphrase: &String) -> Result<String, Box<dyn StdError>> {
+    let keypair = keypair::keypair_from_seed_phrase_and_passphrase(seed_phrase, passphrase)?;
+    let pubkey = keypair.pubkey().to_string();
+    Ok(pubkey)
 }

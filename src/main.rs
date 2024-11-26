@@ -25,8 +25,7 @@ fn init() -> Result<(), AppError> {
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
-        let new_account_name = "Main Account".to_string();
-        AccountModel::new(new_account_name)?;
+        AccountModel::new()?;
         accounts = get_accounts()?;
     }
 
