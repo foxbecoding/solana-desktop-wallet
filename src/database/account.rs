@@ -110,3 +110,5 @@ pub fn add_new_account() -> Result<(), DatabaseError>{
     Account::new(new_account_name)?;
     Ok(())
 }
+
+pub fn account_name_generator() {}
