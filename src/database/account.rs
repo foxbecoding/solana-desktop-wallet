@@ -21,10 +21,8 @@ pub struct Account {
 impl Account {
     pub fn new() -> Result<Self, DatabaseError> {
         let name = account_name_generator()?;
-        let mnemonic_for_seed = Mnemonic::generate(12)?;
-        let mnemonic_for_passphrase = Mnemonic::generate(12)?;
-        let seed_phrase = mnemonic_for_seed.words().collect::<Vec<&str>>().join(" ");
-        let passphrase = mnemonic_for_passphrase.words().collect::<Vec<&str>>().join(" ");
+        let seed_phrase = secure_phrase_generator()?;
+        let passphrase = secure_phrase_generator()?;
         let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&seed_phrase, &passphrase)?;
         let pubkey = keypair.pubkey().to_string();
         let account = Account {
@@ -120,3 +118,4 @@ fn secure_phrase_generator() -> Result<String, MnemonicError>{
     let secure_phrase = mnemonic_phrase.words().collect::<Vec<&str>>().join(" ");
     Ok(secure_phrase)
 }
+
