@@ -114,3 +114,5 @@ fn account_name_generator() -> Result<String, DatabaseError> {
     };
     Ok(name)
 }
+
+fn secure_phrase_generator() {}
