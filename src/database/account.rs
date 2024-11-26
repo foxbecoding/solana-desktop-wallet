@@ -24,8 +24,7 @@ impl Account {
         let name = account_name_generator()?;
         let seed_phrase = secure_phrase_generator()?;
         let passphrase = secure_phrase_generator()?;
-        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&seed_phrase, &passphrase)?;
-        let pubkey = keypair.pubkey().to_string();
+        let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase)?;
         let account = Account {
             id: None,
             name,
