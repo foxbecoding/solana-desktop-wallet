@@ -119,3 +119,4 @@ fn secure_phrase_generator() -> Result<String, MnemonicError>{
     Ok(secure_phrase)
 }
 
+fn pubkey_from_keypair_generator() {}
