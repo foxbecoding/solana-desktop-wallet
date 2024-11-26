@@ -1,5 +1,5 @@
 use std::{error::Error, str::FromStr};
-use bip39::{Mnemonic};
+use bip39::{Mnemonic, Error as MnemonicError};
 use rusqlite::{params};
 use slint::SharedString;
 use solana_sdk::native_token::lamports_to_sol;
@@ -115,4 +115,8 @@ fn account_name_generator() -> Result<String, DatabaseError> {
     Ok(name)
 }
 
-fn secure_phrase_generator() {}
+fn secure_phrase_generator() -> Result<String, MnemonicError>{
+    let mnemonic_phrase = Mnemonic::generate(12)?;
+    let secure_phrase = mnemonic_phrase.words().collect::<Vec<&str>>().join(" ");
+    Ok(secure_phrase)
+}
