@@ -53,8 +53,8 @@ impl Cache {
         }
     }
 
-    pub fn remove(&self, key: &str) -> Result<(), DatabaseError> {
-        self.conn.execute("DELETE FROM cache WHERE key = ?1", params![key])?;
+    pub fn remove(&self, key: &CacheKey) -> Result<(), DatabaseError> {
+        self.conn.execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
         Ok(())
     }
 }
