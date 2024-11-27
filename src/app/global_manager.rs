@@ -2,7 +2,10 @@ use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::errors::AppError;
 use crate::database::{cache::Cache, account::Account};
-use crate::slint_generatedApp::{App as SlintApp, Account as SlintAccount, AccountManager};
+use crate::slint_generatedApp::{
+    App as SlintApp, Account as SlintAccount,
+    AccountManager, View as SlintViewEnum, ViewManager
+};
 
 pub struct GlobalManager {
     app_instance: SlintApp,
@@ -24,6 +27,8 @@ impl GlobalManager {
         self.set_accounts();
         Ok(())
     }
+
+    fn set_selected_view(&self) {}
 
     fn set_selected_account(&self) -> Result<(), AppError> {
         // Initialize first account by default
