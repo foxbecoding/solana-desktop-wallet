@@ -33,4 +33,14 @@ impl App {
     }
 }
 
-pub fn app_view_selector(view: String) {}
+pub fn app_view_selector(view: String) -> SlintViewEnum {
+    match view.as_str() {
+        "Wallet" => SlintViewEnum::Wallet,
+        "Collections" => SlintViewEnum::Collections,
+        "Swap" => SlintViewEnum::Swap,
+        "Explore" => SlintViewEnum::Explore,
+        "Settings" => SlintViewEnum::Settings,
+        "Accounts" => SlintViewEnum::Accounts,
+        _ => SlintViewEnum::Wallet
+    }
+}
