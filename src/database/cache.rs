@@ -9,7 +9,10 @@ pub enum CacheKey {
 
 impl CacheKey {
     pub fn key(&self) -> String {
-
+        match self {
+            CacheKey::SelectedAccount => "selected_account".to_string(),
+            CacheKey::SelectedView => "selected_view".to_string(),
+        }
     }
 }
 
