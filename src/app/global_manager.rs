@@ -22,13 +22,23 @@ impl GlobalManager {
         Ok(())
     }
 
+    pub fn set_accounts(&self) {
+        let mut slint_accounts: Vec<SlintAccount> = vec!();
+        for account in self.accounts.clone() {
+            let slint_account = slint_account_builder(&account);
+            slint_accounts.push(slint_account);
+        }
+
+        let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
+        let model_rc_accounts = ModelRc::from(rc_accounts.clone());
+        AccountManager::get(&self.app_instance).set_accounts(model_rc_accounts);
+    }
+
     fn init_globals(&self) -> Result<(), AppError> {
         self.set_selected_account()?;
         self.set_accounts();
         Ok(())
     }
-
-    fn set_selected_view(&self) {}
 
     fn set_selected_account(&self) -> Result<(), AppError> {
         // Initialize first account by default
@@ -64,17 +74,11 @@ impl GlobalManager {
         self.accounts.iter().find(|acc| acc.id.unwrap().to_string() == id)
     }
 
-    pub fn set_accounts(&self) {
-        let mut slint_accounts: Vec<SlintAccount> = vec!();
-        for account in self.accounts.clone() {
-            let slint_account = slint_account_builder(&account);
-            slint_accounts.push(slint_account);
-        }
-
-        let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
-        let model_rc_accounts = ModelRc::from(rc_accounts.clone());
-        AccountManager::get(&self.app_instance).set_accounts(model_rc_accounts);
+    fn set_selected_view(&self) {
+        // ViewManager::get(&self.app_instance).set_active_view(SlintViewEnum::Accounts);
     }
+
+    fn get_selected_view_from_cache(&self) {}
 }
 
 fn slint_account_builder(account: &Account) -> SlintAccount{
