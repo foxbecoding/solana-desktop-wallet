@@ -9,4 +9,5 @@ export enum View {
 
 export global ViewManager {
     in-out property <View> active_view: View.Wallet;
+    pure callback cache_active_view(View);
 }
