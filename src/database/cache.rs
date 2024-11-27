@@ -7,6 +7,12 @@ pub enum CacheKey {
     SelectedView,
 }
 
+impl CacheKey {
+    pub fn key(&self) -> String {
+
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CacheValue {
     pub value: String,
