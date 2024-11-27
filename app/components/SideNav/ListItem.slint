@@ -44,6 +44,7 @@ export component SideNavListItem inherits Rectangle {
     touch := TouchArea {
         clicked => {
             ViewManager.active_view = view;
+            ViewManager.cache_active_view(view);
         }
     }
 }
