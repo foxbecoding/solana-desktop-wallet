@@ -1,8 +1,11 @@
 use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
-use crate::app::errors::AppError;
-use crate::database::{cache::Cache, account::Account};
-use crate::slint_generatedApp::{App as SlintApp, Account as SlintAccount, AccountManager};
+use crate::app::{app_view_selector, errors::AppError};
+use crate::database::{cache::{Cache, CacheKey}, account::Account};
+use crate::slint_generatedApp::{
+    App as SlintApp, Account as SlintAccount,
+    AccountManager, ViewManager
+};
 
 pub struct GlobalManager {
     app_instance: SlintApp,
@@ -19,9 +22,22 @@ impl GlobalManager {
         Ok(())
     }
 
+    pub fn set_accounts(&self) {
+        let mut slint_accounts: Vec<SlintAccount> = vec!();
+        for account in self.accounts.clone() {
+            let slint_account = slint_account_builder(&account);
+            slint_accounts.push(slint_account);
+        }
+
+        let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
+        let model_rc_accounts = ModelRc::from(rc_accounts.clone());
+        AccountManager::get(&self.app_instance).set_accounts(model_rc_accounts);
+    }
+
     fn init_globals(&self) -> Result<(), AppError> {
         self.set_selected_account()?;
         self.set_accounts();
+        self.set_selected_view()?;
         Ok(())
     }
 
@@ -59,16 +75,22 @@ impl GlobalManager {
         self.accounts.iter().find(|acc| acc.id.unwrap().to_string() == id)
     }
 
-    pub fn set_accounts(&self) {
-        let mut slint_accounts: Vec<SlintAccount> = vec!();
-        for account in self.accounts.clone() {
-            let slint_account = slint_account_builder(&account);
-            slint_accounts.push(slint_account);
+    fn set_selected_view(&self) -> Result<(), AppError> {
+        if let Some(selected_view) = self.get_selected_view_from_cache()? {
+            let view = app_view_selector(selected_view);
+            ViewManager::get(&self.app_instance).set_active_view(view);
         }
+        Ok(())
+    }
 
-        let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
-        let model_rc_accounts = ModelRc::from(rc_accounts.clone());
-        AccountManager::get(&self.app_instance).set_accounts(model_rc_accounts);
+    fn get_selected_view_from_cache(&self) -> Result<Option<String>, AppError> {
+        let cache = Cache::new()?;
+        let cache_key = CacheKey::SelectedView.key();
+        if let Some(value) = cache.get(&cache_key)? {
+            Ok(Some(value.value))
+        } else {
+            Ok(None)
+        }
     }
 }
 

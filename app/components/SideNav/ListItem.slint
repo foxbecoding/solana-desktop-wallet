@@ -16,7 +16,7 @@ export component SideNavListItem inherits Rectangle {
     in-out property<string> label;
     in-out property<image> icon;
 
-    property <bool> is_view: ViewManager.activeView == root.view;
+    property <bool> is_view: ViewManager.active_view == root.view;
 
     HorizontalBox {
         Image{
@@ -43,7 +43,8 @@ export component SideNavListItem inherits Rectangle {
     ]
     touch := TouchArea {
         clicked => {
-            ViewManager.activeView = view;
+            ViewManager.active_view = view;
+            ViewManager.cache_active_view(view);
         }
     }
 }
