@@ -40,9 +40,9 @@ impl Cache {
         Ok(())
     }
 
-    pub fn get(&self, key: &str) -> Result<Option<CacheValue>, DatabaseError> {
+    pub fn get(&self, key: &CacheKey) -> Result<Option<CacheValue>, DatabaseError> {
         let mut stmt = self.conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
-        let mut rows = stmt.query(params![key])?;
+        let mut rows = stmt.query(params![key.key()])?;
 
         if let Some(row) = rows.next()? {
             let value: String = row.get(0)?;
