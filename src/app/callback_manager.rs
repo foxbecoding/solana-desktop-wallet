@@ -61,11 +61,10 @@ impl CallbackManager {
         let cache = Cache::new()?;
         self.app_instance.global::<AccountManager>().on_change_account(move |account_id| {
             let result = (|| -> Result<(), DatabaseError> {
-                // Insert value into cache
                 let cache_value = CacheValue {
                     value: account_id.to_string(),
                 };
-                cache.insert("selected_account", &cache_value)?;
+                cache.insert(&CacheKey::SelectedAccount, &cache_value)?;
                 Ok(())
             })();
 
