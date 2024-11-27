@@ -2,10 +2,10 @@ import {Accounts, Collections, Explore, Settings, Swap, Wallet} from "../views/i
 import {ViewManager, View} from "../managers/view-manager.slint";
 
 export component Main {
-    if ViewManager.activeView == View.accounts : Accounts {}
-    if ViewManager.activeView == View.collections : Collections {}
-    if ViewManager.activeView == View.explore : Explore {}
-    if ViewManager.activeView == View.settings : Settings {}
-    if ViewManager.activeView == View.swap : Swap {}
-    if ViewManager.activeView == View.wallet : Wallet {}
+    if ViewManager.active_view == View.Accounts : Accounts {}
+    if ViewManager.active_view == View.Collections : Collections {}
+    if ViewManager.active_view == View.Explore : Explore {}
+    if ViewManager.active_view == View.Settings : Settings {}
+    if ViewManager.active_view == View.Swap : Swap {}
+    if ViewManager.active_view == View.Wallet : Wallet {}
 }

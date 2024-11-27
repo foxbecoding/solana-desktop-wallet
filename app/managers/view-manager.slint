@@ -1,12 +1,13 @@
 export enum View {
-    wallet,
-    collections,
-    swap,
-    explore,
-    settings,
-    accounts
+    Wallet,
+    Collections,
+    Swap,
+    Explore,
+    Settings,
+    Accounts
 }
 
 export global ViewManager {
-    in-out property <View> activeView: wallet;
+    in-out property <View> active_view: View.Wallet;
+    pure callback cache_active_view(View);
 }
