@@ -74,4 +74,6 @@ impl CallbackManager {
         });
         Ok(())
     }
+
+    fn cache_active_view_handler(&self) -> Result<(), DatabaseError> {Ok(())}
 }
