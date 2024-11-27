@@ -37,6 +37,7 @@ impl GlobalManager {
     fn init_globals(&self) -> Result<(), AppError> {
         self.set_selected_account()?;
         self.set_accounts();
+        self.set_selected_view()?;
         Ok(())
     }
 
