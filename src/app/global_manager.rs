@@ -85,8 +85,7 @@ impl GlobalManager {
 
     fn get_selected_view_from_cache(&self) -> Result<Option<String>, AppError> {
         let cache = Cache::new()?;
-        let cache_key = CacheKey::SelectedView.key();
-        if let Some(value) = cache.get(&cache_key)? {
+        if let Some(value) = cache.get(&CacheKey::SelectedView)? {
             Ok(Some(value.value))
         } else {
             Ok(None)
