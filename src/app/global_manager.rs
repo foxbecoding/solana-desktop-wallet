@@ -1,10 +1,10 @@
 use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
-use crate::app::errors::AppError;
-use crate::database::{cache::Cache, account::Account};
+use crate::app::{app_view_selector, errors::AppError};
+use crate::database::{cache::{Cache, CacheKey}, account::Account};
 use crate::slint_generatedApp::{
     App as SlintApp, Account as SlintAccount,
-    AccountManager, View as SlintViewEnum, ViewManager
+    AccountManager, ViewManager
 };
 
 pub struct GlobalManager {
@@ -74,11 +74,23 @@ impl GlobalManager {
         self.accounts.iter().find(|acc| acc.id.unwrap().to_string() == id)
     }
 
-    fn set_selected_view(&self) {
-        // ViewManager::get(&self.app_instance).set_active_view(SlintViewEnum::Accounts);
+    fn set_selected_view(&self) -> Result<(), AppError> {
+        if let Some(selected_view) = self.get_selected_view_from_cache()? {
+            let view = app_view_selector(selected_view);
+            ViewManager::get(&self.app_instance).set_active_view(view);
+        }
+        Ok(())
     }
 
-    fn get_selected_view_from_cache(&self) {}
+    fn get_selected_view_from_cache(&self) -> Result<Option<String>, AppError> {
+        let cache = Cache::new()?;
+        let cache_key = CacheKey::SelectedView.key();
+        if let Some(value) = cache.get(&cache_key)? {
+            Ok(Some(value.value))
+        } else {
+            Ok(None)
+        }
+    }
 }
 
 fn slint_account_builder(account: &Account) -> SlintAccount{
