@@ -46,7 +46,8 @@ export component SideNavAccount {
                 label: "View Accounts";
                 icon: @image-url("../../assets/icons/eye-icon.svg");
                 clicked => {
-                    ViewManager.active_view = View.Accounts
+                    ViewManager.active_view = View.Accounts;
+                    ViewManager.cache_active_view(View.Accounts);
                 }
             }
         }
