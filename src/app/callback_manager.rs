@@ -1,8 +1,9 @@
 use slint::{ComponentHandle};
 use solana_sdk::msg;
-use crate::database::{cache::{Cache, CacheValue}, errors::DatabaseError, account::{Account, get_accounts}};
-use crate::app::global_manager::GlobalManager;
-use crate::slint_generatedApp::{App as SlintApp, AccountManager};
+use serde_json;
+use crate::database::{cache::{Cache, CacheKey, CacheValue}, errors::DatabaseError, account::{Account, get_accounts}};
+use crate::app::{global_manager::GlobalManager};
+use crate::slint_generatedApp::{App as SlintApp, AccountManager, View as SlintViewEnum, ViewManager};
 
 pub struct CallbackManager {
     app_instance: SlintApp,
@@ -22,6 +23,7 @@ impl CallbackManager {
         self.view_account_handler();
         self.add_account_handler()?;
         self.change_account_handler()?;
+        self.cache_active_view_handler()?;
         Ok(())
     }
 
@@ -75,5 +77,22 @@ impl CallbackManager {
         Ok(())
     }
 
-    fn cache_active_view_handler(&self) -> Result<(), DatabaseError> {Ok(())}
+    fn cache_active_view_handler(&self) -> Result<(), DatabaseError> {
+        let cache = Cache::new()?;
+        self.app_instance.global::<ViewManager>().on_cache_active_view(move |view: SlintViewEnum| {
+            let result = (|| -> Result<(), DatabaseError> {
+                let cache_key = CacheKey::SelectedView.key();
+                let cache_value = CacheValue {
+                    value: format!("{:?}", view),
+                };
+                cache.insert(&cache_key, &cache_value)?;
+                Ok(())
+            })();
+
+            if let Err(e) = result {
+                eprintln!("Error in on_cache_active_view: {}", e);
+            }
+        });
+        Ok(())
+    }
 }
