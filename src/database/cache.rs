@@ -2,6 +2,8 @@ use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
 use crate::database::{database_connection, errors::DatabaseError};
 
+pub enum CacheKey {}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CacheValue {
     pub value: String,
