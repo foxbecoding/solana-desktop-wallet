@@ -2,7 +2,10 @@ use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
 use crate::database::{database_connection, errors::DatabaseError};
 
-pub enum CacheKey {}
+pub enum CacheKey {
+    SelectedAccount,
+    SelectedView,
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CacheValue {
