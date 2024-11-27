@@ -5,7 +5,7 @@ pub(crate) mod callback_manager;
 pub(crate) mod global_manager;
 use crate::database::account::Account;
 use crate::app::errors::AppError;
-use crate::slint_generatedApp::{App as SlintApp};
+use crate::slint_generatedApp::{App as SlintApp, View as SlintViewEnum};
 
 #[derive(Debug)]
 pub struct App {
@@ -32,3 +32,5 @@ impl App {
         Ok(())
     }
 }
+
+pub fn app_view_selector(view: String) {}
