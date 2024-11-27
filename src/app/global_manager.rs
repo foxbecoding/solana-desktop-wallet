@@ -64,7 +64,7 @@ impl GlobalManager {
 
     fn get_selected_account_from_cache(&self) -> Result<Option<String>, AppError> {
         let cache = Cache::new()?;
-        if let Some(value) = cache.get("selected_account")? {
+        if let Some(value) = cache.get(&CacheKey::SelectedAccount)? {
             Ok(Some(value.value))
         } else {
             Ok(None)
