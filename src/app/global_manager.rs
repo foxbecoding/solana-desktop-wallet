@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::{app_view_selector, errors::AppError};
-use crate::database::{cache::{Cache, CacheKey}, account::Account};
+use crate::database::{cache::{Cache, CacheKey, fetch_cache_value}, account::Account};
 use crate::slint_generatedApp::{
     App as SlintApp, Account as SlintAccount,
     AccountManager, ViewManager
@@ -76,7 +76,7 @@ impl GlobalManager {
     }
 
     fn set_selected_view(&self) -> Result<(), AppError> {
-        if let Some(selected_view) = self.get_selected_view_from_cache()? {
+        if let Some(selected_view) = fetch_cache_value(&CacheKey::SelectedView)? {
             let view = app_view_selector(selected_view);
             ViewManager::get(&self.app_instance).set_active_view(view);
         }
