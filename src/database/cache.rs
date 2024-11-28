@@ -58,3 +58,12 @@ impl Cache {
         Ok(())
     }
 }
+
+pub fn fetch_cache_value(key: &CacheKey) -> Result<Option<String>, DatabaseError> {
+    let cache = Cache::new()?;
+    if let Some(value) = cache.get(key)? {
+        Ok(Some(value.value))
+    } else {
+        Ok(None)
+    }
+}
