@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::{app_view_selector, errors::AppError};
-use crate::database::{cache::{Cache, CacheKey, fetch_cache_value}, account::Account};
+use crate::database::{cache::{CacheKey, fetch_cache_value}, account::Account};
 use crate::slint_generatedApp::{
     App as SlintApp, Account as SlintAccount,
     AccountManager, ViewManager
@@ -59,15 +59,6 @@ impl GlobalManager {
                 Ok(())
             },
             None => Err(AppError::NoAccountSelected),
-        }
-    }
-
-    fn get_selected_account_from_cache(&self) -> Result<Option<String>, AppError> {
-        let cache = Cache::new()?;
-        if let Some(value) = cache.get(&CacheKey::SelectedAccount)? {
-            Ok(Some(value.value))
-        } else {
-            Ok(None)
         }
     }
 
