@@ -103,12 +103,3 @@ fn slint_account_builder(account: &Account) -> SlintAccount {
         balance: account.balance_in_sol() as f32
     }
 }
-
-fn fetch_cache_value(key: &CacheKey) -> Result<Option<String>, AppError> {
-    let cache = Cache::new()?;
-    if let Some(value) = cache.get(key)? {
-        Ok(Some(value.value))
-    } else {
-        Ok(None)
-    }
-}
