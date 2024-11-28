@@ -31,18 +31,18 @@ impl Cache {
         Ok(Cache { conn })
     }
 
-    pub fn insert(&self, key: &str, value: &CacheValue) -> Result<(), DatabaseError> {
+    pub fn insert(&self, key: &CacheKey, value: &CacheValue) -> Result<(), DatabaseError> {
         let value = serde_json::to_string(value).unwrap();
         self.conn.execute(
             "INSERT OR REPLACE INTO cache (key, value) VALUES (?1, ?2)",
-            params![key, value],
+            params![key.key(), value],
         )?;
         Ok(())
     }
 
-    pub fn get(&self, key: &str) -> Result<Option<CacheValue>, DatabaseError> {
+    pub fn get(&self, key: &CacheKey) -> Result<Option<CacheValue>, DatabaseError> {
         let mut stmt = self.conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
-        let mut rows = stmt.query(params![key])?;
+        let mut rows = stmt.query(params![key.key()])?;
 
         if let Some(row) = rows.next()? {
             let value: String = row.get(0)?;
@@ -53,8 +53,17 @@ impl Cache {
         }
     }
 
-    pub fn remove(&self, key: &str) -> Result<(), DatabaseError> {
-        self.conn.execute("DELETE FROM cache WHERE key = ?1", params![key])?;
+    pub fn remove(&self, key: &CacheKey) -> Result<(), DatabaseError> {
+        self.conn.execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
         Ok(())
+    }
+}
+
+pub fn fetch_cache_value(key: &CacheKey) -> Result<Option<String>, DatabaseError> {
+    let cache = Cache::new()?;
+    if let Some(value) = cache.get(key)? {
+        Ok(Some(value.value))
+    } else {
+        Ok(None)
     }
 }

@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use crate::app::{app_view_selector, errors::AppError};
-use crate::database::{cache::{Cache, CacheKey}, account::Account};
+use crate::database::{cache::{CacheKey, fetch_cache_value}, account::Account};
 use crate::slint_generatedApp::{
     App as SlintApp, Account as SlintAccount,
     AccountManager, ViewManager
@@ -46,7 +46,7 @@ impl GlobalManager {
         let mut account = self.accounts.first();
 
         // Check cache for selected account
-        if let Some(selected_account_id) = self.get_selected_account_from_cache()? {
+        if let Some(selected_account_id) = fetch_cache_value(&CacheKey::SelectedAccount)? {
             if let Some(acc) = self.find_account_by_id(&selected_account_id) {
                 account = Some(acc);
             }
@@ -62,39 +62,20 @@ impl GlobalManager {
         }
     }
 
-    fn get_selected_account_from_cache(&self) -> Result<Option<String>, AppError> {
-        let cache = Cache::new()?;
-        if let Some(value) = cache.get("selected_account")? {
-            Ok(Some(value.value))
-        } else {
-            Ok(None)
-        }
-    }
-
     fn find_account_by_id(&self, id: &str) -> Option<&Account> {
         self.accounts.iter().find(|acc| acc.id.unwrap().to_string() == id)
     }
 
     fn set_selected_view(&self) -> Result<(), AppError> {
-        if let Some(selected_view) = self.get_selected_view_from_cache()? {
+        if let Some(selected_view) = fetch_cache_value(&CacheKey::SelectedView)? {
             let view = app_view_selector(selected_view);
             ViewManager::get(&self.app_instance).set_active_view(view);
         }
         Ok(())
     }
-
-    fn get_selected_view_from_cache(&self) -> Result<Option<String>, AppError> {
-        let cache = Cache::new()?;
-        let cache_key = CacheKey::SelectedView.key();
-        if let Some(value) = cache.get(&cache_key)? {
-            Ok(Some(value.value))
-        } else {
-            Ok(None)
-        }
-    }
 }
 
-fn slint_account_builder(account: &Account) -> SlintAccount{
+fn slint_account_builder(account: &Account) -> SlintAccount {
     SlintAccount {
         id: account.id.unwrap(),
         name: SharedString::from(account.name.clone()),

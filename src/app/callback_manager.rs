@@ -1,6 +1,5 @@
 use slint::{ComponentHandle};
 use solana_sdk::msg;
-use serde_json;
 use crate::database::{cache::{Cache, CacheKey, CacheValue}, errors::DatabaseError, account::{Account, get_accounts}};
 use crate::app::{global_manager::GlobalManager};
 use crate::slint_generatedApp::{App as SlintApp, AccountManager, View as SlintViewEnum, ViewManager};
@@ -62,11 +61,10 @@ impl CallbackManager {
         let cache = Cache::new()?;
         self.app_instance.global::<AccountManager>().on_change_account(move |account_id| {
             let result = (|| -> Result<(), DatabaseError> {
-                // Insert value into cache
                 let cache_value = CacheValue {
                     value: account_id.to_string(),
                 };
-                cache.insert("selected_account", &cache_value)?;
+                cache.insert(&CacheKey::SelectedAccount, &cache_value)?;
                 Ok(())
             })();
 
@@ -81,11 +79,10 @@ impl CallbackManager {
         self.app_instance.global::<ViewManager>().on_cache_active_view(move |view: SlintViewEnum| {
             let result = (|| -> Result<(), DatabaseError> {
                 let cache = Cache::new()?;
-                let cache_key = CacheKey::SelectedView.key();
                 let cache_value = CacheValue {
                     value: format!("{:?}", view),
                 };
-                cache.insert(&cache_key, &cache_value)?;
+                cache.insert(&CacheKey::SelectedView, &cache_value)?;
                 Ok(())
             })();
 
