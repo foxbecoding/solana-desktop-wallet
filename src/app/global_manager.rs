@@ -46,7 +46,7 @@ impl GlobalManager {
         let mut account = self.accounts.first();
 
         // Check cache for selected account
-        if let Some(selected_account_id) = self.get_selected_account_from_cache()? {
+        if let Some(selected_account_id) = fetch_cache_value(&CacheKey::SelectedAccount)? {
             if let Some(acc) = self.find_account_by_id(&selected_account_id) {
                 account = Some(acc);
             }
