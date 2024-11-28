@@ -93,7 +93,7 @@ impl GlobalManager {
     }
 }
 
-fn slint_account_builder(account: &Account) -> SlintAccount{
+fn slint_account_builder(account: &Account) -> SlintAccount {
     SlintAccount {
         id: account.id.unwrap(),
         name: SharedString::from(account.name.clone()),
@@ -101,5 +101,14 @@ fn slint_account_builder(account: &Account) -> SlintAccount{
         pubkey: SharedString::from(account.pubkey.clone()),
         pubkey_display: account.pubkey_display(),
         balance: account.balance_in_sol() as f32
+    }
+}
+
+fn fetch_cache_value(key: &CacheKey) -> Result<Option<String>, AppError> {
+    let cache = Cache::new()?;
+    if let Some(value) = cache.get(key)? {
+        Ok(Some(value.value))
+    } else {
+        Ok(None)
     }
 }
