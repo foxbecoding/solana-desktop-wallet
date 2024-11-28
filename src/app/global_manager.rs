@@ -82,15 +82,6 @@ impl GlobalManager {
         }
         Ok(())
     }
-
-    fn get_selected_view_from_cache(&self) -> Result<Option<String>, AppError> {
-        let cache = Cache::new()?;
-        if let Some(value) = cache.get(&CacheKey::SelectedView)? {
-            Ok(Some(value.value))
-        } else {
-            Ok(None)
-        }
-    }
 }
 
 fn slint_account_builder(account: &Account) -> SlintAccount {
