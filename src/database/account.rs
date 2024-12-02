@@ -171,4 +171,15 @@ mod tests {
 }
 
 #[test]
-fn test_pubkey_display() {}
+fn test_pubkey_display() {
+    let account = Account {
+        id: None,
+        name: "Test".to_string(),
+        seed: "test_seed".to_string(),
+        pubkey: "123456789abcdef".to_string(),
+        passphrase: "test_passphrase".to_string(),
+        balance: Some(1000),
+    };
+    let display = account.pubkey_display();
+    assert_eq!(display.as_str(), "12345...cdef");
+}
