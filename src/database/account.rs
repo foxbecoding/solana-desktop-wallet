@@ -196,3 +196,6 @@ fn test_balance_in_sol() {
     };
     assert_eq!(account.balance_in_sol(), 1.0);
 }
+
+#[test]
+fn test_insert_account_and_get_accounts() {}
