@@ -229,4 +229,7 @@ mod tests {
         assert_eq!(retrieved_account.passphrase, account.passphrase);
         assert_eq!(retrieved_account.balance, account.balance);
     }
+
+    #[test]
+    fn test_account_name_generator() {}
 }
