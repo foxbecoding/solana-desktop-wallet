@@ -154,6 +154,10 @@ mod tests {
         Mutex::new(conn)
     }
 
+    fn teardown_test_db(conn: &rusqlite::Connection) {
+        conn.execute("DELETE FROM accounts", []).unwrap();
+    }
+
     // Mock function to simulate `get_accounts`
     fn mock_get_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, DatabaseError> {
         Ok(accounts) // Return the mock accounts as a simulated database query result
