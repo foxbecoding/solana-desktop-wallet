@@ -153,4 +153,7 @@ mod tests {
         .unwrap();
         Mutex::new(conn)
     }
+
+    #[test]
+    fn test_account_new() {}
 }
