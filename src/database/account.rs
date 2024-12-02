@@ -137,5 +137,20 @@ mod tests {
     use std::sync::Mutex;
 
     // Helper function to set up a temporary in-memory database
-    fn setup_test_db() -> Mutex<Connection> {}
+    fn setup_test_db() -> Mutex<Connection> {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute(
+            "CREATE TABLE accounts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                seed TEXT NOT NULL,
+                pubkey TEXT NOT NULL,
+                passphrase TEXT NOT NULL,
+                balance INTEGER
+            )",
+            [],
+        )
+        .unwrap();
+        Mutex::new(conn)
+    }
 }
