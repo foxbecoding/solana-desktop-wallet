@@ -169,3 +169,6 @@ mod tests {
         assert!(!account.passphrase.is_empty());
     }
 }
+
+#[test]
+fn test_pubkey_display() {}
