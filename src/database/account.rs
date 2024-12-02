@@ -248,5 +248,10 @@ mod tests {
     }
 
     #[test]
-    fn test_pubkey_from_keypair_generator() {}
+    fn test_pubkey_from_keypair_generator() {
+        let result =
+            pubkey_from_keypair_generator(&"mock_seed".to_string(), &"mock_passphrase".to_string());
+        assert!(result.is_ok());
+        assert!(!result.unwrap().is_empty());
+    }
 }
