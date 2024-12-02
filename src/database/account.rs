@@ -154,6 +154,11 @@ mod tests {
         Mutex::new(conn)
     }
 
+    // Mock function to simulate `get_accounts`
+    fn mock_get_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, DatabaseError> {
+        Ok(accounts) // Return the mock accounts as a simulated database query result
+    }
+
     #[test]
     fn test_account_new() {
         let _db = setup_test_db(); // Ensure a clean database environment
