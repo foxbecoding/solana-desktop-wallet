@@ -168,34 +168,65 @@ mod tests {
         assert!(!account.pubkey.is_empty());
         assert!(!account.passphrase.is_empty());
     }
-}
 
-#[test]
-fn test_pubkey_display() {
-    let account = Account {
-        id: None,
-        name: "Test".to_string(),
-        seed: "test_seed".to_string(),
-        pubkey: "123456789abcdef".to_string(),
-        passphrase: "test_passphrase".to_string(),
-        balance: Some(1000),
-    };
-    let display = account.pubkey_display();
-    assert_eq!(display.as_str(), "12345...cdef");
-}
+    #[test]
+    fn test_pubkey_display() {
+        let account = Account {
+            id: None,
+            name: "Test".to_string(),
+            seed: "test_seed".to_string(),
+            pubkey: "123456789abcdef".to_string(),
+            passphrase: "test_passphrase".to_string(),
+            balance: Some(1000),
+        };
+        let display = account.pubkey_display();
+        assert_eq!(display.as_str(), "12345...cdef");
+    }
 
-#[test]
-fn test_balance_in_sol() {
-    let account = Account {
-        id: None,
-        name: "Test".to_string(),
-        seed: "test_seed".to_string(),
-        pubkey: "pubkey".to_string(),
-        passphrase: "test_passphrase".to_string(),
-        balance: Some(1_000_000_000), // 1 SOL in lamports
-    };
-    assert_eq!(account.balance_in_sol(), 1.0);
-}
+    #[test]
+    fn test_balance_in_sol() {
+        let account = Account {
+            id: None,
+            name: "Test".to_string(),
+            seed: "test_seed".to_string(),
+            pubkey: "pubkey".to_string(),
+            passphrase: "test_passphrase".to_string(),
+            balance: Some(1_000_000_000), // 1 SOL in lamports
+        };
+        assert_eq!(account.balance_in_sol(), 1.0);
+    }
 
-#[test]
-fn test_insert_account_and_get_accounts() {}
+    #[test]
+    fn test_insert_account_and_get_accounts() {
+        let db = setup_test_db(); // Set up the in-memory database
+        let _conn = db.lock().unwrap();
+
+        let account = Account {
+            id: None,
+            name: "Test".to_string(),
+            seed: "test_seed".to_string(),
+            pubkey: "test_pubkey".to_string(),
+            passphrase: "test_passphrase".to_string(),
+            balance: Some(100),
+        };
+
+        // Test inserting an account
+        let result = insert_account(&account);
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), 1); // One row should be inserted
+
+        // Test retrieving accounts
+        let accounts = get_accounts();
+        assert!(accounts.is_ok());
+        let accounts = accounts.unwrap();
+        assert_eq!(accounts.len(), 1);
+
+        // Validate the retrieved account
+        let retrieved_account = &accounts[0];
+        assert_eq!(retrieved_account.name, account.name);
+        assert_eq!(retrieved_account.seed, account.seed);
+        assert_eq!(retrieved_account.pubkey, account.pubkey);
+        assert_eq!(retrieved_account.passphrase, account.passphrase);
+        assert_eq!(retrieved_account.balance, account.balance);
+    }
+}
