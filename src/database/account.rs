@@ -231,5 +231,19 @@ mod tests {
     }
 
     #[test]
-    fn test_account_name_generator() {}
+    fn test_account_name_generator() {
+        // Mock the `get_accounts` function
+        let _mock = mock_get_accounts(vec![Account {
+            id: Some(1),
+            name: "Main Account".to_string(),
+            seed: "seed".to_string(),
+            pubkey: "pubkey".to_string(),
+            passphrase: "passphrase".to_string(),
+            balance: None,
+        }]);
+
+        let name = account_name_generator();
+        assert!(name.is_ok());
+        assert_eq!(name.unwrap(), "Account 2");
+    }
 }
