@@ -155,5 +155,17 @@ mod tests {
     }
 
     #[test]
-    fn test_account_new() {}
+    fn test_account_new() {
+        let _db = setup_test_db(); // Ensure a clean database environment
+
+        let account = Account::new();
+        assert!(account.is_ok());
+        let account = account.unwrap();
+
+        // Validate that the account properties are correctly generated
+        assert!(account.name.starts_with("Main Account") || account.name.starts_with("Account"));
+        assert!(!account.seed.is_empty());
+        assert!(!account.pubkey.is_empty());
+        assert!(!account.passphrase.is_empty());
+    }
 }
