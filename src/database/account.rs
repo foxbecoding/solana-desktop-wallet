@@ -183,3 +183,6 @@ fn test_pubkey_display() {
     let display = account.pubkey_display();
     assert_eq!(display.as_str(), "12345...cdef");
 }
+
+#[test]
+fn test_balance_in_sol() {}
