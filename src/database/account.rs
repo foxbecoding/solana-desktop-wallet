@@ -133,5 +133,9 @@ fn pubkey_from_keypair_generator(
 #[cfg(test)]
 mod tests {
     use super::*;
-}
+    use rusqlite::Connection;
+    use std::sync::Mutex;
 
+    // Helper function to set up a temporary in-memory database
+    fn setup_test_db() -> Mutex<Connection> {}
+}
