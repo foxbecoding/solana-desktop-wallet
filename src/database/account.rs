@@ -1,13 +1,13 @@
-use std::{error::Error, str::FromStr};
-use bip39::{Mnemonic, Error as MnemonicError};
-use rusqlite::{params};
+use crate::database::{database_connection, errors::DatabaseError};
+use bip39::{Error as MnemonicError, Mnemonic};
+use rusqlite::params;
 use serde::de::StdError;
 use slint::SharedString;
 use solana_sdk::native_token::lamports_to_sol;
+use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
-use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
-use crate::database::{database_connection, errors::DatabaseError};
+use std::{error::Error, str::FromStr};
 
 #[derive(Debug, Clone)]
 pub struct Account {
@@ -16,7 +16,7 @@ pub struct Account {
     pub seed: String,
     pub pubkey: String,
     passphrase: String,
-    pub balance: Option<u64>
+    pub balance: Option<u64>,
 }
 
 impl Account {
@@ -31,7 +31,7 @@ impl Account {
             seed: seed_phrase,
             pubkey,
             passphrase,
-            balance: None
+            balance: None,
         };
         insert_account(&account)?;
         Ok(account)
@@ -60,8 +60,9 @@ impl Account {
         lamports_to_sol(self.balance.unwrap_or_else(|| 0u64))
     }
 
-    pub fn account_keypair(&self) -> Result<Keypair, Box <dyn Error>> {
-        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
+    pub fn account_keypair(&self) -> Result<Keypair, Box<dyn Error>> {
+        let keypair =
+            keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
         Ok(keypair)
     }
 }
@@ -77,7 +78,8 @@ pub fn insert_account(account: &Account) -> Result<usize, DatabaseError> {
             &account.pubkey,
             &account.passphrase,
         ],
-    ).map_err(DatabaseError::from)
+    )
+    .map_err(DatabaseError::from)
 }
 
 // Function to retrieve all accounts from the accounts table
@@ -113,14 +115,23 @@ fn account_name_generator() -> Result<String, DatabaseError> {
     Ok(name)
 }
 
-fn secure_phrase_generator() -> Result<String, MnemonicError>{
+fn secure_phrase_generator() -> Result<String, MnemonicError> {
     let mnemonic_phrase = Mnemonic::generate(12)?;
     let secure_phrase = mnemonic_phrase.words().collect::<Vec<&str>>().join(" ");
     Ok(secure_phrase)
 }
 
-fn pubkey_from_keypair_generator(seed_phrase: &String, passphrase: &String) -> Result<String, Box<dyn StdError>> {
+fn pubkey_from_keypair_generator(
+    seed_phrase: &String,
+    passphrase: &String,
+) -> Result<String, Box<dyn StdError>> {
     let keypair = keypair::keypair_from_seed_phrase_and_passphrase(seed_phrase, passphrase)?;
     let pubkey = keypair.pubkey().to_string();
     Ok(pubkey)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+}
+
