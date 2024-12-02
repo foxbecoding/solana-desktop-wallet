@@ -246,4 +246,7 @@ mod tests {
         assert!(name.is_ok());
         assert_eq!(name.unwrap(), "Account 2");
     }
+
+    #[test]
+    fn test_pubkey_from_keypair_generator() {}
 }
