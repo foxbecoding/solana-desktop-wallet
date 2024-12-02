@@ -185,4 +185,14 @@ fn test_pubkey_display() {
 }
 
 #[test]
-fn test_balance_in_sol() {}
+fn test_balance_in_sol() {
+    let account = Account {
+        id: None,
+        name: "Test".to_string(),
+        seed: "test_seed".to_string(),
+        pubkey: "pubkey".to_string(),
+        passphrase: "test_passphrase".to_string(),
+        balance: Some(1_000_000_000), // 1 SOL in lamports
+    };
+    assert_eq!(account.balance_in_sol(), 1.0);
+}
