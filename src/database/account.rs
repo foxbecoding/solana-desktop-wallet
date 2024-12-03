@@ -166,7 +166,7 @@ mod tests {
 
     impl MockAccount {
         pub fn new(conn: &Connection) -> Self {
-            let name = account_name_generator().unwrap();
+            let name = mock_account_name_generator(conn);
             let seed_phrase = secure_phrase_generator().unwrap();
             let passphrase = secure_phrase_generator().unwrap();
             let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase).unwrap();
