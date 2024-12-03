@@ -6,6 +6,11 @@ pub mod errors;
 use crate::database::errors::DatabaseError;
 
 pub fn database_connection() -> Result<Connection, DatabaseError> {
-    let conn = Connection::open("resources/database/database.db")?;
+    let conn = if cfg!(test) {
+        Connection::open_in_memory()?
+    } else {
+        Connection::open("resources/database/database.db")?
+    };
     Ok(conn)
 }
+
