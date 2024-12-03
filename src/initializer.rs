@@ -1,4 +1,4 @@
-use crate::app::errors::AppError;
+use crate::app::{errors::AppError, App};
 use crate::connection::Connection;
 use crate::database::account::{get_accounts, Account as AccountModel};
 use solana_sdk::pubkey::Pubkey;
@@ -15,7 +15,7 @@ pub fn init() -> Result<(), AppError> {
         accounts = get_accounts()?;
     }
 
-    let app = app::App { accounts };
+    let app = App { accounts };
     start_app(app)?;
     Ok(())
 }
@@ -47,4 +47,9 @@ fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel
     }
 
     Ok(updated_accounts)
+}
+
+fn start_app(app: App) -> Result<(), AppError> {
+    app.start()?;
+    Ok(())
 }
