@@ -178,7 +178,7 @@ mod tests {
                 passphrase,
                 balance: None,
             };
-            mock_insert_account(&conn, &account).unwrap();
+            mock_insert_account(&conn, &account);
             account
         }
     }
