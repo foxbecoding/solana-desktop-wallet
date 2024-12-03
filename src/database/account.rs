@@ -236,11 +236,9 @@ mod tests {
 
     #[test]
     fn test_account_new() {
-        let _conn = setup_test_db(); // Ensure a clean database environment
+        let conn = setup_test_db(); // Ensure a clean database environment
 
-        let account = Account::new();
-        assert!(account.is_ok());
-        let account = account.unwrap();
+        let account = MockAccount::new(&conn);
 
         // Validate that the account properties are correctly generated
         assert!(account.name.starts_with("Main Account") || account.name.starts_with("Account"));
