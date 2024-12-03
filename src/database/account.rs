@@ -159,6 +159,12 @@ mod tests {
         Ok(accounts) // Return the mock accounts as a simulated database query result
     }
 
+    pub fn mock_insert_account(
+        conn: &Connection,
+        account: &Account,
+    ) -> Result<usize, DatabaseError> {
+    }
+
     #[test]
     fn test_account_new() {
         let _conn = setup_test_db(); // Ensure a clean database environment
