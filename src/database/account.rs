@@ -150,12 +150,7 @@ mod tests {
             [],
         )
         .unwrap();
-        teardown_test_db(&conn);
         conn
-    }
-
-    fn teardown_test_db(conn: &rusqlite::Connection) {
-        conn.execute("DELETE FROM accounts", []).unwrap();
     }
 
     // Mock function to simulate `get_accounts`
