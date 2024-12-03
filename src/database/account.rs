@@ -165,7 +165,22 @@ mod tests {
     }
 
     impl MockAccount {
-        pub fn new() -> Result<Self, DatabaseError> {}
+        pub fn new(conn: &Connection) -> Self {
+            let name = account_name_generator().unwrap();
+            let seed_phrase = secure_phrase_generator().unwrap();
+            let passphrase = secure_phrase_generator().unwrap();
+            let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase).unwrap();
+            let account = MockAccount {
+                id: None,
+                name,
+                seed: seed_phrase,
+                pubkey,
+                passphrase,
+                balance: None,
+            };
+            mock_insert_account(&conn, &account).unwrap();
+            account
+        }
     }
 
     // Mock function to simulate `get_accounts`
