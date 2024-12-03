@@ -188,6 +188,8 @@ mod tests {
         Ok(accounts) // Return the mock accounts as a simulated database query result
     }
 
+    pub fn get_mock_accounts() -> Vec<MockAccount> {}
+
     fn mock_insert_account(conn: &Connection, account: &MockAccount) -> usize {
         conn.execute(
             "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
