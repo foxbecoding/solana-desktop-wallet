@@ -4,7 +4,7 @@ use crate::database::account::{get_accounts, Account as AccountModel};
 use solana_sdk::pubkey::Pubkey;
 use std::error::Error;
 
-pub fn init() -> Result<(), AppError> {
+pub fn run() -> Result<(), AppError> {
     set_backend_renderer();
     let mut accounts = get_accounts()?;
     accounts = set_accounts_balances(accounts.clone())?;
