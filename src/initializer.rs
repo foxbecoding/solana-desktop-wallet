@@ -16,3 +16,8 @@ pub fn init() -> Result<(), AppError> {
     start_app(app)?;
     Ok(())
 }
+
+fn set_backend_renderer() {
+    std::env::set_var("SLINT_BACKEND", "winit");
+    std::env::set_var("SLINT_RENDERER", "skia");
+}
