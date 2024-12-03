@@ -188,10 +188,7 @@ mod tests {
         Ok(accounts) // Return the mock accounts as a simulated database query result
     }
 
-    fn mock_insert_account(
-        conn: &Connection,
-        account: &MockAccount,
-    ) -> Result<usize, DatabaseError> {
+    fn mock_insert_account(conn: &Connection, account: &MockAccount) -> usize {
         conn.execute(
             "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
             params![
@@ -201,7 +198,7 @@ mod tests {
                 &account.passphrase,
             ],
         )
-        .map_err(DatabaseError::from)
+        .unwrap()
     }
 
     #[test]
