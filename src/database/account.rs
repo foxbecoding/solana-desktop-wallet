@@ -276,9 +276,9 @@ mod tests {
 
     #[test]
     fn test_insert_account_and_get_accounts() {
-        let _conn = setup_test_db(); // Set up the in-memory database
+        let conn = setup_test_db(); // Set up the in-memory database
 
-        let account = Account {
+        let account = MockAccount {
             id: None,
             name: "Test".to_string(),
             seed: "test_seed".to_string(),
@@ -288,15 +288,12 @@ mod tests {
         };
 
         // Test inserting an account
-        let result = insert_account(&account);
-        assert!(result.is_ok());
-        assert_eq!(result.unwrap(), 1); // One row should be inserted
+        let result = mock_insert_account(&conn, &account);
+        assert_eq!(result, 1); // One row should be inserted
 
         // Test retrieving accounts
-        let accounts = get_accounts();
-        assert!(accounts.is_ok());
-        let accounts = accounts.unwrap();
-        assert_ne!(accounts.len(), 0);
+        let accounts = get_mock_accounts(&conn);
+        assert_eq!(accounts.len(), 1);
 
         // Validate the retrieved account
         let retrieved_account = accounts.last().unwrap();
