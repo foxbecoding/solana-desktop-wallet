@@ -183,12 +183,7 @@ mod tests {
         }
     }
 
-    // Mock function to simulate `get_accounts`
-    fn mock_get_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, DatabaseError> {
-        Ok(accounts) // Return the mock accounts as a simulated database query result
-    }
-
-    fn get_mock_accounts(conn: &Connection) -> Vec<MockAccount> {
+    fn mock_get_accounts(conn: &Connection) -> Vec<MockAccount> {
         let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
         let mut stmt = conn.prepare(query).unwrap();
         let account_iter = stmt
@@ -225,7 +220,7 @@ mod tests {
     }
 
     fn mock_account_name_generator(conn: &Connection) -> String {
-        let accounts_count = get_mock_accounts(conn).len();
+        let accounts_count = mock_get_accounts(conn).len();
         let name = if accounts_count > 0 {
             format!("Account {}", accounts_count + 1)
         } else {
@@ -292,7 +287,7 @@ mod tests {
         assert_eq!(result, 1); // One row should be inserted
 
         // Test retrieving accounts
-        let accounts = get_mock_accounts(&conn);
+        let accounts = mock_get_accounts(&conn);
         assert_eq!(accounts.len(), 1);
 
         // Validate the retrieved account
