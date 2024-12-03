@@ -224,7 +224,15 @@ mod tests {
         .unwrap()
     }
 
-    fn mock_account_name_generator() -> String {}
+    fn mock_account_name_generator(conn: &Connection) -> String {
+        let accounts_count = get_mock_accounts(conn).len();
+        let name = if accounts_count > 0 {
+            format!("Account {}", accounts_count + 1)
+        } else {
+            "Main Account".to_string()
+        };
+        name
+    }
 
     #[test]
     fn test_account_new() {
