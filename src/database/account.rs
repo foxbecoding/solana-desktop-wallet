@@ -188,7 +188,28 @@ mod tests {
         Ok(accounts) // Return the mock accounts as a simulated database query result
     }
 
-    pub fn get_mock_accounts() -> Vec<MockAccount> {}
+    fn get_mock_accounts(conn: &Connection) -> Vec<MockAccount> {
+        let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
+        let mut stmt = conn.prepare(query).unwrap();
+        let account_iter = stmt
+            .query_map([], |row| {
+                Ok(MockAccount {
+                    id: row.get(0)?,
+                    name: row.get(1)?,
+                    seed: row.get(2)?,
+                    pubkey: row.get(3)?,
+                    passphrase: row.get(4)?,
+                    balance: row.get(5)?,
+                })
+            })
+            .unwrap();
+
+        let mut accounts = Vec::new();
+        for account_result in account_iter {
+            accounts.push(account_result.unwrap());
+        }
+        accounts
+    }
 
     fn mock_insert_account(conn: &Connection, account: &MockAccount) -> usize {
         conn.execute(
