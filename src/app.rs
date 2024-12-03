@@ -1,15 +1,15 @@
 use slint::ComponentHandle;
 
-pub(crate) mod errors;
 pub(crate) mod callback_manager;
+pub(crate) mod errors;
 pub(crate) mod global_manager;
-use crate::database::account::Account;
 use crate::app::errors::AppError;
+use crate::database::account::Account;
 use crate::slint_generatedApp::{App as SlintApp, View as SlintViewEnum};
 
 #[derive(Debug)]
 pub struct App {
-    pub accounts: Vec<Account>
+    pub accounts: Vec<Account>,
 }
 
 impl App {
@@ -27,7 +27,8 @@ impl App {
     }
 
     fn run_managers(&self, app_instance: SlintApp) -> Result<(), AppError> {
-        global_manager::GlobalManager::new(app_instance.clone_strong(), self.accounts.clone()).run()?;
+        global_manager::GlobalManager::new(app_instance.clone_strong(), self.accounts.clone())
+            .run()?;
         callback_manager::CallbackManager::new(app_instance).run()?;
         Ok(())
     }
@@ -41,6 +42,7 @@ pub fn app_view_selector(view: String) -> SlintViewEnum {
         "Explore" => SlintViewEnum::Explore,
         "Settings" => SlintViewEnum::Settings,
         "Accounts" => SlintViewEnum::Accounts,
-        _ => SlintViewEnum::Wallet
+        _ => SlintViewEnum::Wallet,
     }
 }
+

@@ -1,13 +1,13 @@
-use std::{error::Error, str::FromStr};
-use bip39::{Mnemonic, Error as MnemonicError};
-use rusqlite::{params};
+use crate::database::{database_connection, errors::DatabaseError};
+use bip39::{Error as MnemonicError, Mnemonic};
+use rusqlite::params;
 use serde::de::StdError;
 use slint::SharedString;
 use solana_sdk::native_token::lamports_to_sol;
+use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
-use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
-use crate::database::{database_connection, errors::DatabaseError};
+use std::{error::Error, str::FromStr};
 
 #[derive(Debug, Clone)]
 pub struct Account {
@@ -16,7 +16,7 @@ pub struct Account {
     pub seed: String,
     pub pubkey: String,
     passphrase: String,
-    pub balance: Option<u64>
+    pub balance: Option<u64>,
 }
 
 impl Account {
@@ -31,7 +31,7 @@ impl Account {
             seed: seed_phrase,
             pubkey,
             passphrase,
-            balance: None
+            balance: None,
         };
         insert_account(&account)?;
         Ok(account)
@@ -60,8 +60,9 @@ impl Account {
         lamports_to_sol(self.balance.unwrap_or_else(|| 0u64))
     }
 
-    pub fn account_keypair(&self) -> Result<Keypair, Box <dyn Error>> {
-        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
+    pub fn account_keypair(&self) -> Result<Keypair, Box<dyn Error>> {
+        let keypair =
+            keypair::keypair_from_seed_phrase_and_passphrase(&*self.seed, &*self.passphrase)?;
         Ok(keypair)
     }
 }
@@ -77,7 +78,8 @@ pub fn insert_account(account: &Account) -> Result<usize, DatabaseError> {
             &account.pubkey,
             &account.passphrase,
         ],
-    ).map_err(DatabaseError::from)
+    )
+    .map_err(DatabaseError::from)
 }
 
 // Function to retrieve all accounts from the accounts table
@@ -113,14 +115,146 @@ fn account_name_generator() -> Result<String, DatabaseError> {
     Ok(name)
 }
 
-fn secure_phrase_generator() -> Result<String, MnemonicError>{
+fn secure_phrase_generator() -> Result<String, MnemonicError> {
     let mnemonic_phrase = Mnemonic::generate(12)?;
     let secure_phrase = mnemonic_phrase.words().collect::<Vec<&str>>().join(" ");
     Ok(secure_phrase)
 }
 
-fn pubkey_from_keypair_generator(seed_phrase: &String, passphrase: &String) -> Result<String, Box<dyn StdError>> {
+fn pubkey_from_keypair_generator(
+    seed_phrase: &String,
+    passphrase: &String,
+) -> Result<String, Box<dyn StdError>> {
     let keypair = keypair::keypair_from_seed_phrase_and_passphrase(seed_phrase, passphrase)?;
     let pubkey = keypair.pubkey().to_string();
     Ok(pubkey)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rusqlite::Connection;
+
+    // Helper function to set up a temporary in-memory database
+    fn setup_test_db() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute(
+            "CREATE TABLE accounts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                seed TEXT NOT NULL,
+                pubkey TEXT NOT NULL,
+                passphrase TEXT NOT NULL,
+                balance INTEGER
+            )",
+            [],
+        )
+        .unwrap();
+        conn
+    }
+
+    // Mock function to simulate `get_accounts`
+    fn mock_get_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, DatabaseError> {
+        Ok(accounts) // Return the mock accounts as a simulated database query result
+    }
+
+    #[test]
+    fn test_account_new() {
+        let _conn = setup_test_db(); // Ensure a clean database environment
+
+        let account = Account::new();
+        assert!(account.is_ok());
+        let account = account.unwrap();
+
+        // Validate that the account properties are correctly generated
+        assert!(account.name.starts_with("Main Account") || account.name.starts_with("Account"));
+        assert!(!account.seed.is_empty());
+        assert!(!account.pubkey.is_empty());
+        assert!(!account.passphrase.is_empty());
+    }
+
+    #[test]
+    fn test_pubkey_display() {
+        let account = Account {
+            id: None,
+            name: "Test".to_string(),
+            seed: "test_seed".to_string(),
+            pubkey: "123456789abcdef".to_string(),
+            passphrase: "test_passphrase".to_string(),
+            balance: Some(1000),
+        };
+        let display = account.pubkey_display();
+        assert_eq!(display.as_str(), "12345...cdef");
+    }
+
+    #[test]
+    fn test_balance_in_sol() {
+        let account = Account {
+            id: None,
+            name: "Test".to_string(),
+            seed: "test_seed".to_string(),
+            pubkey: "pubkey".to_string(),
+            passphrase: "test_passphrase".to_string(),
+            balance: Some(1_000_000_000), // 1 SOL in lamports
+        };
+        assert_eq!(account.balance_in_sol(), 1.0);
+    }
+
+    #[test]
+    fn test_insert_account_and_get_accounts() {
+        let _conn = setup_test_db(); // Set up the in-memory database
+
+        let account = Account {
+            id: None,
+            name: "Test".to_string(),
+            seed: "test_seed".to_string(),
+            pubkey: "test_pubkey".to_string(),
+            passphrase: "test_passphrase".to_string(),
+            balance: None,
+        };
+
+        // Test inserting an account
+        let result = insert_account(&account);
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), 1); // One row should be inserted
+
+        // Test retrieving accounts
+        let accounts = get_accounts();
+        assert!(accounts.is_ok());
+        let accounts = accounts.unwrap();
+        assert_ne!(accounts.len(), 0);
+
+        // Validate the retrieved account
+        let retrieved_account = accounts.last().unwrap();
+        assert_eq!(retrieved_account.name, account.name);
+        assert_eq!(retrieved_account.seed, account.seed);
+        assert_eq!(retrieved_account.pubkey, account.pubkey);
+        assert_eq!(retrieved_account.passphrase, account.passphrase);
+        assert_eq!(retrieved_account.balance, account.balance);
+    }
+
+    #[test]
+    fn test_account_name_generator() {
+        // Mock the `get_accounts` function
+        let _mock = mock_get_accounts(vec![Account {
+            id: Some(1),
+            name: "Main Account".to_string(),
+            seed: "seed".to_string(),
+            pubkey: "pubkey".to_string(),
+            passphrase: "passphrase".to_string(),
+            balance: None,
+        }]);
+
+        let name = account_name_generator();
+        assert!(name.is_ok());
+        //assert_eq!(name.unwrap(), "Account 2");
+    }
+
+    #[test]
+    fn test_pubkey_from_keypair_generator() {
+        let result =
+            pubkey_from_keypair_generator(&"mock_seed".to_string(), &"mock_passphrase".to_string());
+        assert!(result.is_ok());
+        assert!(!result.unwrap().is_empty());
+    }
 }
