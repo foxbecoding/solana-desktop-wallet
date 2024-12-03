@@ -155,7 +155,14 @@ mod tests {
     }
 
     #[derive(Debug, Clone)]
-    pub struct MockAccount {}
+    pub struct MockAccount {
+        pub id: Option<i32>,
+        pub name: String,
+        pub seed: String,
+        pub pubkey: String,
+        passphrase: String,
+        pub balance: Option<u64>,
+    }
 
     // Mock function to simulate `get_accounts`
     fn mock_get_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, DatabaseError> {
