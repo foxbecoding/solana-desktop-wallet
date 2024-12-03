@@ -154,6 +154,9 @@ mod tests {
         conn
     }
 
+    #[derive(Debug, Clone)]
+    pub struct MockAccount {}
+
     // Mock function to simulate `get_accounts`
     fn mock_get_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, DatabaseError> {
         Ok(accounts) // Return the mock accounts as a simulated database query result
