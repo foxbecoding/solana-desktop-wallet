@@ -224,6 +224,8 @@ mod tests {
         .unwrap()
     }
 
+    fn mock_account_name_generator() -> String {}
+
     #[test]
     fn test_account_new() {
         let _conn = setup_test_db(); // Ensure a clean database environment
