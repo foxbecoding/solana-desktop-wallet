@@ -164,7 +164,9 @@ mod tests {
         pub balance: Option<u64>,
     }
 
-    impl MockAccount {}
+    impl MockAccount {
+        pub fn new() -> Result<Self, DatabaseError> {}
+    }
 
     // Mock function to simulate `get_accounts`
     fn mock_get_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, DatabaseError> {
