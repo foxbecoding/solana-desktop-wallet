@@ -133,11 +133,12 @@ fn pubkey_from_keypair_generator(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::database::database_connection;
     use rusqlite::Connection;
 
     // Helper function to set up a temporary in-memory database
     fn setup_test_db() -> Connection {
-        let conn = Connection::open_in_memory().unwrap();
+        let conn = database_connection().unwrap();
         conn.execute(
             "CREATE TABLE accounts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
