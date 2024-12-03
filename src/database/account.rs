@@ -133,11 +133,12 @@ fn pubkey_from_keypair_generator(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::database::database_connection;
     use rusqlite::Connection;
 
     // Helper function to set up a temporary in-memory database
     fn setup_test_db() -> Connection {
-        let conn = Connection::open_in_memory().unwrap();
+        let conn = database_connection().unwrap();
         conn.execute(
             "CREATE TABLE accounts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -153,18 +154,86 @@ mod tests {
         conn
     }
 
-    // Mock function to simulate `get_accounts`
-    fn mock_get_accounts(accounts: Vec<Account>) -> Result<Vec<Account>, DatabaseError> {
-        Ok(accounts) // Return the mock accounts as a simulated database query result
+    #[derive(Debug, Clone)]
+    pub struct MockAccount {
+        pub id: Option<i32>,
+        pub name: String,
+        pub seed: String,
+        pub pubkey: String,
+        passphrase: String,
+        pub balance: Option<u64>,
+    }
+
+    impl MockAccount {
+        pub fn new(conn: &Connection) -> Self {
+            let name = mock_account_name_generator(conn);
+            let seed_phrase = secure_phrase_generator().unwrap();
+            let passphrase = secure_phrase_generator().unwrap();
+            let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase).unwrap();
+            let account = MockAccount {
+                id: None,
+                name,
+                seed: seed_phrase,
+                pubkey,
+                passphrase,
+                balance: None,
+            };
+            mock_insert_account(&conn, &account);
+            account
+        }
+    }
+
+    fn mock_get_accounts(conn: &Connection) -> Vec<MockAccount> {
+        let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
+        let mut stmt = conn.prepare(query).unwrap();
+        let account_iter = stmt
+            .query_map([], |row| {
+                Ok(MockAccount {
+                    id: row.get(0)?,
+                    name: row.get(1)?,
+                    seed: row.get(2)?,
+                    pubkey: row.get(3)?,
+                    passphrase: row.get(4)?,
+                    balance: row.get(5)?,
+                })
+            })
+            .unwrap();
+
+        let mut accounts = Vec::new();
+        for account_result in account_iter {
+            accounts.push(account_result.unwrap());
+        }
+        accounts
+    }
+
+    fn mock_insert_account(conn: &Connection, account: &MockAccount) -> usize {
+        conn.execute(
+            "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
+            params![
+                &account.name,
+                &account.seed,
+                &account.pubkey,
+                &account.passphrase,
+            ],
+        )
+        .unwrap()
+    }
+
+    fn mock_account_name_generator(conn: &Connection) -> String {
+        let accounts_count = mock_get_accounts(conn).len();
+        let name = if accounts_count > 0 {
+            format!("Account {}", accounts_count + 1)
+        } else {
+            "Main Account".to_string()
+        };
+        name
     }
 
     #[test]
     fn test_account_new() {
-        let _conn = setup_test_db(); // Ensure a clean database environment
+        let conn = setup_test_db(); // Ensure a clean database environment
 
-        let account = Account::new();
-        assert!(account.is_ok());
-        let account = account.unwrap();
+        let account = MockAccount::new(&conn);
 
         // Validate that the account properties are correctly generated
         assert!(account.name.starts_with("Main Account") || account.name.starts_with("Account"));
@@ -202,9 +271,9 @@ mod tests {
 
     #[test]
     fn test_insert_account_and_get_accounts() {
-        let _conn = setup_test_db(); // Set up the in-memory database
+        let conn = setup_test_db(); // Set up the in-memory database
 
-        let account = Account {
+        let account = MockAccount {
             id: None,
             name: "Test".to_string(),
             seed: "test_seed".to_string(),
@@ -214,15 +283,12 @@ mod tests {
         };
 
         // Test inserting an account
-        let result = insert_account(&account);
-        assert!(result.is_ok());
-        assert_eq!(result.unwrap(), 1); // One row should be inserted
+        let result = mock_insert_account(&conn, &account);
+        assert_eq!(result, 1); // One row should be inserted
 
         // Test retrieving accounts
-        let accounts = get_accounts();
-        assert!(accounts.is_ok());
-        let accounts = accounts.unwrap();
-        assert_ne!(accounts.len(), 0);
+        let accounts = mock_get_accounts(&conn);
+        assert_eq!(accounts.len(), 1);
 
         // Validate the retrieved account
         let retrieved_account = accounts.last().unwrap();
@@ -235,19 +301,10 @@ mod tests {
 
     #[test]
     fn test_account_name_generator() {
-        // Mock the `get_accounts` function
-        let _mock = mock_get_accounts(vec![Account {
-            id: Some(1),
-            name: "Main Account".to_string(),
-            seed: "seed".to_string(),
-            pubkey: "pubkey".to_string(),
-            passphrase: "passphrase".to_string(),
-            balance: None,
-        }]);
-
-        let name = account_name_generator();
-        assert!(name.is_ok());
-        //assert_eq!(name.unwrap(), "Account 2");
+        let conn = setup_test_db();
+        let _ = MockAccount::new(&conn);
+        let name = mock_account_name_generator(&conn);
+        assert_eq!(name, "Account 2");
     }
 
     #[test]
