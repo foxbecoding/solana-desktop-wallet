@@ -230,9 +230,7 @@ mod tests {
 
     #[test]
     fn test_account_new() {
-        let conn = setup_test_db(); // Ensure a clean database environment
-
-        let account = MockAccount::new(&conn);
+        let account = Account::new().unwrap();
 
         // Validate that the account properties are correctly generated
         assert!(!account.id.is_some());
