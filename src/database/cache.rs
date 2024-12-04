@@ -1,6 +1,6 @@
+use crate::database::{database_connection, errors::DatabaseError};
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
-use crate::database::{database_connection, errors::DatabaseError};
 
 pub enum CacheKey {
     SelectedAccount,
@@ -41,7 +41,9 @@ impl Cache {
     }
 
     pub fn get(&self, key: &CacheKey) -> Result<Option<CacheValue>, DatabaseError> {
-        let mut stmt = self.conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
+        let mut stmt = self
+            .conn
+            .prepare("SELECT value FROM cache WHERE key = ?1")?;
         let mut rows = stmt.query(params![key.key()])?;
 
         if let Some(row) = rows.next()? {
@@ -54,16 +56,118 @@ impl Cache {
     }
 
     pub fn remove(&self, key: &CacheKey) -> Result<(), DatabaseError> {
-        self.conn.execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
+        self.conn
+            .execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
         Ok(())
     }
 }
 
-pub fn fetch_cache_value(key: &CacheKey) -> Result<Option<String>, DatabaseError> {
-    let cache = Cache::new()?;
+pub fn fetch_cache_value(cache: &Cache, key: &CacheKey) -> Result<Option<String>, DatabaseError> {
     if let Some(value) = cache.get(key)? {
         Ok(Some(value.value))
     } else {
         Ok(None)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn setup_test_db() -> Connection {
+        let conn = database_connection().unwrap();
+        conn.execute(
+            "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+            [],
+        )
+        .unwrap();
+        conn
+    }
+
+    #[test]
+    fn test_insert_and_get_cache_value() {
+        let conn = setup_test_db();
+        let cache = Cache { conn };
+
+        let key = CacheKey::SelectedAccount;
+        let value = CacheValue {
+            value: "TestAccount".to_string(),
+        };
+
+        // Insert value into cache
+        cache.insert(&key, &value).unwrap();
+
+        // Retrieve value from cache
+        let fetched_value = cache.get(&key).unwrap();
+
+        assert!(fetched_value.is_some());
+        assert_eq!(fetched_value.unwrap().value, "TestAccount");
+    }
+
+    #[test]
+    fn test_get_nonexistent_cache_value() {
+        let conn = setup_test_db();
+        let cache = Cache { conn };
+
+        let key = CacheKey::SelectedAccount;
+
+        // Try fetching a nonexistent value
+        let fetched_value = cache.get(&key).unwrap();
+
+        assert!(fetched_value.is_none());
+    }
+
+    #[test]
+    fn test_remove_cache_value() {
+        let conn = setup_test_db();
+        let cache = Cache { conn };
+
+        let key = CacheKey::SelectedAccount;
+        let value = CacheValue {
+            value: "ToBeRemoved".to_string(),
+        };
+
+        // Insert value into cache
+        cache.insert(&key, &value).unwrap();
+
+        // Remove the value
+        cache.remove(&key).unwrap();
+
+        // Try fetching the removed value
+        let fetched_value = cache.get(&key).unwrap();
+
+        assert!(fetched_value.is_none());
+    }
+
+    #[test]
+    fn test_fetch_cache_value() {
+        let conn = setup_test_db();
+        let cache = Cache { conn };
+
+        let key = CacheKey::SelectedAccount;
+        let value = CacheValue {
+            value: "FetchTest".to_string(),
+        };
+
+        // Insert value into cache
+        cache.insert(&key, &value).unwrap();
+
+        // Use fetch_cache_value function
+        let fetched_value = fetch_cache_value(&cache, &key).unwrap();
+
+        assert!(fetched_value.is_some());
+        assert_eq!(fetched_value.unwrap(), "FetchTest");
+    }
+
+    #[test]
+    fn test_fetch_cache_value_nonexistent() {
+        let conn = setup_test_db();
+        let cache = Cache { conn };
+        let key = CacheKey::SelectedAccount;
+
+        // Use fetch_cache_value function without inserting any value
+        let fetched_value = fetch_cache_value(&cache, &key).unwrap();
+
+        assert!(fetched_value.is_none());
     }
 }

@@ -6,3 +6,6 @@
 
 *.db
 /Cargo.lock
+.idea/
+lazygit
+lazygit*
