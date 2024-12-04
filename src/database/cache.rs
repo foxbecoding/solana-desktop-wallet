@@ -153,7 +153,7 @@ mod tests {
         cache.insert(&key, &value).unwrap();
 
         // Use fetch_cache_value function
-        let fetched_value = fetch_cache_value(&key).unwrap();
+        let fetched_value = fetch_cache_value(&cache, &key).unwrap();
 
         assert!(fetched_value.is_some());
         assert_eq!(fetched_value.unwrap(), "FetchTest");
