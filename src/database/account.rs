@@ -1,6 +1,6 @@
 use crate::database::{database_connection, errors::DatabaseError};
 use bip39::{Error as MnemonicError, Mnemonic};
-use rusqlite::params;
+use rusqlite::{params, Connection};
 use serde::de::StdError;
 use slint::SharedString;
 use solana_sdk::native_token::lamports_to_sol;
@@ -20,7 +20,7 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new() -> Result<Self, DatabaseError> {
+    pub fn new(conn: &Connection) -> Result<Self, DatabaseError> {
         let name = account_name_generator()?;
         let seed_phrase = secure_phrase_generator()?;
         let passphrase = secure_phrase_generator()?;
@@ -33,7 +33,7 @@ impl Account {
             passphrase,
             balance: None,
         };
-        insert_account(&account)?;
+        insert_account(&conn, &account)?;
         Ok(account)
     }
 
