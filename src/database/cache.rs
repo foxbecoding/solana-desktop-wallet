@@ -77,4 +77,6 @@ mod tests {
     use super::*;
     
     fn setup_test_db() -> Connection {}
+
+    fn test_insert_and_get_cache_value() {}
 }
