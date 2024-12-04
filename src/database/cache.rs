@@ -75,4 +75,6 @@ pub fn fetch_cache_value(key: &CacheKey) -> Result<Option<String>, DatabaseError
 #[cfg(test)]
 mod tests {
     use super::*;
+    
+    fn setup_test_db() -> Connection {}
 }
