@@ -1,4 +1,4 @@
-use crate::database::{database_connection, errors::DatabaseError};
+use crate::database::errors::DatabaseError;
 use bip39::{Error as MnemonicError, Mnemonic};
 use rusqlite::{params, Connection};
 use serde::de::StdError;
@@ -21,7 +21,7 @@ pub struct Account {
 
 impl Account {
     pub fn new(conn: &Connection) -> Result<Self, DatabaseError> {
-        let name = account_name_generator()?;
+        let name = account_name_generator(conn)?;
         let seed_phrase = secure_phrase_generator()?;
         let passphrase = secure_phrase_generator()?;
         let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase)?;
@@ -131,8 +131,7 @@ fn pubkey_from_keypair_generator(
 #[cfg(test)]
 mod tests {
     use super::*;
-    //use crate::database::database_connection;
-    //use rusqlite::Connection;
+    use crate::database::database_connection;
 
     // Helper function to set up a temporary in-memory database
     fn setup_test_db() -> Connection {
