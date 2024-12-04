@@ -7,7 +7,9 @@ use crate::database::errors::DatabaseError;
 
 pub fn database_connection() -> Result<Connection, DatabaseError> {
     let conn = if cfg!(test) {
-        Connection::open_in_memory()?
+        let conn = Connection::open_in_memory()?;
+        create_test_tables(&conn);
+        conn
     } else {
         Connection::open("resources/database/database.db")?
     };
