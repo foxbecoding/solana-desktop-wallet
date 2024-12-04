@@ -78,7 +78,12 @@ mod tests {
     
     fn setup_test_db() -> Connection {}
 
+    #[test]
     fn test_insert_and_get_cache_value() {}
 
+    #[test]
     fn test_get_nonexistent_cache_value() {}
+
+    #[test]
+    fn test_remove_cache_value() {}
 }
