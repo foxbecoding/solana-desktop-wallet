@@ -151,19 +151,6 @@ mod tests {
         conn
     }
 
-    fn mock_insert_account(conn: &Connection, account: &MockAccount) -> usize {
-        conn.execute(
-            "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
-            params![
-                &account.name,
-                &account.seed,
-                &account.pubkey,
-                &account.passphrase,
-            ],
-        )
-        .unwrap()
-    }
-
     fn mock_account_name_generator(conn: &Connection) -> String {
         let accounts_count = mock_get_accounts(conn).len();
         let name = if accounts_count > 0 {
