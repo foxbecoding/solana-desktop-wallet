@@ -1,8 +1,15 @@
-use slint::{ComponentHandle};
+use crate::app::global_manager::GlobalManager;
+use crate::database::{
+    account::{get_accounts, Account},
+    cache::{Cache, CacheKey, CacheValue},
+    database_connection,
+    errors::DatabaseError,
+};
+use crate::slint_generatedApp::{
+    AccountManager, App as SlintApp, View as SlintViewEnum, ViewManager,
+};
+use slint::ComponentHandle;
 use solana_sdk::msg;
-use crate::database::{cache::{Cache, CacheKey, CacheValue}, errors::DatabaseError, account::{Account, get_accounts}};
-use crate::app::{global_manager::GlobalManager};
-use crate::slint_generatedApp::{App as SlintApp, AccountManager, View as SlintViewEnum, ViewManager};
 
 pub struct CallbackManager {
     app_instance: SlintApp,
@@ -27,15 +34,17 @@ impl CallbackManager {
     }
 
     fn view_account_handler(&self) {
-        self.app_instance.global::<AccountManager>().on_view_account(move |pubkey| {
-            let url = format!("https://solscan.io/account/{}", pubkey);
+        self.app_instance
+            .global::<AccountManager>()
+            .on_view_account(move |pubkey| {
+                let url = format!("https://solscan.io/account/{}", pubkey);
 
-            if webbrowser::open(url.as_str()).is_ok() {
-                msg!("Opened '{}' in your default web browser.", pubkey);
-            } else {
-                msg!("Failed to open '{}'.", pubkey);
-            }
-        });
+                if webbrowser::open(url.as_str()).is_ok() {
+                    msg!("Opened '{}' in your default web browser.", pubkey);
+                } else {
+                    msg!("Failed to open '{}'.", pubkey);
+                }
+            });
     }
 
     fn add_account_handler(&self) -> Result<(), DatabaseError> {
@@ -43,8 +52,9 @@ impl CallbackManager {
         let weak_app = app.as_weak().unwrap();
         app.global::<AccountManager>().on_add_account(move || {
             let result = (|| -> Result<(), DatabaseError> {
-                Account::new()?;
-                let accounts = get_accounts()?;
+                let conn = database_connection()?;
+                Account::new(&conn)?;
+                let accounts = get_accounts(&conn)?;
                 let global_manager = GlobalManager::new(weak_app.clone_strong(), accounts);
                 global_manager.set_accounts();
                 Ok(())
@@ -59,37 +69,42 @@ impl CallbackManager {
 
     fn change_account_handler(&self) -> Result<(), DatabaseError> {
         let cache = Cache::new()?;
-        self.app_instance.global::<AccountManager>().on_change_account(move |account_id| {
-            let result = (|| -> Result<(), DatabaseError> {
-                let cache_value = CacheValue {
-                    value: account_id.to_string(),
-                };
-                cache.insert(&CacheKey::SelectedAccount, &cache_value)?;
-                Ok(())
-            })();
+        self.app_instance
+            .global::<AccountManager>()
+            .on_change_account(move |account_id| {
+                let result = (|| -> Result<(), DatabaseError> {
+                    let cache_value = CacheValue {
+                        value: account_id.to_string(),
+                    };
+                    cache.insert(&CacheKey::SelectedAccount, &cache_value)?;
+                    Ok(())
+                })();
 
-            if let Err(e) = result {
-                eprintln!("Error in change_account_handler: {}", e);
-            }
-        });
+                if let Err(e) = result {
+                    eprintln!("Error in change_account_handler: {}", e);
+                }
+            });
         Ok(())
     }
 
     fn cache_active_view_handler(&self) -> Result<(), DatabaseError> {
-        self.app_instance.global::<ViewManager>().on_cache_active_view(move |view: SlintViewEnum| {
-            let result = (|| -> Result<(), DatabaseError> {
-                let cache = Cache::new()?;
-                let cache_value = CacheValue {
-                    value: format!("{:?}", view),
-                };
-                cache.insert(&CacheKey::SelectedView, &cache_value)?;
-                Ok(())
-            })();
+        self.app_instance
+            .global::<ViewManager>()
+            .on_cache_active_view(move |view: SlintViewEnum| {
+                let result = (|| -> Result<(), DatabaseError> {
+                    let cache = Cache::new()?;
+                    let cache_value = CacheValue {
+                        value: format!("{:?}", view),
+                    };
+                    cache.insert(&CacheKey::SelectedView, &cache_value)?;
+                    Ok(())
+                })();
 
-            if let Err(e) = result {
-                eprintln!("Error in on_cache_active_view: {}", e);
-            }
-        });
+                if let Err(e) = result {
+                    eprintln!("Error in on_cache_active_view: {}", e);
+                }
+            });
         Ok(())
     }
 }
+

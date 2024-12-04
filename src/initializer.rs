@@ -1,18 +1,20 @@
 use crate::app::{errors::AppError, App};
 use crate::connection::Connection;
 use crate::database::account::{get_accounts, Account as AccountModel};
+use crate::database::database_connection;
 use solana_sdk::pubkey::Pubkey;
 use std::error::Error;
 
 pub fn run() -> Result<(), AppError> {
+    let conn = database_connection()?;
     set_backend_renderer();
-    let mut accounts = get_accounts()?;
+    let mut accounts = get_accounts(&conn)?;
     accounts = set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
-        AccountModel::new()?;
-        accounts = get_accounts()?;
+        AccountModel::new(&conn)?;
+        accounts = get_accounts(&conn)?;
     }
 
     let app = App { accounts };
