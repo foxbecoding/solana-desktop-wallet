@@ -154,7 +154,6 @@ mod tests {
         conn
     }
 
-    #[derive(Debug, Clone)]
     pub struct MockAccount {
         pub id: Option<i32>,
         pub name: String,
@@ -236,6 +235,7 @@ mod tests {
         let account = MockAccount::new(&conn);
 
         // Validate that the account properties are correctly generated
+        assert!(!account.id.is_some());
         assert!(account.name.starts_with("Main Account") || account.name.starts_with("Account"));
         assert!(!account.seed.is_empty());
         assert!(!account.pubkey.is_empty());
