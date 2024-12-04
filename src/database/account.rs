@@ -131,8 +131,8 @@ fn pubkey_from_keypair_generator(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::database::database_connection;
-    use rusqlite::Connection;
+    //use crate::database::database_connection;
+    //use rusqlite::Connection;
 
     // Helper function to set up a temporary in-memory database
     fn setup_test_db() -> Connection {
@@ -228,7 +228,8 @@ mod tests {
 
     #[test]
     fn test_account_new() {
-        let account = Account::new().unwrap();
+        let conn = setup_test_db();
+        let account = Account::new(&conn).unwrap();
 
         // Validate that the account properties are correctly generated
         assert!(!account.id.is_some());
