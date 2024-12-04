@@ -151,16 +151,6 @@ mod tests {
         conn
     }
 
-    fn mock_account_name_generator(conn: &Connection) -> String {
-        let accounts_count = mock_get_accounts(conn).len();
-        let name = if accounts_count > 0 {
-            format!("Account {}", accounts_count + 1)
-        } else {
-            "Main Account".to_string()
-        };
-        name
-    }
-
     #[test]
     fn test_account_new() {
         let conn = setup_test_db();
