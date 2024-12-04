@@ -2,7 +2,6 @@ use crate::app::{app_view_selector, errors::AppError};
 use crate::database::{
     account::Account,
     cache::{fetch_cache_value, Cache, CacheKey},
-    database_connection,
 };
 use crate::slint_generatedApp::{
     Account as SlintAccount, AccountManager, App as SlintApp, ViewManager,
