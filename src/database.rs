@@ -22,7 +22,7 @@ fn create_test_tables(conn: &Connection) {
 
 fn create_test_accounts_table(conn: &Connection) {
     conn.execute(
-        "CREATE TABLE accounts (
+        "CREATE TABLE IF NOT EXISTS accounts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 seed TEXT NOT NULL,
