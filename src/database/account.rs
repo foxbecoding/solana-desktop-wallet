@@ -103,8 +103,8 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
     Ok(accounts)
 }
 
-fn account_name_generator() -> Result<String, DatabaseError> {
-    let accounts_count = get_accounts()?.len();
+fn account_name_generator(conn: &Connection) -> Result<String, DatabaseError> {
+    let accounts_count = get_accounts(conn)?.len();
     let name = if accounts_count > 0 {
         format!("Account {}", accounts_count + 1)
     } else {
