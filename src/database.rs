@@ -14,7 +14,9 @@ pub fn database_connection() -> Result<Connection, DatabaseError> {
     Ok(conn)
 }
 
-fn create_test_tables(conn: &Connection) {}
+fn create_test_tables(conn: &Connection) {
+    create_test_accounts_table(conn);
+}
 
 fn create_test_accounts_table(conn: &Connection) {
     conn.execute(
