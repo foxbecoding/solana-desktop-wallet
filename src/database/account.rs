@@ -82,8 +82,7 @@ pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, Dat
 }
 
 // Function to retrieve all accounts from the accounts table
-pub fn get_accounts() -> Result<Vec<Account>, DatabaseError> {
-    let conn = database_connection()?;
+pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
     let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
     let mut stmt = conn.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
