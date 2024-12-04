@@ -86,4 +86,7 @@ mod tests {
 
     #[test]
     fn test_remove_cache_value() {}
+
+    #[test]
+    fn test_fetch_cache_value() {}
 }
