@@ -14,4 +14,17 @@ pub fn database_connection() -> Result<Connection, DatabaseError> {
     Ok(conn)
 }
 
-fn create_test_accounts_table(conn: &Connection) {}
+fn create_test_accounts_table(conn: &Connection) {
+    conn.execute(
+        "CREATE TABLE accounts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                seed TEXT NOT NULL,
+                pubkey TEXT NOT NULL,
+                passphrase TEXT NOT NULL,
+                balance INTEGER
+            )",
+        [],
+    )
+    .unwrap();
+}
