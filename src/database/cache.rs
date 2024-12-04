@@ -161,10 +161,12 @@ mod tests {
 
     #[test]
     fn test_fetch_cache_value_nonexistent() {
+        let conn = setup_test_db();
+        let cache = Cache { conn };
         let key = CacheKey::SelectedAccount;
 
         // Use fetch_cache_value function without inserting any value
-        let fetched_value = fetch_cache_value(&key).unwrap();
+        let fetched_value = fetch_cache_value(&cache, &key).unwrap();
 
         assert!(fetched_value.is_none());
     }
