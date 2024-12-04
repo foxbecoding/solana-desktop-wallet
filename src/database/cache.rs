@@ -75,7 +75,15 @@ pub fn fetch_cache_value(key: &CacheKey) -> Result<Option<String>, DatabaseError
 mod tests {
     use super::*;
 
-    fn setup_test_db() -> Connection {}
+    fn setup_test_db() -> Connection {
+        let conn = database_connection().unwrap();
+        conn.execute(
+            "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+            [],
+        )
+        .unwrap();
+        conn
+    }
 
     #[test]
     fn test_insert_and_get_cache_value() {}
