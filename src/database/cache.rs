@@ -106,7 +106,17 @@ mod tests {
     }
 
     #[test]
-    fn test_get_nonexistent_cache_value() {}
+    fn test_get_nonexistent_cache_value() {
+        let conn = setup_test_db();
+        let cache = Cache { conn };
+
+        let key = CacheKey::SelectedAccount;
+
+        // Try fetching a nonexistent value
+        let fetched_value = cache.get(&key).unwrap();
+
+        assert!(fetched_value.is_none());
+    }
 
     #[test]
     fn test_remove_cache_value() {}
