@@ -151,34 +151,6 @@ mod tests {
         conn
     }
 
-    pub struct MockAccount {
-        pub id: Option<i32>,
-        pub name: String,
-        pub seed: String,
-        pub pubkey: String,
-        passphrase: String,
-        pub balance: Option<u64>,
-    }
-
-    impl MockAccount {
-        pub fn new(conn: &Connection) -> Self {
-            let name = mock_account_name_generator(conn);
-            let seed_phrase = secure_phrase_generator().unwrap();
-            let passphrase = secure_phrase_generator().unwrap();
-            let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase).unwrap();
-            let account = MockAccount {
-                id: None,
-                name,
-                seed: seed_phrase,
-                pubkey,
-                passphrase,
-                balance: None,
-            };
-            mock_insert_account(&conn, &account);
-            account
-        }
-    }
-
     fn mock_get_accounts(conn: &Connection) -> Vec<MockAccount> {
         let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
         let mut stmt = conn.prepare(query).unwrap();
