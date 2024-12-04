@@ -299,9 +299,8 @@ mod tests {
 
     #[test]
     fn test_account_name_generator() {
-        let conn = setup_test_db();
-        let _ = MockAccount::new(&conn);
-        let name = mock_account_name_generator(&conn);
+        Account::new().unwrap();
+        let name = account_name_generator().unwrap();
         assert_eq!(name, "Account 2");
     }
 
