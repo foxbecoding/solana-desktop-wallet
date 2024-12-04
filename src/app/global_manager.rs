@@ -50,8 +50,7 @@ impl GlobalManager {
     fn set_selected_account(&self) -> Result<(), AppError> {
         // Initialize first account by default
         let mut account = self.accounts.first();
-        let conn = database_connection()?;
-        let cache = Cache { conn };
+        let cache = Cache::new()?;
 
         // Check cache for selected account
         if let Some(selected_account_id) = fetch_cache_value(&cache, &CacheKey::SelectedAccount)? {
