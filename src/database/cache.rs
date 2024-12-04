@@ -119,7 +119,26 @@ mod tests {
     }
 
     #[test]
-    fn test_remove_cache_value() {}
+    fn test_remove_cache_value() {
+        let conn = setup_test_db();
+        let cache = Cache { conn };
+
+        let key = CacheKey::SelectedAccount;
+        let value = CacheValue {
+            value: "ToBeRemoved".to_string(),
+        };
+
+        // Insert value into cache
+        cache.insert(&key, &value).unwrap();
+
+        // Remove the value
+        cache.remove(&key).unwrap();
+
+        // Try fetching the removed value
+        let fetched_value = cache.get(&key).unwrap();
+
+        assert!(fetched_value.is_none());
+    }
 
     #[test]
     fn test_fetch_cache_value() {}
