@@ -1,6 +1,6 @@
+use crate::database::{database_connection, errors::DatabaseError};
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
-use crate::database::{database_connection, errors::DatabaseError};
 
 pub enum CacheKey {
     SelectedAccount,
@@ -41,7 +41,9 @@ impl Cache {
     }
 
     pub fn get(&self, key: &CacheKey) -> Result<Option<CacheValue>, DatabaseError> {
-        let mut stmt = self.conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
+        let mut stmt = self
+            .conn
+            .prepare("SELECT value FROM cache WHERE key = ?1")?;
         let mut rows = stmt.query(params![key.key()])?;
 
         if let Some(row) = rows.next()? {
@@ -54,7 +56,8 @@ impl Cache {
     }
 
     pub fn remove(&self, key: &CacheKey) -> Result<(), DatabaseError> {
-        self.conn.execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
+        self.conn
+            .execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
         Ok(())
     }
 }
@@ -66,4 +69,10 @@ pub fn fetch_cache_value(key: &CacheKey) -> Result<Option<String>, DatabaseError
     } else {
         Ok(None)
     }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
 }
