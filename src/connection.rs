@@ -79,10 +79,22 @@ mod tests {
     }
 
     #[test]
-    fn test_connection_network_default_to_devnet() {}
+    fn test_connection_network_default_to_devnet() {
+        env::remove_var("NETWORK");
+        let connection = Connection::new();
+        assert_eq!(connection.network, ConnectionNetwork::DEVNET);
+    }
 
     #[test]
-    fn test_connection_network_from_env() {}
+    fn test_connection_network_from_env() {
+        env::set_var("NETWORK", "mainnet");
+        let connection = Connection::new();
+        assert_eq!(connection.network, ConnectionNetwork::MAINNET);
+
+        env::set_var("NETWORK", "testnet");
+        let connection = Connection::new();
+        assert_eq!(connection.network, ConnectionNetwork::TESTNET);
+    }
 
     #[test]
     #[should_panic(expected = "invalid network")]
