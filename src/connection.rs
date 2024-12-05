@@ -149,4 +149,7 @@ mod tests {
         let connection = Connection::new();
         assert_eq!(connection.solana_url(), "https://api.testnet.solana.com");
     }
+
+    #[test]
+    fn test_connection_network_default_url() {}
 }
