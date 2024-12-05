@@ -62,4 +62,7 @@ mod tests {
 
     #[test]
     fn test_set_backend_renderer() {}
+
+    #[test]
+    fn test_set_accounts_balances() {}
 }
