@@ -64,4 +64,8 @@ mod tests {
 
     #[test]
     fn test_connection_network_from_env() {}
+
+    #[test]
+    #[should_panic(expected = "invalid network")]
+    fn test_connection_invalid_network_panic() {}
 }
