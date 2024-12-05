@@ -9,10 +9,12 @@ mod database;
 mod initializer;
 
 use crate::app::errors::AppError;
+use crate::database::database_connection;
 use crate::initializer::run as Run_Initializer;
 
 include_slint_modules!();
 fn main() -> Result<(), AppError> {
-    Run_Initializer()?;
+    let conn = database_connection()?;
+    Run_Initializer(&conn)?;
     Ok(())
 }
