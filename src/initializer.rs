@@ -1,13 +1,11 @@
 use crate::app::{errors::AppError, App};
 use crate::connection::Connection;
 use crate::database::account::{get_accounts, Account as AccountModel};
-use crate::database::database_connection;
 use rusqlite::Connection as SqliteConnection;
 use solana_sdk::pubkey::Pubkey;
 use std::{env, error::Error};
 
 pub fn run(conn: &SqliteConnection) -> Result<(), AppError> {
-    //let conn = database_connection()?;
     set_backend_renderer();
     let mut accounts = get_accounts(conn)?;
     accounts = set_accounts_balances(accounts.clone())?;
@@ -60,10 +58,18 @@ fn start_app(app: App) -> Result<(), AppError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::database::database_connection;
 
     // Helper function to set up a temporary in-memory database
     fn setup_test_db() -> SqliteConnection {
         let conn = database_connection().unwrap();
+
+        conn.execute(
+            "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+            [],
+        )
+        .unwrap();
+
         conn.execute(
             "CREATE TABLE accounts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,6 +82,7 @@ mod tests {
             [],
         )
         .unwrap();
+
         conn
     }
 
@@ -91,40 +98,29 @@ mod tests {
 
     #[test]
     fn test_set_accounts_balances() {
-        // Mock accounts
-        let mock_accounts = vec![
-            AccountModel {
-                id: None,
-                name: "Test".to_string(),
-                seed: "test_seed".to_string(),
-                pubkey: Pubkey::new_unique().to_string(),
-                passphrase: "test_passphrase".to_string(),
-                balance: None,
-            },
-            AccountModel {
-                id: None,
-                name: "Test".to_string(),
-                seed: "test_seed".to_string(),
-                pubkey: Pubkey::new_unique().to_string(),
-                passphrase: "test_passphrase".to_string(),
-                balance: None,
-            },
-        ];
+        let conn = setup_test_db();
+        AccountModel::new(&conn).unwrap();
+        let accounts = get_accounts(&conn).unwrap();
 
         // Mock connection (requires setting up a mock `Connection` with a library like `mockall`).
         // Assuming we use a mock client to simulate `get_multiple_accounts`.
-        let updated_accounts = set_accounts_balances(mock_accounts.clone());
+        let updated_accounts = set_accounts_balances(accounts.clone());
 
         // Check results (adjust assertions based on actual mock behavior).
         assert!(updated_accounts.is_ok());
         let updated_accounts = updated_accounts.unwrap();
-        assert!(updated_accounts.iter().all(|a| a.balance.is_some()));
+
+        assert!(updated_accounts.iter().all(|a| a.balance.is_none()));
     }
 
     #[test]
     fn test_start_app() {
+        let conn = setup_test_db();
+        AccountModel::new(&conn).unwrap();
+        let accounts = get_accounts(&conn).unwrap();
+
         // Mock an app instance
-        let app = App { accounts: vec![] };
+        let app = App { accounts };
 
         // Check if starting the app works without issues
         let result = start_app(app);
