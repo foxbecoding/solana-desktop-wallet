@@ -15,7 +15,7 @@ pub struct Account {
     pub name: String,
     pub seed: String,
     pub pubkey: String,
-    passphrase: String,
+    pub passphrase: String,
     pub balance: Option<u64>,
 }
 
