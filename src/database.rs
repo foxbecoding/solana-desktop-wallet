@@ -13,3 +13,8 @@ pub fn database_connection() -> Result<Connection, DatabaseError> {
     };
     Ok(conn)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+}
