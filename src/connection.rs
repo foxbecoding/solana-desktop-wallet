@@ -52,9 +52,10 @@ impl Connection {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    #[test]
+    fn test_connection_network_from_str() {}
 }
