@@ -61,4 +61,7 @@ mod tests {
 
     #[test]
     fn test_connection_network_default_to_devnet() {}
+
+    #[test]
+    fn test_connection_network_from_env() {}
 }
