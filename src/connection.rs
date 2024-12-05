@@ -98,7 +98,10 @@ mod tests {
 
     #[test]
     #[should_panic(expected = "invalid network")]
-    fn test_connection_invalid_network_panic() {}
+    fn test_connection_invalid_network_panic() {
+        env::set_var("NETWORK", "invalid");
+        Connection::new();
+    }
 
     #[test]
     fn test_solana_url_resolution() {}
