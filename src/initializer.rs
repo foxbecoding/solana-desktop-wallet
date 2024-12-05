@@ -103,7 +103,14 @@ mod tests {
     }
 
     #[test]
-    fn test_start_app() {}
+    fn test_start_app() {
+        // Mock an app instance
+        let app = App { accounts: vec![] };
+
+        // Check if starting the app works without issues
+        let result = start_app(app);
+        assert!(result.is_ok(), "start_app failed");
+    }
 
     #[test]
     fn test_run_successful() {}
