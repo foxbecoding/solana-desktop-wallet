@@ -3,7 +3,7 @@ use crate::connection::Connection;
 use crate::database::account::{get_accounts, Account as AccountModel};
 use crate::database::database_connection;
 use solana_sdk::pubkey::Pubkey;
-use std::error::Error;
+use std::{env, error::Error};
 
 pub fn run() -> Result<(), AppError> {
     let conn = database_connection()?;
@@ -23,8 +23,8 @@ pub fn run() -> Result<(), AppError> {
 }
 
 fn set_backend_renderer() {
-    std::env::set_var("SLINT_BACKEND", "winit");
-    std::env::set_var("SLINT_RENDERER", "skia");
+    env::set_var("SLINT_BACKEND", "winit");
+    env::set_var("SLINT_RENDERER", "skia");
 }
 
 fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel>, Box<dyn Error>> {
@@ -59,4 +59,7 @@ fn start_app(app: App) -> Result<(), AppError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_set_backend_renderer() {}
 }
