@@ -58,4 +58,7 @@ mod tests {
 
     #[test]
     fn test_connection_network_from_str() {}
+
+    #[test]
+    fn test_connection_network_default_to_devnet() {}
 }
