@@ -1,10 +1,10 @@
-use std::env;
 use solana_rpc_client::rpc_client::RpcClient;
+use std::env;
 
 pub enum ConnectionNetwork {
     MAINNET,
     DEVNET,
-    TESTNET
+    TESTNET,
 }
 
 impl ConnectionNetwork {
@@ -36,9 +36,12 @@ impl Connection {
 
     fn solana_url(&self) -> String {
         // Define the URLs
-        let solana_mainnet = env::var("SOLANA_MAINNET").unwrap_or_else(|_| "https://api.mainnet-beta.solana.com".to_string());
-        let solana_devnet = env::var("SOLANA_DEVNET").unwrap_or_else(|_| "https://api.devnet.solana.com".to_string());
-        let solana_testnet = env::var("SOLANA_TESTNET").unwrap_or_else(|_| "https://api.testnet.solana.com".to_string());
+        let solana_mainnet = env::var("SOLANA_MAINNET")
+            .unwrap_or_else(|_| "https://api.mainnet-beta.solana.com".to_string());
+        let solana_devnet = env::var("SOLANA_DEVNET")
+            .unwrap_or_else(|_| "https://api.devnet.solana.com".to_string());
+        let solana_testnet = env::var("SOLANA_TESTNET")
+            .unwrap_or_else(|_| "https://api.testnet.solana.com".to_string());
 
         // Match the NETWORK variable and return the corresponding URL
         match self.network {
@@ -47,4 +50,11 @@ impl Connection {
             ConnectionNetwork::TESTNET => solana_testnet,
         }
     }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
 }
