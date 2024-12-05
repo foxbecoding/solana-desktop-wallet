@@ -1,6 +1,7 @@
 use solana_rpc_client::rpc_client::RpcClient;
 use std::env;
 
+#[derive(Debug, PartialEq)]
 pub enum ConnectionNetwork {
     MAINNET,
     DEVNET,
@@ -57,7 +58,25 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_connection_network_from_str() {}
+    fn test_connection_network_from_str() {
+        assert_eq!(
+            ConnectionNetwork::from_str("mainnet"),
+            Some(ConnectionNetwork::MAINNET)
+        );
+        assert_eq!(
+            ConnectionNetwork::from_str("devnet"),
+            Some(ConnectionNetwork::DEVNET)
+        );
+        assert_eq!(
+            ConnectionNetwork::from_str("testnet"),
+            Some(ConnectionNetwork::TESTNET)
+        );
+        assert_eq!(
+            ConnectionNetwork::from_str("MAINNET"),
+            Some(ConnectionNetwork::MAINNET)
+        );
+        assert_eq!(ConnectionNetwork::from_str("unknown"), None);
+    }
 
     #[test]
     fn test_connection_network_default_to_devnet() {}
