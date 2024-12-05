@@ -71,7 +71,36 @@ mod tests {
     }
 
     #[test]
-    fn test_set_accounts_balances() {}
+    fn test_set_accounts_balances() {
+        // Mock accounts
+        let mock_accounts = vec![
+            AccountModel {
+                id: None,
+                name: "Test".to_string(),
+                seed: "test_seed".to_string(),
+                pubkey: Pubkey::new_unique().to_string(),
+                passphrase: "test_passphrase".to_string(),
+                balance: None,
+            },
+            AccountModel {
+                id: None,
+                name: "Test".to_string(),
+                seed: "test_seed".to_string(),
+                pubkey: Pubkey::new_unique().to_string(),
+                passphrase: "test_passphrase".to_string(),
+                balance: None,
+            },
+        ];
+
+        // Mock connection (requires setting up a mock `Connection` with a library like `mockall`).
+        // Assuming we use a mock client to simulate `get_multiple_accounts`.
+        let updated_accounts = set_accounts_balances(mock_accounts.clone());
+
+        // Check results (adjust assertions based on actual mock behavior).
+        assert!(updated_accounts.is_ok());
+        let updated_accounts = updated_accounts.unwrap();
+        assert!(updated_accounts.iter().all(|a| a.balance.is_some()));
+    }
 
     #[test]
     fn test_start_app() {}
