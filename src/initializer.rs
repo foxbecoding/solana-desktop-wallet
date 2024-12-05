@@ -2,19 +2,20 @@ use crate::app::{errors::AppError, App};
 use crate::connection::Connection;
 use crate::database::account::{get_accounts, Account as AccountModel};
 use crate::database::database_connection;
+use rusqlite::Connection as SqliteConnection;
 use solana_sdk::pubkey::Pubkey;
 use std::{env, error::Error};
 
-pub fn run() -> Result<(), AppError> {
-    let conn = database_connection()?;
+pub fn run(conn: &SqliteConnection) -> Result<(), AppError> {
+    //let conn = database_connection()?;
     set_backend_renderer();
-    let mut accounts = get_accounts(&conn)?;
+    let mut accounts = get_accounts(conn)?;
     accounts = set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
-        AccountModel::new(&conn)?;
-        accounts = get_accounts(&conn)?;
+        AccountModel::new(conn)?;
+        accounts = get_accounts(conn)?;
     }
 
     let app = App { accounts };
@@ -59,6 +60,24 @@ fn start_app(app: App) -> Result<(), AppError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    // Helper function to set up a temporary in-memory database
+    fn setup_test_db() -> SqliteConnection {
+        let conn = database_connection().unwrap();
+        conn.execute(
+            "CREATE TABLE accounts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                seed TEXT NOT NULL,
+                pubkey TEXT NOT NULL,
+                passphrase TEXT NOT NULL,
+                balance INTEGER
+            )",
+            [],
+        )
+        .unwrap();
+        conn
+    }
 
     #[test]
     fn test_set_backend_renderer() {
@@ -113,5 +132,17 @@ mod tests {
     }
 
     #[test]
-    fn test_run_successful() {}
+    fn test_run_successful() {
+        // Set up a mock database
+        let conn = setup_test_db();
+
+        // Create a mock `get_accounts` implementation
+        AccountModel::new(&conn).unwrap();
+
+        // Call the `run` function
+        let result = run(&conn);
+
+        // Assert the function completes successfully
+        assert!(result.is_ok(), "run failed with error: {:?}", result.err());
+    }
 }
