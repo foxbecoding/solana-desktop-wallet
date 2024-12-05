@@ -61,7 +61,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_set_backend_renderer() {}
+    fn test_set_backend_renderer() {
+        // Call the function
+        set_backend_renderer();
+
+        // Check that the environment variables are set correctly
+        assert_eq!(env::var("SLINT_BACKEND").unwrap(), "winit");
+        assert_eq!(env::var("SLINT_RENDERER").unwrap(), "skia");
+    }
 
     #[test]
     fn test_set_accounts_balances() {}
