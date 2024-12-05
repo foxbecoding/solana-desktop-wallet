@@ -68,4 +68,7 @@ mod tests {
 
     #[test]
     fn test_start_app() {}
+
+    #[test]
+    fn test_run_successful() {}
 }
