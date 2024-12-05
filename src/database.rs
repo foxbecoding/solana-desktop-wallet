@@ -20,4 +20,7 @@ mod tests {
 
     #[test]
     fn test_in_memory_database_connection() {}
+
+    #[test]
+    fn test_file_database_connection() {}
 }
