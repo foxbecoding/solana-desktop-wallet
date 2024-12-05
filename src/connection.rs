@@ -71,4 +71,7 @@ mod tests {
 
     #[test]
     fn test_solana_url_resolution() {}
+
+    #[test]
+    fn test_solana_url_default_values() {}
 }
