@@ -55,3 +55,8 @@ fn start_app(app: App) -> Result<(), AppError> {
     app.start()?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+}
