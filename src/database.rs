@@ -17,6 +17,7 @@ pub fn database_connection() -> Result<Connection, DatabaseError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use tempfile::NamedTempFile;
 
     #[test]
     fn test_in_memory_database_connection() {
@@ -47,5 +48,28 @@ mod tests {
     }
 
     #[test]
-    fn test_file_database_connection() {}
+    fn test_file_database_connection() {
+        // Create a temporary file
+        let temp_file = NamedTempFile::new().expect("Failed to create temporary file");
+        let conn = Connection::open(temp_file.path()).expect("Failed to open temporary database");
+
+        // Perform operations
+        conn.execute(
+            "CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+            [],
+        )
+        .expect("Failed to create table in temporary database");
+
+        conn.execute("INSERT INTO test (name) VALUES ('test_name')", [])
+            .expect("Failed to insert into temporary database");
+
+        let mut stmt = conn
+            .prepare("SELECT name FROM test WHERE id = 1")
+            .expect("Failed to prepare statement");
+        let result: String = stmt
+            .query_row([], |row| row.get(0))
+            .expect("Failed to query temporary database");
+
+        assert_eq!(result, "test_name");
+    }
 }
