@@ -68,4 +68,7 @@ mod tests {
     #[test]
     #[should_panic(expected = "invalid network")]
     fn test_connection_invalid_network_panic() {}
+
+    #[test]
+    fn test_solana_url_resolution() {}
 }
