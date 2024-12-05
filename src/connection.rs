@@ -17,6 +17,7 @@ impl ConnectionNetwork {
             _ => None,
         }
     }
+    fn default_url(&self) -> String {}
 }
 
 pub struct Connection {
