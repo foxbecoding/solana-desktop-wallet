@@ -17,4 +17,7 @@ pub fn database_connection() -> Result<Connection, DatabaseError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_in_memory_database_connection() {}
 }
