@@ -122,5 +122,23 @@ mod tests {
     }
 
     #[test]
-    fn test_solana_url_default_values() {}
+    fn test_solana_url_default_values() {
+        env::set_var("NETWORK", "mainnet");
+        env::remove_var("SOLANA_MAINNET");
+        let connection = Connection::new();
+        assert_eq!(
+            connection.solana_url(),
+            "https://api.mainnet-beta.solana.com"
+        );
+
+        env::set_var("NETWORK", "devnet");
+        env::remove_var("SOLANA_DEVNET");
+        let connection = Connection::new();
+        assert_eq!(connection.solana_url(), "https://api.devnet.solana.com");
+
+        env::set_var("NETWORK", "testnet");
+        env::remove_var("SOLANA_TESTNET");
+        let connection = Connection::new();
+        assert_eq!(connection.solana_url(), "https://api.testnet.solana.com");
+    }
 }
