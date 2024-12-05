@@ -151,5 +151,18 @@ mod tests {
     }
 
     #[test]
-    fn test_connection_network_default_url() {}
+    fn test_connection_network_default_url() {
+        assert_eq!(
+            ConnectionNetwork::MAINNET.default_url(),
+            "https://api.mainnet-beta.solana.com"
+        );
+        assert_eq!(
+            ConnectionNetwork::DEVNET.default_url(),
+            "https://api.devnet.solana.com"
+        );
+        assert_eq!(
+            ConnectionNetwork::TESTNET.default_url(),
+            "https://api.testnet.solana.com"
+        );
+    }
 }
