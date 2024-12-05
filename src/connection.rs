@@ -17,7 +17,13 @@ impl ConnectionNetwork {
             _ => None,
         }
     }
-    fn default_url(&self) -> String {}
+    fn default_url(&self) -> String {
+        match self {
+            ConnectionNetwork::MAINNET => "https://api.mainnet-beta.solana.com".to_string(),
+            ConnectionNetwork::DEVNET => "https://api.devnet.solana.com".to_string(),
+            ConnectionNetwork::TESTNET => "https://api.testnet.solana.com".to_string(),
+        }
+    }
 }
 
 pub struct Connection {
