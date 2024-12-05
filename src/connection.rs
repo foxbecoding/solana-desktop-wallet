@@ -104,7 +104,22 @@ mod tests {
     }
 
     #[test]
-    fn test_solana_url_resolution() {}
+    fn test_solana_url_resolution() {
+        env::set_var("NETWORK", "mainnet");
+        env::set_var("SOLANA_MAINNET", "http://custom.mainnet.url");
+        let connection = Connection::new();
+        assert_eq!(connection.solana_url(), "http://custom.mainnet.url");
+
+        env::set_var("NETWORK", "devnet");
+        env::set_var("SOLANA_DEVNET", "http://custom.devnet.url");
+        let connection = Connection::new();
+        assert_eq!(connection.solana_url(), "http://custom.devnet.url");
+
+        env::set_var("NETWORK", "testnet");
+        env::set_var("SOLANA_TESTNET", "http://custom.testnet.url");
+        let connection = Connection::new();
+        assert_eq!(connection.solana_url(), "http://custom.testnet.url");
+    }
 
     #[test]
     fn test_solana_url_default_values() {}
