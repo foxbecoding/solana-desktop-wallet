@@ -8,11 +8,13 @@ use crate::database::{
 use crate::slint_generatedApp::{
     AccountManager, App as SlintApp, View as SlintViewEnum, ViewManager,
 };
+use rusqlite::Connection;
 use slint::ComponentHandle;
 use solana_sdk::msg;
 
-pub struct CallbackManager {
+pub struct CallbackManager<'a> {
     app_instance: SlintApp,
+    conn: &'a Connection,
 }
 
 impl CallbackManager {
@@ -107,4 +109,3 @@ impl CallbackManager {
         Ok(())
     }
 }
-
