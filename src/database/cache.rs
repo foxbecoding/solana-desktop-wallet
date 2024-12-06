@@ -21,12 +21,12 @@ pub struct CacheValue {
     pub value: String,
 }
 
-pub struct Cache {
-    pub conn: Connection,
+pub struct Cache<'a> {
+    pub conn: &'a Connection,
 }
 
-impl Cache {
-    pub fn new(conn: Connection) -> Result<Self, DatabaseError> {
+impl<'a> Cache<'a> {
+    pub fn new(conn: &'a Connection) -> Result<Self, DatabaseError> {
         Ok(Cache { conn })
     }
 
