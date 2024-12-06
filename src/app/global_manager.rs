@@ -6,19 +6,29 @@ use crate::database::{
 use crate::slint_generatedApp::{
     Account as SlintAccount, AccountManager, App as SlintApp, ViewManager,
 };
+use rusqlite::Connection;
 use slint::{Global, ModelRc, SharedString, VecModel};
-use std::rc::Rc;
+use std::{
+    rc::Rc,
+    sync::{Arc, Mutex},
+};
 
 pub struct GlobalManager {
     app_instance: SlintApp,
     accounts: Vec<Account>,
+    conn: Arc<Mutex<Connection>>,
 }
 
 impl GlobalManager {
-    pub fn new(app_instance: SlintApp, accounts: Vec<Account>) -> Self {
+    pub fn new(
+        conn: Arc<Mutex<Connection>>,
+        app_instance: SlintApp,
+        accounts: Vec<Account>,
+    ) -> Self {
         GlobalManager {
             app_instance,
             accounts,
+            conn,
         }
     }
 
@@ -47,9 +57,11 @@ impl GlobalManager {
     }
 
     fn set_selected_account(&self) -> Result<(), AppError> {
-        // Initialize first account by default
+        // Set first account by default
         let mut account = self.accounts.first();
-        let cache = Cache::new()?;
+
+        let conn = self.conn.clone();
+        let cache = Cache::new(conn);
 
         // Check cache for selected account
         if let Some(selected_account_id) = fetch_cache_value(&cache, &CacheKey::SelectedAccount)? {
@@ -75,7 +87,9 @@ impl GlobalManager {
     }
 
     fn set_selected_view(&self) -> Result<(), AppError> {
-        let cache = Cache::new()?;
+        let conn = self.conn.clone();
+        let cache = Cache::new(conn);
+
         if let Some(selected_view) = fetch_cache_value(&cache, &CacheKey::SelectedView)? {
             let view = app_view_selector(selected_view);
             ViewManager::get(&self.app_instance).set_active_view(view);
@@ -94,4 +108,3 @@ fn slint_account_builder(account: &Account) -> SlintAccount {
         balance: account.balance_in_sol() as f32,
     }
 }
-

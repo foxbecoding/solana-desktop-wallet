@@ -2,22 +2,24 @@ use crate::app::global_manager::GlobalManager;
 use crate::database::{
     account::{get_accounts, Account},
     cache::{Cache, CacheKey, CacheValue},
-    database_connection,
     errors::DatabaseError,
 };
 use crate::slint_generatedApp::{
     AccountManager, App as SlintApp, View as SlintViewEnum, ViewManager,
 };
+use rusqlite::Connection;
 use slint::ComponentHandle;
 use solana_sdk::msg;
+use std::sync::{Arc, Mutex};
 
 pub struct CallbackManager {
     app_instance: SlintApp,
+    conn: Arc<Mutex<Connection>>,
 }
 
 impl CallbackManager {
-    pub fn new(app_instance: SlintApp) -> Self {
-        CallbackManager { app_instance }
+    pub fn new(conn: Arc<Mutex<Connection>>, app_instance: SlintApp) -> Self {
+        CallbackManager { app_instance, conn }
     }
 
     pub fn run(&self) -> Result<(), DatabaseError> {
@@ -48,14 +50,15 @@ impl CallbackManager {
     }
 
     fn add_account_handler(&self) -> Result<(), DatabaseError> {
+        let conn = self.conn.clone();
         let app = self.app_instance.clone_strong();
         let weak_app = app.as_weak().unwrap();
         app.global::<AccountManager>().on_add_account(move || {
+            let conn = conn.clone();
             let result = (|| -> Result<(), DatabaseError> {
-                let conn = database_connection()?;
-                Account::new(&conn)?;
+                Account::new(conn.clone())?;
                 let accounts = get_accounts(&conn)?;
-                let global_manager = GlobalManager::new(weak_app.clone_strong(), accounts);
+                let global_manager = GlobalManager::new(conn, weak_app.clone_strong(), accounts);
                 global_manager.set_accounts();
                 Ok(())
             })();
@@ -68,7 +71,8 @@ impl CallbackManager {
     }
 
     fn change_account_handler(&self) -> Result<(), DatabaseError> {
-        let cache = Cache::new()?;
+        let conn = self.conn.clone();
+        let cache = Cache::new(conn);
         self.app_instance
             .global::<AccountManager>()
             .on_change_account(move |account_id| {
@@ -88,11 +92,12 @@ impl CallbackManager {
     }
 
     fn cache_active_view_handler(&self) -> Result<(), DatabaseError> {
+        let conn = self.conn.clone();
+        let cache = Cache::new(conn);
         self.app_instance
             .global::<ViewManager>()
             .on_cache_active_view(move |view: SlintViewEnum| {
                 let result = (|| -> Result<(), DatabaseError> {
-                    let cache = Cache::new()?;
                     let cache_value = CacheValue {
                         value: format!("{:?}", view),
                     };
@@ -107,4 +112,3 @@ impl CallbackManager {
         Ok(())
     }
 }
-
