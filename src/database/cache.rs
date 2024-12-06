@@ -27,8 +27,8 @@ pub struct Cache {
 }
 
 impl Cache {
-    pub fn new(conn: Arc<Mutex<Connection>>) -> Result<Self, DatabaseError> {
-        Ok(Cache { conn })
+    pub fn new(conn: Arc<Mutex<Connection>>) -> Self {
+        Cache { conn }
     }
 
     pub fn insert(&self, key: &CacheKey, value: &CacheValue) -> Result<(), DatabaseError> {
