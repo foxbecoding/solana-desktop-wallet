@@ -107,7 +107,7 @@ mod tests {
     #[test]
     fn test_set_accounts_balances() {
         let conn = setup_test_db();
-        AccountModel::new(&conn).unwrap();
+        AccountModel::new(conn.clone()).unwrap();
         let accounts = get_accounts(&conn).unwrap();
 
         // Mock connection (requires setting up a mock `Connection` with a library like `mockall`).
