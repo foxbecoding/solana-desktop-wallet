@@ -124,11 +124,11 @@ mod tests {
     #[test]
     fn test_start_app() {
         let conn = setup_test_db();
-        AccountModel::new(&conn).unwrap();
+        AccountModel::new(conn.clone()).unwrap();
         let accounts = get_accounts(&conn).unwrap();
 
         // Mock an app instance
-        let app = App { accounts };
+        let app = App { accounts, conn };
 
         // Check if starting the app works without issues
         let result = start_app(app);
