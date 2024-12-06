@@ -38,7 +38,7 @@ impl Account {
             passphrase,
             balance: None,
         };
-        insert_account(conn, &account)?;
+        insert_account(&conn, &account)?;
         Ok(account)
     }
 
@@ -74,7 +74,7 @@ impl Account {
 
 // Function to insert a new account into the accounts table
 pub fn insert_account(
-    conn: Arc<Mutex<Connection>>,
+    conn: &Arc<Mutex<Connection>>,
     account: &Account,
 ) -> Result<usize, DatabaseError> {
     let conn_binding = conn.lock().unwrap();
