@@ -1,4 +1,5 @@
 use rusqlite::{Connection, Result};
+use std::sync::{Arc, Mutex};
 pub mod account;
 pub mod cache;
 pub mod errors;
@@ -13,6 +14,8 @@ pub fn database_connection() -> Result<Connection, DatabaseError> {
     };
     Ok(conn)
 }
+
+pub fn pure_connection(conn: Arc<Mutex<Connection>>) {}
 
 #[cfg(test)]
 mod tests {
