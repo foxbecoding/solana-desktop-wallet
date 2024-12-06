@@ -8,10 +8,13 @@ use crate::app::{
 };
 use crate::database::account::Account;
 use crate::slint_generatedApp::{App as SlintApp, View as SlintViewEnum};
+use rusqlite::Connection;
+use std::sync::{Arc, Mutex};
 
 #[derive(Debug)]
 pub struct App {
     pub accounts: Vec<Account>,
+    pub conn: Arc<Mutex<Connection>>,
 }
 
 impl App {
@@ -29,8 +32,14 @@ impl App {
     }
 
     fn run_managers(&self, app_instance: SlintApp) -> Result<(), AppError> {
-        GlobalManager::new(app_instance.clone_strong(), self.accounts.clone()).run()?;
-        CallbackManager::new(app_instance).run()?;
+        let conn = self.conn.clone();
+        GlobalManager::new(
+            conn.clone(),
+            app_instance.clone_strong(),
+            self.accounts.clone(),
+        )
+        .run()?;
+        CallbackManager::new(conn, app_instance).run()?;
         Ok(())
     }
 }
