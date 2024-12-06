@@ -18,7 +18,7 @@ pub struct CallbackManager {
     conn: Arc<Mutex<Connection>>,
 }
 
-impl<'a> CallbackManager<'a> {
+impl CallbackManager {
     pub fn new(conn: &'a Connection, app_instance: SlintApp) -> Self {
         CallbackManager { app_instance, conn }
     }
