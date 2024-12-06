@@ -15,8 +15,6 @@ pub fn database_connection() -> Result<Connection, DatabaseError> {
     Ok(conn)
 }
 
-pub fn pure_connection(conn: Arc<Mutex<Connection>>) {}
-
 #[cfg(test)]
 mod tests {
     use super::*;
