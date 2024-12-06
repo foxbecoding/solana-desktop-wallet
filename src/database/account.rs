@@ -168,7 +168,7 @@ mod tests {
     #[test]
     fn test_account_new() {
         let conn = setup_test_db();
-        let account = Account::new(&conn).unwrap();
+        let account = Account::new(conn).unwrap();
 
         // Validate that the account properties are correctly generated
         assert!(!account.id.is_some());
