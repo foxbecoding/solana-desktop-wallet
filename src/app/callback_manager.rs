@@ -17,7 +17,7 @@ pub struct CallbackManager<'a> {
     conn: &'a Connection,
 }
 
-impl CallbackManager {
+impl<'a> CallbackManager<'a> {
     pub fn new(app_instance: SlintApp) -> Self {
         CallbackManager { app_instance }
     }
