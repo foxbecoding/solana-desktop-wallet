@@ -2,7 +2,6 @@ use crate::app::global_manager::GlobalManager;
 use crate::database::{
     account::{get_accounts, Account},
     cache::{Cache, CacheKey, CacheValue},
-    database_connection,
     errors::DatabaseError,
 };
 use crate::slint_generatedApp::{
