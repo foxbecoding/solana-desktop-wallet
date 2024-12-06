@@ -86,9 +86,10 @@ pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, Dat
 }
 
 // Function to retrieve all accounts from the accounts table
-pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
+pub fn get_accounts(conn: Arc<Mutex<Connection>>) -> Result<Vec<Account>, DatabaseError> {
+    let conn_binding = conn.lock().unwrap();
     let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
-    let mut stmt = conn.prepare(query)?;
+    let mut stmt = conn_binding.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
         Ok(Account {
             id: row.get(0)?,
