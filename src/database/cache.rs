@@ -33,7 +33,7 @@ impl Cache {
 
     pub fn insert(&self, key: &CacheKey, value: &CacheValue) -> Result<(), DatabaseError> {
         let value = serde_json::to_string(value).unwrap();
-        self.conn.execute(
+        self.conn.lock().unwrap().execute(
             "INSERT OR REPLACE INTO cache (key, value) VALUES (?1, ?2)",
             params![key.key(), value],
         )?;
