@@ -56,8 +56,8 @@ impl Cache {
     }
 
     pub fn remove(&self, key: &CacheKey) -> Result<(), DatabaseError> {
-        self.conn
-            .execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
+        let conn = self.conn.lock().unwrap();
+        conn.execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
         Ok(())
     }
 }
