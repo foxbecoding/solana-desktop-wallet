@@ -65,17 +65,21 @@ mod tests {
     use crate::database::database_connection;
 
     // Helper function to set up a temporary in-memory database
-    fn setup_test_db() -> SqliteConnection {
-        let conn = database_connection().unwrap();
+    fn setup_test_db() -> Arc<Mutex<SqliteConnection>> {
+        let conn = Arc::new(Mutex::new(database_connection().unwrap()));
+        let conn_clone_binding = conn.clone();
+        let conn_clone = conn_clone_binding.lock().unwrap();
 
-        conn.execute(
-            "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
-            [],
-        )
-        .unwrap();
+        conn_clone
+            .execute(
+                "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+                [],
+            )
+            .unwrap();
 
-        conn.execute(
-            "CREATE TABLE accounts (
+        conn_clone
+            .execute(
+                "CREATE TABLE accounts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 seed TEXT NOT NULL,
@@ -83,9 +87,9 @@ mod tests {
                 passphrase TEXT NOT NULL,
                 balance INTEGER
             )",
-            [],
-        )
-        .unwrap();
+                [],
+            )
+            .unwrap();
 
         conn
     }
