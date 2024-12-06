@@ -145,10 +145,13 @@ mod tests {
     use crate::database::database_connection;
 
     // Helper function to set up a temporary in-memory database
-    fn setup_test_db() -> Connection {
-        let conn = database_connection().unwrap();
-        conn.execute(
-            "CREATE TABLE accounts (
+    fn setup_test_db() -> Arc<Mutex<Connection>> {
+        let conn = Arc::new(Mutex::new(database_connection().unwrap()));
+        let conn_binding = conn.clone();
+        let conn_clone = conn_binding.lock().unwrap();
+        conn_clone
+            .execute(
+                "CREATE TABLE accounts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 seed TEXT NOT NULL,
@@ -156,9 +159,9 @@ mod tests {
                 passphrase TEXT NOT NULL,
                 balance INTEGER
             )",
-            [],
-        )
-        .unwrap();
+                [],
+            )
+            .unwrap();
         conn
     }
 
