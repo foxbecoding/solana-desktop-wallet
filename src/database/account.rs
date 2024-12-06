@@ -208,6 +208,7 @@ mod tests {
     #[test]
     fn test_insert_account_and_get_accounts() {
         let conn = setup_test_db(); // Set up the in-memory database
+        let conn_clone = conn.clone();
 
         let account = Account {
             id: None,
@@ -219,11 +220,11 @@ mod tests {
         };
 
         // Test inserting an account
-        let result = insert_account(&conn, &account).unwrap();
+        let result = insert_account(conn_clone, &account).unwrap();
         assert_eq!(result, 1); // One row should be inserted
 
         // Test retrieving accounts
-        let accounts = get_accounts(&conn).unwrap();
+        let accounts = get_accounts(conn).unwrap();
         assert_eq!(accounts.len(), 1);
 
         // Validate the retrieved account
