@@ -25,8 +25,7 @@ pub struct Account {
 
 impl Account {
     pub fn new(conn: Arc<Mutex<Connection>>) -> Result<Self, DatabaseError> {
-        let conn_clone = conn.clone();
-        let name = account_name_generator(conn_clone)?;
+        let name = account_name_generator(&conn)?;
         let seed_phrase = secure_phrase_generator()?;
         let passphrase = secure_phrase_generator()?;
         let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase)?;
