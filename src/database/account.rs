@@ -72,17 +72,22 @@ impl Account {
 }
 
 // Function to insert a new account into the accounts table
-pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
-    conn.execute(
-        "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
-        params![
-            &account.name,
-            &account.seed,
-            &account.pubkey,
-            &account.passphrase,
-        ],
-    )
-    .map_err(DatabaseError::from)
+pub fn insert_account(
+    conn: Arc<Mutex<Connection>>,
+    account: &Account,
+) -> Result<usize, DatabaseError> {
+    let conn_binding = conn.lock().unwrap();
+    conn_binding
+        .execute(
+            "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
+            params![
+                &account.name,
+                &account.seed,
+                &account.pubkey,
+                &account.passphrase,
+            ],
+        )
+        .map_err(DatabaseError::from)
 }
 
 // Function to retrieve all accounts from the accounts table
