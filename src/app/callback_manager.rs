@@ -18,8 +18,8 @@ pub struct CallbackManager<'a> {
 }
 
 impl<'a> CallbackManager<'a> {
-    pub fn new(app_instance: SlintApp) -> Self {
-        CallbackManager { app_instance }
+    pub fn new(conn: &'a Connection, app_instance: SlintApp) -> Self {
+        CallbackManager { app_instance, conn }
     }
 
     pub fn run(&self) -> Result<(), DatabaseError> {
