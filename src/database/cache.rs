@@ -1,4 +1,4 @@
-use crate::database::{database_connection, errors::DatabaseError};
+use crate::database::errors::DatabaseError;
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
 
