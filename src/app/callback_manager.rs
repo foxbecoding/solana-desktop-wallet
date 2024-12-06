@@ -12,13 +12,13 @@ use rusqlite::Connection;
 use slint::ComponentHandle;
 use solana_sdk::msg;
 
-pub struct CallbackManager<'a> {
+pub struct CallbackManager {
     app_instance: SlintApp,
-    conn: &'a Connection,
+    conn: Connection,
 }
 
-impl<'a> CallbackManager<'a> {
-    pub fn new(conn: &'a Connection, app_instance: SlintApp) -> Self {
+impl CallbackManager {
+    pub fn new(conn: Connection, app_instance: SlintApp) -> Self {
         CallbackManager { app_instance, conn }
     }
 
