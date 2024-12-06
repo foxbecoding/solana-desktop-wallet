@@ -47,9 +47,11 @@ impl GlobalManager {
     }
 
     fn set_selected_account(&self) -> Result<(), AppError> {
-        // Initialize first account by default
+        // Set first account by default
         let mut account = self.accounts.first();
-        let cache = Cache::new()?;
+
+        let conn = self.conn.clone();
+        let cache = Cache::new(conn);
 
         // Check cache for selected account
         if let Some(selected_account_id) = fetch_cache_value(&cache, &CacheKey::SelectedAccount)? {
@@ -94,4 +96,3 @@ fn slint_account_builder(account: &Account) -> SlintAccount {
         balance: account.balance_in_sol() as f32,
     }
 }
-
