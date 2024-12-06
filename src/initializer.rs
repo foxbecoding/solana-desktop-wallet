@@ -124,6 +124,7 @@ mod tests {
     #[test]
     fn test_start_app() {
         let conn = setup_test_db();
+
         AccountModel::new(conn.clone()).unwrap();
         let accounts = get_accounts(&conn).unwrap();
 
@@ -141,10 +142,10 @@ mod tests {
         let conn = setup_test_db();
 
         // Create a mock `get_accounts` implementation
-        AccountModel::new(&conn).unwrap();
+        AccountModel::new(conn.clone()).unwrap();
 
         // Call the `run` function
-        let result = run(&conn);
+        let result = run(conn);
 
         // Assert the function completes successfully
         assert!(result.is_ok(), "run failed with error: {:?}", result.err());
