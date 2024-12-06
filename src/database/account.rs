@@ -7,7 +7,11 @@ use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
-use std::{error::Error, str::FromStr};
+use std::{
+    error::Error,
+    str::FromStr,
+    sync::{Arc, Mutex},
+};
 
 #[derive(Debug, Clone)]
 pub struct Account {
@@ -20,8 +24,8 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(conn: &Connection) -> Result<Self, DatabaseError> {
-        let name = account_name_generator(conn)?;
+    pub fn new(conn: Arc<Mutex<Connection>>) -> Result<Self, DatabaseError> {
+        let name = account_name_generator(&conn)?;
         let seed_phrase = secure_phrase_generator()?;
         let passphrase = secure_phrase_generator()?;
         let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase)?;
@@ -68,23 +72,29 @@ impl Account {
 }
 
 // Function to insert a new account into the accounts table
-pub fn insert_account(conn: &Connection, account: &Account) -> Result<usize, DatabaseError> {
-    conn.execute(
-        "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
-        params![
-            &account.name,
-            &account.seed,
-            &account.pubkey,
-            &account.passphrase,
-        ],
-    )
-    .map_err(DatabaseError::from)
+pub fn insert_account(
+    conn: &Arc<Mutex<Connection>>,
+    account: &Account,
+) -> Result<usize, DatabaseError> {
+    let conn_binding = conn.lock().unwrap();
+    conn_binding
+        .execute(
+            "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
+            params![
+                &account.name,
+                &account.seed,
+                &account.pubkey,
+                &account.passphrase,
+            ],
+        )
+        .map_err(DatabaseError::from)
 }
 
 // Function to retrieve all accounts from the accounts table
-pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
+pub fn get_accounts(conn: &Arc<Mutex<Connection>>) -> Result<Vec<Account>, DatabaseError> {
+    let conn_binding = conn.lock().unwrap();
     let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
-    let mut stmt = conn.prepare(query)?;
+    let mut stmt = conn_binding.prepare(query)?;
     let account_iter = stmt.query_map([], |row| {
         Ok(Account {
             id: row.get(0)?,
@@ -103,7 +113,7 @@ pub fn get_accounts(conn: &Connection) -> Result<Vec<Account>, DatabaseError> {
     Ok(accounts)
 }
 
-fn account_name_generator(conn: &Connection) -> Result<String, DatabaseError> {
+fn account_name_generator(conn: &Arc<Mutex<Connection>>) -> Result<String, DatabaseError> {
     let accounts_count = get_accounts(conn)?.len();
     let name = if accounts_count > 0 {
         format!("Account {}", accounts_count + 1)
@@ -134,10 +144,13 @@ mod tests {
     use crate::database::database_connection;
 
     // Helper function to set up a temporary in-memory database
-    fn setup_test_db() -> Connection {
-        let conn = database_connection().unwrap();
-        conn.execute(
-            "CREATE TABLE accounts (
+    fn setup_test_db() -> Arc<Mutex<Connection>> {
+        let conn = Arc::new(Mutex::new(database_connection().unwrap()));
+        let conn_binding = conn.clone();
+        let conn_clone = conn_binding.lock().unwrap();
+        conn_clone
+            .execute(
+                "CREATE TABLE accounts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 seed TEXT NOT NULL,
@@ -145,16 +158,16 @@ mod tests {
                 passphrase TEXT NOT NULL,
                 balance INTEGER
             )",
-            [],
-        )
-        .unwrap();
+                [],
+            )
+            .unwrap();
         conn
     }
 
     #[test]
     fn test_account_new() {
         let conn = setup_test_db();
-        let account = Account::new(&conn).unwrap();
+        let account = Account::new(conn).unwrap();
 
         // Validate that the account properties are correctly generated
         assert!(!account.id.is_some());
@@ -224,7 +237,7 @@ mod tests {
     #[test]
     fn test_account_name_generator() {
         let conn = setup_test_db();
-        Account::new(&conn).unwrap();
+        Account::new(conn.clone()).unwrap();
         let name = account_name_generator(&conn).unwrap();
         assert_eq!(name, "Account 2");
     }

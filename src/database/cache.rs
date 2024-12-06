@@ -1,6 +1,7 @@
-use crate::database::{database_connection, errors::DatabaseError};
+use crate::database::errors::DatabaseError;
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
+use std::sync::{Arc, Mutex};
 
 pub enum CacheKey {
     SelectedAccount,
@@ -22,18 +23,18 @@ pub struct CacheValue {
 }
 
 pub struct Cache {
-    pub conn: Connection,
+    pub conn: Arc<Mutex<Connection>>,
 }
 
 impl Cache {
-    pub fn new() -> Result<Self, DatabaseError> {
-        let conn = database_connection()?;
-        Ok(Cache { conn })
+    pub fn new(conn: Arc<Mutex<Connection>>) -> Self {
+        Cache { conn }
     }
 
     pub fn insert(&self, key: &CacheKey, value: &CacheValue) -> Result<(), DatabaseError> {
+        let conn = self.conn.lock().unwrap();
         let value = serde_json::to_string(value).unwrap();
-        self.conn.execute(
+        conn.execute(
             "INSERT OR REPLACE INTO cache (key, value) VALUES (?1, ?2)",
             params![key.key(), value],
         )?;
@@ -41,9 +42,8 @@ impl Cache {
     }
 
     pub fn get(&self, key: &CacheKey) -> Result<Option<CacheValue>, DatabaseError> {
-        let mut stmt = self
-            .conn
-            .prepare("SELECT value FROM cache WHERE key = ?1")?;
+        let conn = self.conn.lock().unwrap();
+        let mut stmt = conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
         let mut rows = stmt.query(params![key.key()])?;
 
         if let Some(row) = rows.next()? {
@@ -56,8 +56,8 @@ impl Cache {
     }
 
     pub fn remove(&self, key: &CacheKey) -> Result<(), DatabaseError> {
-        self.conn
-            .execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
+        let conn = self.conn.lock().unwrap();
+        conn.execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
         Ok(())
     }
 }
@@ -73,14 +73,18 @@ pub fn fetch_cache_value(cache: &Cache, key: &CacheKey) -> Result<Option<String>
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::database::database_connection;
 
-    fn setup_test_db() -> Connection {
-        let conn = database_connection().unwrap();
-        conn.execute(
-            "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
-            [],
-        )
-        .unwrap();
+    fn setup_test_db() -> Arc<Mutex<Connection>> {
+        let conn = Arc::new(Mutex::new(database_connection().unwrap()));
+        let conn_clone_binding = conn.clone();
+        let conn_clone = conn_clone_binding.lock().unwrap();
+        conn_clone
+            .execute(
+                "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+                [],
+            )
+            .unwrap();
         conn
     }
 
