@@ -239,8 +239,10 @@ mod tests {
     #[test]
     fn test_account_name_generator() {
         let conn = setup_test_db();
-        Account::new(&conn).unwrap();
-        let name = account_name_generator(&conn).unwrap();
+        let conn_clone = conn.clone();
+
+        Account::new(conn_clone).unwrap();
+        let name = account_name_generator(conn).unwrap();
         assert_eq!(name, "Account 2");
     }
 
