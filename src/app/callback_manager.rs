@@ -70,9 +70,9 @@ impl CallbackManager {
         Ok(())
     }
 
-    fn change_account_handler(&'a self) -> Result<(), DatabaseError> {
-        let conn = self.conn;
-        let cache = Cache::new(conn)?;
+    fn change_account_handler(&self) -> Result<(), DatabaseError> {
+        let conn = self.conn.clone();
+        let cache = Cache::new(conn);
         self.app_instance
             .global::<AccountManager>()
             .on_change_account(move |account_id| {
