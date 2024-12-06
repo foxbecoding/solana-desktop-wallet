@@ -3,20 +3,24 @@ use crate::connection::Connection;
 use crate::database::account::{get_accounts, Account as AccountModel};
 use rusqlite::Connection as SqliteConnection;
 use solana_sdk::pubkey::Pubkey;
-use std::{env, error::Error};
+use std::{
+    env,
+    error::Error,
+    sync::{Arc, Mutex},
+};
 
-pub fn run(conn: &SqliteConnection) -> Result<(), AppError> {
+pub fn run(conn: Arc<Mutex<SqliteConnection>>) -> Result<(), AppError> {
     set_backend_renderer();
-    let mut accounts = get_accounts(conn)?;
+    let mut accounts = get_accounts(&conn)?;
     accounts = set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
-        AccountModel::new(conn)?;
-        accounts = get_accounts(conn)?;
+        AccountModel::new(conn.clone())?;
+        accounts = get_accounts(&conn)?;
     }
 
-    let app = App { accounts };
+    let app = App { accounts, conn };
     start_app(app)?;
     Ok(())
 }
