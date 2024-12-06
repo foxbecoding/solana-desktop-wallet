@@ -6,12 +6,17 @@ use crate::database::{
 use crate::slint_generatedApp::{
     Account as SlintAccount, AccountManager, App as SlintApp, ViewManager,
 };
+use rusqlite::Connection;
 use slint::{Global, ModelRc, SharedString, VecModel};
-use std::rc::Rc;
+use std::{
+    rc::Rc,
+    sync::{Arc, Mutex},
+};
 
 pub struct GlobalManager {
     app_instance: SlintApp,
     accounts: Vec<Account>,
+    conn: Arc<Mutex<Connection>>,
 }
 
 impl GlobalManager {
