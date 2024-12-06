@@ -92,11 +92,12 @@ impl CallbackManager {
     }
 
     fn cache_active_view_handler(&self) -> Result<(), DatabaseError> {
+        let conn = self.conn.clone();
+        let cache = Cache::new(conn);
         self.app_instance
             .global::<ViewManager>()
             .on_cache_active_view(move |view: SlintViewEnum| {
                 let result = (|| -> Result<(), DatabaseError> {
-                    let cache = Cache::new()?;
                     let cache_value = CacheValue {
                         value: format!("{:?}", view),
                     };
