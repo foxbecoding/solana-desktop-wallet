@@ -73,14 +73,18 @@ pub fn fetch_cache_value(cache: &Cache, key: &CacheKey) -> Result<Option<String>
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::database::database_connection;
 
-    fn setup_test_db() -> Connection {
-        let conn = database_connection().unwrap();
-        conn.execute(
-            "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
-            [],
-        )
-        .unwrap();
+    fn setup_test_db() -> Arc<Mutex<Connection>> {
+        let conn = Arc::new(Mutex::new(database_connection().unwrap()));
+        let conn_clone_binding = conn.clone();
+        let conn_clone = conn_clone_binding.lock().unwrap();
+        conn_clone
+            .execute(
+                "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+                [],
+            )
+            .unwrap();
         conn
     }
 
