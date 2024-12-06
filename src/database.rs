@@ -1,5 +1,4 @@
 use rusqlite::{Connection, Result};
-use std::sync::{Arc, Mutex};
 pub mod account;
 pub mod cache;
 pub mod errors;
