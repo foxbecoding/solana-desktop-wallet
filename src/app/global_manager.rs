@@ -20,10 +20,15 @@ pub struct GlobalManager {
 }
 
 impl GlobalManager {
-    pub fn new(app_instance: SlintApp, accounts: Vec<Account>) -> Self {
+    pub fn new(
+        conn: Arc<Mutex<Connection>>,
+        app_instance: SlintApp,
+        accounts: Vec<Account>,
+    ) -> Self {
         GlobalManager {
             app_instance,
             accounts,
+            conn,
         }
     }
 
