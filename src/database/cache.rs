@@ -1,6 +1,7 @@
 use crate::database::errors::DatabaseError;
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
+use std::sync::{Arc, Mutex};
 
 pub enum CacheKey {
     SelectedAccount,
@@ -21,8 +22,8 @@ pub struct CacheValue {
     pub value: String,
 }
 
-pub struct Cache<'a> {
-    pub conn: &'a Connection,
+pub struct Cache {
+    pub conn: Arc<Mutex<Connection>>,
 }
 
 impl<'a> Cache<'a> {
