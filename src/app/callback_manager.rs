@@ -11,10 +11,11 @@ use crate::slint_generatedApp::{
 use rusqlite::Connection;
 use slint::ComponentHandle;
 use solana_sdk::msg;
+use std::sync::{Arc, Mutex};
 
-pub struct CallbackManager<'a> {
+pub struct CallbackManager {
     app_instance: SlintApp,
-    conn: &'a Connection,
+    conn: Arc<Mutex<Connection>>,
 }
 
 impl<'a> CallbackManager<'a> {
@@ -69,7 +70,7 @@ impl<'a> CallbackManager<'a> {
         Ok(())
     }
 
-    fn change_account_handler(&self) -> Result<(), DatabaseError> {
+    fn change_account_handler(&'a self) -> Result<(), DatabaseError> {
         let conn = self.conn;
         let cache = Cache::new(conn)?;
         self.app_instance
