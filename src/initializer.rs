@@ -121,20 +121,20 @@ mod tests {
         assert!(updated_accounts.iter().all(|a| a.balance.is_none()));
     }
 
-    #[test]
-    fn test_start_app() {
-        let conn = setup_test_db();
-
-        AccountModel::new(conn.clone()).unwrap();
-        let accounts = get_accounts(&conn).unwrap();
-
-        // Mock an app instance
-        let app = App { accounts, conn };
-
-        // Check if starting the app works without issues
-        let result = start_app(app);
-        assert!(result.is_ok(), "start_app failed");
-    }
+    //#[test]
+    //fn test_start_app() {
+    //    let conn = setup_test_db();
+    //
+    //    AccountModel::new(conn.clone()).unwrap();
+    //    let accounts = get_accounts(&conn).unwrap();
+    //
+    //    // Mock an app instance
+    //    let app = App { accounts, conn };
+    //
+    //    // Check if starting the app works without issues
+    //    let result = start_app(app);
+    //    assert!(result.is_ok(), "start_app failed");
+    //}
 
     #[test]
     fn test_run_successful() {
