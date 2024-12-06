@@ -51,6 +51,7 @@ impl CallbackManager {
     }
 
     fn add_account_handler(&self) -> Result<(), DatabaseError> {
+        let conn = self.conn.clone();
         let app = self.app_instance.clone_strong();
         let weak_app = app.as_weak().unwrap();
         app.global::<AccountManager>().on_add_account(move || {
@@ -58,7 +59,7 @@ impl CallbackManager {
                 let conn = database_connection()?;
                 Account::new(&conn)?;
                 let accounts = get_accounts(&conn)?;
-                let global_manager = GlobalManager::new(weak_app.clone_strong(), accounts);
+                let global_manager = GlobalManager::new(conn, weak_app.clone_strong(), accounts);
                 global_manager.set_accounts();
                 Ok(())
             })();
