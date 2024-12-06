@@ -87,7 +87,9 @@ impl GlobalManager {
     }
 
     fn set_selected_view(&self) -> Result<(), AppError> {
-        let cache = Cache::new()?;
+        let conn = self.conn.clone();
+        let cache = Cache::new(conn);
+
         if let Some(selected_view) = fetch_cache_value(&cache, &CacheKey::SelectedView)? {
             let view = app_view_selector(selected_view);
             ViewManager::get(&self.app_instance).set_active_view(view);
