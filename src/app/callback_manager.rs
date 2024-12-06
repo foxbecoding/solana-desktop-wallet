@@ -12,13 +12,13 @@ use rusqlite::Connection;
 use slint::ComponentHandle;
 use solana_sdk::msg;
 
-pub struct CallbackManager {
+pub struct CallbackManager<'a> {
     app_instance: SlintApp,
-    conn: Connection,
+    conn: &'a Connection,
 }
 
-impl CallbackManager {
-    pub fn new(conn: Connection, app_instance: SlintApp) -> Self {
+impl<'a> CallbackManager<'a> {
+    pub fn new(conn: &'a Connection, app_instance: SlintApp) -> Self {
         CallbackManager { app_instance, conn }
     }
 
@@ -70,7 +70,8 @@ impl CallbackManager {
     }
 
     fn change_account_handler(&self) -> Result<(), DatabaseError> {
-        let cache = Cache::new()?;
+        let conn = self.conn;
+        let cache = Cache::new(conn)?;
         self.app_instance
             .global::<AccountManager>()
             .on_change_account(move |account_id| {
