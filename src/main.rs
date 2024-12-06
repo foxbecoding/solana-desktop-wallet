@@ -12,9 +12,11 @@ use crate::app::errors::AppError;
 use crate::database::database_connection;
 use crate::initializer::run as Run_Initializer;
 
+use std::sync::{Arc, Mutex};
+
 include_slint_modules!();
 fn main() -> Result<(), AppError> {
-    let conn = database_connection()?;
-    Run_Initializer(&conn)?;
+    let conn = Arc::new(Mutex::new(database_connection()?));
+    Run_Initializer(conn)?;
     Ok(())
 }
