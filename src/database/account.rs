@@ -7,7 +7,11 @@ use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use solana_sdk::signature::{keypair, Keypair};
 use solana_sdk::signer::Signer;
-use std::{error::Error, str::FromStr};
+use std::{
+    error::Error,
+    str::FromStr,
+    sync::{Arc, Mutex},
+};
 
 #[derive(Debug, Clone)]
 pub struct Account {
@@ -20,7 +24,7 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(conn: &Connection) -> Result<Self, DatabaseError> {
+    pub fn new(conn: Arc<Mutex<Connection>>) -> Result<Self, DatabaseError> {
         let name = account_name_generator(conn)?;
         let seed_phrase = secure_phrase_generator()?;
         let passphrase = secure_phrase_generator()?;
@@ -33,7 +37,7 @@ impl Account {
             passphrase,
             balance: None,
         };
-        insert_account(&conn, &account)?;
+        insert_account(conn, &account)?;
         Ok(account)
     }
 
