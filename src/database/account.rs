@@ -47,31 +47,6 @@ impl Account {
     }
 }
 
-// Function to insert a new account into the accounts table
-
-// Function to retrieve all accounts from the accounts table
-pub fn get_accounts(conn: &Arc<Mutex<Connection>>) -> Result<Vec<Account>, DatabaseError> {
-    let conn_binding = conn.lock().unwrap();
-    let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
-    let mut stmt = conn_binding.prepare(query)?;
-    let account_iter = stmt.query_map([], |row| {
-        Ok(Account {
-            id: row.get(0)?,
-            name: row.get(1)?,
-            seed: row.get(2)?,
-            pubkey: row.get(3)?,
-            passphrase: row.get(4)?,
-            balance: row.get(5)?,
-        })
-    })?;
-
-    let mut accounts = Vec::new();
-    for account_result in account_iter {
-        accounts.push(account_result?);
-    }
-    Ok(accounts)
-}
-
 fn account_name_generator(conn: &Arc<Mutex<Connection>>) -> Result<String, DatabaseError> {
     let accounts_count = get_accounts(conn)?.len();
     let name = if accounts_count > 0 {
