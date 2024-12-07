@@ -1,17 +1,8 @@
-use crate::database::errors::DatabaseError;
-use bip39::{Error as MnemonicError, Mnemonic};
-use rusqlite::{params, Connection};
-use serde::de::StdError;
 use slint::SharedString;
 use solana_sdk::native_token::lamports_to_sol;
 use solana_sdk::pubkey::{ParsePubkeyError, Pubkey};
 use solana_sdk::signature::{keypair, Keypair};
-use solana_sdk::signer::Signer;
-use std::{
-    error::Error,
-    str::FromStr,
-    sync::{Arc, Mutex},
-};
+use std::{error::Error, str::FromStr};
 
 #[derive(Debug, Clone)]
 pub struct Account {
