@@ -18,4 +18,6 @@ impl AccountService {
     pub fn create_account(&self) -> Result<Account, DatabaseError> {}
 
     pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {}
+
+    pub fn get_account_balance(&self, account: &Account) -> f64 {}
 }
