@@ -1,6 +1,7 @@
 use crate::app::{errors::AppError, App};
 use crate::connection::Connection;
-use crate::database::account::{get_accounts, Account as AccountModel};
+use crate::database::account::Account;
+use crate::services::account_service::AccountService;
 use rusqlite::Connection as SqliteConnection;
 use solana_sdk::pubkey::Pubkey;
 use std::{
@@ -11,13 +12,14 @@ use std::{
 
 pub fn run(conn: Arc<Mutex<SqliteConnection>>) -> Result<(), AppError> {
     set_backend_renderer();
-    let mut accounts = get_accounts(&conn)?;
+    let account_service = AccountService::new(conn);
+    let mut accounts = account_service.get_all_accounts()?;
     accounts = set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
-        AccountModel::new(conn.clone())?;
-        accounts = get_accounts(&conn)?;
+        account_service.create_account()?;
+        accounts = account_service.get_all_accounts()?;
     }
 
     let app = App { accounts, conn };
