@@ -20,4 +20,6 @@ impl AccountService {
     pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {}
 
     pub fn get_account_balance(&self, account: &Account) -> f64 {}
+
+    pub fn generate_pubkey_display(&self, account: &Account) -> SharedString {}
 }
