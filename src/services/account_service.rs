@@ -139,6 +139,7 @@ mod tests {
     #[test]
     fn test_insert_account_and_get_accounts() {
         let conn = setup_test_db(); // Set up the in-memory database
+        let account_service = AccountService::new(conn);
 
         let account = Account {
             id: None,
@@ -150,11 +151,11 @@ mod tests {
         };
 
         // Test inserting an account
-        let result = insert_account(&conn, &account).unwrap();
+        let result = account_service.insert_account(&account).unwrap();
         assert_eq!(result, 1); // One row should be inserted
 
         // Test retrieving accounts
-        let accounts = get_accounts(&conn).unwrap();
+        let accounts = account_service.get_all_accounts().unwrap();
         assert_eq!(accounts.len(), 1);
 
         // Validate the retrieved account
