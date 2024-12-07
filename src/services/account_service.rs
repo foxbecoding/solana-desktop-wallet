@@ -171,6 +171,7 @@ mod tests {
     fn test_account_name_generator() {
         let conn = setup_test_db();
         let account_service = AccountService::new(conn);
+        account_service.create_account().unwrap();
         let name = account_service.account_name_generator().unwrap();
         assert_eq!(name, "Account 2");
     }
