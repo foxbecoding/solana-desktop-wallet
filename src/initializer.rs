@@ -12,7 +12,7 @@ use std::{
 
 pub fn run(conn: Arc<Mutex<SqliteConnection>>) -> Result<(), AppError> {
     set_backend_renderer();
-    let account_service = AccountService::new(conn);
+    let account_service = AccountService::new(conn.clone());
     let mut accounts = account_service.get_all_accounts()?;
     accounts = set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
