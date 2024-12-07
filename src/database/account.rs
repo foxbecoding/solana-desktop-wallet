@@ -23,8 +23,7 @@ impl Account {
     }
 
     pub fn pubkey(&self) -> Result<Pubkey, ParsePubkeyError> {
-        let pubkey = Pubkey::from_str(&self.pubkey)?;
-        Ok(pubkey)
+        Pubkey::from_str(&self.pubkey)
     }
 
     pub fn balance_in_sol(&self) -> f64 {
