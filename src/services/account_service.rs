@@ -36,8 +36,4 @@ impl AccountService {
     pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {
         get_accounts(&self.conn)
     }
-
-    pub fn generate_pubkey_display(&self, account: &Account) -> SharedString {
-        account.pubkey_display()
-    }
 }
