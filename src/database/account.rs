@@ -47,15 +47,6 @@ impl Account {
     }
 }
 
-fn pubkey_from_keypair_generator(
-    seed_phrase: &String,
-    passphrase: &String,
-) -> Result<String, Box<dyn StdError>> {
-    let keypair = keypair::keypair_from_seed_phrase_and_passphrase(seed_phrase, passphrase)?;
-    let pubkey = keypair.pubkey().to_string();
-    Ok(pubkey)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
