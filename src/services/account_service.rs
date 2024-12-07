@@ -24,7 +24,9 @@ impl AccountService {
         get_accounts(&self.conn)
     }
 
-    pub fn get_account_balance(&self, account: &Account) -> f64 {}
+    pub fn get_account_balance(&self, account: &Account) -> f64 {
+        account.balance_in_sol()
+    }
 
     pub fn generate_pubkey_display(&self, account: &Account) -> SharedString {}
 }
