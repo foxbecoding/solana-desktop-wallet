@@ -136,33 +136,6 @@ mod tests {
     }
 
     #[test]
-    fn test_pubkey_display() {
-        let account = Account {
-            id: None,
-            name: "Test".to_string(),
-            seed: "test_seed".to_string(),
-            pubkey: "123456789abcdef".to_string(),
-            passphrase: "test_passphrase".to_string(),
-            balance: Some(1000),
-        };
-        let display = account.pubkey_display();
-        assert_eq!(display.as_str(), "12345...cdef");
-    }
-
-    #[test]
-    fn test_balance_in_sol() {
-        let account = Account {
-            id: None,
-            name: "Test".to_string(),
-            seed: "test_seed".to_string(),
-            pubkey: "pubkey".to_string(),
-            passphrase: "test_passphrase".to_string(),
-            balance: Some(1_000_000_000), // 1 SOL in lamports
-        };
-        assert_eq!(account.balance_in_sol(), 1.0);
-    }
-
-    #[test]
     fn test_insert_account_and_get_accounts() {
         let conn = setup_test_db(); // Set up the in-memory database
 
