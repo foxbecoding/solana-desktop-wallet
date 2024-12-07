@@ -25,7 +25,7 @@ impl AccountService {
             passphrase,
             balance: None,
         };
-        insert_account(&self.conn, &account)?;
+        self.insert_account(&account)?;
         Ok(account)
     }
 
