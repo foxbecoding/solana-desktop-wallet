@@ -32,7 +32,7 @@ fn set_backend_renderer() {
     env::set_var("SLINT_RENDERER", "skia");
 }
 
-fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel>, Box<dyn Error>> {
+fn set_accounts_balances(accounts: Vec<Account>) -> Result<Vec<Account>, Box<dyn Error>> {
     let new_connection = Connection::new();
     let connection = new_connection.connection();
 
