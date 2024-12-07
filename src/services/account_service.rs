@@ -1,6 +1,11 @@
 use bip39::{Error as MnemonicError, Mnemonic};
 use rusqlite::{params, Connection};
-use std::sync::{Arc, Mutex};
+use solana_sdk::signature::keypair;
+use solana_sdk::signer::Signer;
+use std::{
+    error::Error as StdError,
+    sync::{Arc, Mutex},
+};
 
 use crate::database::{account::Account, errors::DatabaseError};
 
@@ -61,5 +66,14 @@ impl AccountService {
     fn secure_phrase_generator(&self) -> Result<String, MnemonicError> {
         let mnemonic_phrase = Mnemonic::generate(12)?;
         Ok(mnemonic_phrase.words().collect::<Vec<&str>>().join(" "))
+    }
+
+    fn pubkey_from_keypair_generator(
+        &self,
+        seed_phrase: &String,
+        passphrase: &String,
+    ) -> Result<String, Box<dyn StdError>> {
+        let keypair = keypair::keypair_from_seed_phrase_and_passphrase(seed_phrase, passphrase)?;
+        Ok(keypair.pubkey().to_string())
     }
 }
