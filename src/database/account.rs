@@ -24,23 +24,6 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn new(conn: Arc<Mutex<Connection>>) -> Result<Self, DatabaseError> {
-        let name = account_name_generator(&conn)?;
-        let seed_phrase = secure_phrase_generator()?;
-        let passphrase = secure_phrase_generator()?;
-        let pubkey = pubkey_from_keypair_generator(&seed_phrase, &passphrase)?;
-        let account = Account {
-            id: None,
-            name,
-            seed: seed_phrase,
-            pubkey,
-            passphrase,
-            balance: None,
-        };
-        insert_account(&conn, &account)?;
-        Ok(account)
-    }
-
     pub fn pubkey_display(&self) -> SharedString {
         let input_string = self.pubkey.clone();
 
