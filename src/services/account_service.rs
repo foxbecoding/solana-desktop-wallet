@@ -10,4 +10,6 @@ pub struct AccountService {
     conn: Arc<Mutex<Connection>>,
 }
 
-impl AccountService {}
+impl AccountService {
+    pub fn new(conn: Arc<Mutex<Connection>>) -> Self {}
+}
