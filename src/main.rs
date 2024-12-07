@@ -7,6 +7,7 @@ mod app;
 mod connection;
 mod database;
 mod initializer;
+mod services;
 
 use crate::app::errors::AppError;
 use crate::database::database_connection;
