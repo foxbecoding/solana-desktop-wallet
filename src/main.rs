@@ -2,17 +2,17 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use slint::include_modules as include_slint_modules;
+use std::sync::{Arc, Mutex};
 
 mod app;
 mod connection;
 mod database;
 mod initializer;
+mod services;
 
 use crate::app::errors::AppError;
 use crate::database::database_connection;
 use crate::initializer::run as Run_Initializer;
-
-use std::sync::{Arc, Mutex};
 
 include_slint_modules!();
 fn main() -> Result<(), AppError> {

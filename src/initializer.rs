@@ -1,6 +1,7 @@
 use crate::app::{errors::AppError, App};
 use crate::connection::Connection;
-use crate::database::account::{get_accounts, Account as AccountModel};
+use crate::database::account::Account;
+use crate::services::account_service::AccountService;
 use rusqlite::Connection as SqliteConnection;
 use solana_sdk::pubkey::Pubkey;
 use std::{
@@ -11,13 +12,14 @@ use std::{
 
 pub fn run(conn: Arc<Mutex<SqliteConnection>>) -> Result<(), AppError> {
     set_backend_renderer();
-    let mut accounts = get_accounts(&conn)?;
+    let account_service = AccountService::new(conn.clone());
+    let mut accounts = account_service.get_all_accounts()?;
     accounts = set_accounts_balances(accounts.clone())?;
     let has_accounts = !accounts.is_empty();
 
     if !has_accounts {
-        AccountModel::new(conn.clone())?;
-        accounts = get_accounts(&conn)?;
+        account_service.create_account()?;
+        accounts = account_service.get_all_accounts()?;
     }
 
     let app = App { accounts, conn };
@@ -30,7 +32,7 @@ fn set_backend_renderer() {
     env::set_var("SLINT_RENDERER", "skia");
 }
 
-fn set_accounts_balances(accounts: Vec<AccountModel>) -> Result<Vec<AccountModel>, Box<dyn Error>> {
+fn set_accounts_balances(accounts: Vec<Account>) -> Result<Vec<Account>, Box<dyn Error>> {
     let new_connection = Connection::new();
     let connection = new_connection.connection();
 
@@ -107,10 +109,10 @@ mod tests {
     #[test]
     fn test_set_accounts_balances() {
         let conn = setup_test_db();
-        AccountModel::new(conn.clone()).unwrap();
-        let accounts = get_accounts(&conn).unwrap();
+        let account_service = AccountService::new(conn);
+        account_service.create_account().unwrap();
+        let accounts = account_service.get_all_accounts().unwrap();
 
-        // Mock connection (requires setting up a mock `Connection` with a library like `mockall`).
         // Assuming we use a mock client to simulate `get_multiple_accounts`.
         let updated_accounts = set_accounts_balances(accounts.clone());
 
@@ -140,9 +142,8 @@ mod tests {
     fn test_run_successful() {
         // Set up a mock database
         let conn = setup_test_db();
-
-        // Create a mock `get_accounts` implementation
-        AccountModel::new(conn.clone()).unwrap();
+        let account_service = AccountService::new(conn.clone());
+        account_service.create_account().unwrap();
 
         // Call the `run` function
         let result = run(conn);

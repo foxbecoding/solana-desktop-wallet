@@ -1,9 +1,9 @@
 use crate::app::global_manager::GlobalManager;
 use crate::database::{
-    account::{get_accounts, Account},
     cache::{Cache, CacheKey, CacheValue},
     errors::DatabaseError,
 };
+use crate::services::account_service::AccountService;
 use crate::slint_generatedApp::{
     AccountManager, App as SlintApp, View as SlintViewEnum, ViewManager,
 };
@@ -56,8 +56,8 @@ impl CallbackManager {
         app.global::<AccountManager>().on_add_account(move || {
             let conn = conn.clone();
             let result = (|| -> Result<(), DatabaseError> {
-                Account::new(conn.clone())?;
-                let accounts = get_accounts(&conn)?;
+                let account_service = AccountService::new(conn.clone());
+                let accounts = account_service.get_all_accounts()?;
                 let global_manager = GlobalManager::new(conn, weak_app.clone_strong(), accounts);
                 global_manager.set_accounts();
                 Ok(())
