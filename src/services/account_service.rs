@@ -20,7 +20,9 @@ impl AccountService {
         Ok(account)
     }
 
-    pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {}
+    pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {
+        get_accounts(&self.conn)
+    }
 
     pub fn get_account_balance(&self, account: &Account) -> f64 {}
 
