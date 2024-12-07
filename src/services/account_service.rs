@@ -99,7 +99,7 @@ impl AccountService {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{database::database_connection, services::account_service};
+    use crate::database::database_connection;
 
     // Helper function to set up a temporary in-memory database
     fn setup_test_db() -> Arc<Mutex<Connection>> {
