@@ -11,5 +11,7 @@ pub struct AccountService {
 }
 
 impl AccountService {
-    pub fn new(conn: Arc<Mutex<Connection>>) -> Self {}
+    pub fn new(conn: Arc<Mutex<Connection>>) -> Self {
+        Self { conn }
+    }
 }
