@@ -47,12 +47,6 @@ impl Account {
     }
 }
 
-fn secure_phrase_generator() -> Result<String, MnemonicError> {
-    let mnemonic_phrase = Mnemonic::generate(12)?;
-    let secure_phrase = mnemonic_phrase.words().collect::<Vec<&str>>().join(" ");
-    Ok(secure_phrase)
-}
-
 fn pubkey_from_keypair_generator(
     seed_phrase: &String,
     passphrase: &String,
