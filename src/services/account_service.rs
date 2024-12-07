@@ -1,4 +1,4 @@
-use rusqlite::Connection;
+use rusqlite::{params, Connection};
 use slint::SharedString;
 use std::sync::{Arc, Mutex};
 
@@ -19,6 +19,21 @@ impl AccountService {
     pub fn create_account(&self) -> Result<Account, DatabaseError> {
         let account = Account::new(self.conn.clone())?;
         Ok(account)
+    }
+
+    pub fn insert_account(&self, account: &Account) -> Result<usize, DatabaseError> {
+        let conn_binding = self.conn.lock().unwrap();
+        conn_binding
+            .execute(
+                "INSERT INTO accounts (name, seed, pubkey, passphrase) VALUES (?1, ?2, ?3, ?4)",
+                params![
+                    &account.name,
+                    &account.seed,
+                    &account.pubkey,
+                    &account.passphrase,
+                ],
+            )
+            .map_err(DatabaseError::from)
     }
 
     pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {
