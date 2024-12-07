@@ -1,3 +1,4 @@
+use bip39::{Error as MnemonicError, Mnemonic};
 use rusqlite::{params, Connection};
 use std::sync::{Arc, Mutex};
 
@@ -55,5 +56,10 @@ impl AccountService {
         } else {
             "Main Account".to_string()
         })
+    }
+
+    fn secure_phrase_generator(&self) -> Result<String, MnemonicError> {
+        let mnemonic_phrase = Mnemonic::generate(12)?;
+        Ok(mnemonic_phrase.words().collect::<Vec<&str>>().join(" "))
     }
 }
