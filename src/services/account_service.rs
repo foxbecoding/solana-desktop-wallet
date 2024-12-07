@@ -15,7 +15,10 @@ impl AccountService {
         Self { conn }
     }
 
-    pub fn create_account(&self) -> Result<Account, DatabaseError> {}
+    pub fn create_account(&self) -> Result<Account, DatabaseError> {
+        let account = Account::new(self.conn.clone())?;
+        Ok(account)
+    }
 
     pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {}
 
