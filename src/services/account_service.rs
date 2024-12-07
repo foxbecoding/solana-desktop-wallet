@@ -1,5 +1,4 @@
 use rusqlite::{params, Connection};
-use slint::SharedString;
 use std::sync::{Arc, Mutex};
 
 use crate::database::{account::Account, errors::DatabaseError};
@@ -14,7 +13,19 @@ impl AccountService {
     }
 
     pub fn create_account(&self) -> Result<Account, DatabaseError> {
-        let account = Account::new(self.conn.clone())?;
+        let name = self.account_name_generator()?;
+        let seed_phrase = self.secure_phrase_generator()?;
+        let passphrase = self.secure_phrase_generator()?;
+        let pubkey = self.pubkey_from_keypair_generator(&seed_phrase, &passphrase)?;
+        let account = Account {
+            id: None,
+            name,
+            seed: seed_phrase,
+            pubkey,
+            passphrase,
+            balance: None,
+        };
+        insert_account(&self.conn, &account)?;
         Ok(account)
     }
 
