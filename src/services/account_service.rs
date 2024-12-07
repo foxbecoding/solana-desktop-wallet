@@ -99,7 +99,7 @@ impl AccountService {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::database::database_connection;
+    use crate::{database::database_connection, services::account_service};
 
     // Helper function to set up a temporary in-memory database
     fn setup_test_db() -> Arc<Mutex<Connection>> {
@@ -170,8 +170,8 @@ mod tests {
     #[test]
     fn test_account_name_generator() {
         let conn = setup_test_db();
-        Account::new(conn.clone()).unwrap();
-        let name = account_name_generator(&conn).unwrap();
+        let account_service = AccountService::new(conn);
+        let name = account_service.account_name_generator().unwrap();
         assert_eq!(name, "Account 2");
     }
 
