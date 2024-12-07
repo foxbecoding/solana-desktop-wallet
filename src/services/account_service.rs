@@ -14,4 +14,6 @@ impl AccountService {
     pub fn new(conn: Arc<Mutex<Connection>>) -> Self {
         Self { conn }
     }
+
+    pub fn create_account(&self) -> Result<Account, DatabaseError> {}
 }
