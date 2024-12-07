@@ -1,6 +1,5 @@
 use crate::app::global_manager::GlobalManager;
 use crate::database::{
-    account::Account,
     cache::{Cache, CacheKey, CacheValue},
     errors::DatabaseError,
 };
