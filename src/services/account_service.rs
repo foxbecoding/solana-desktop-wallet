@@ -1,4 +1,5 @@
 use rusqlite::Connection;
+use slint::SharedString;
 use std::sync::{Arc, Mutex};
 
 use crate::database::{
@@ -28,5 +29,7 @@ impl AccountService {
         account.balance_in_sol()
     }
 
-    pub fn generate_pubkey_display(&self, account: &Account) -> SharedString {}
+    pub fn generate_pubkey_display(&self, account: &Account) -> SharedString {
+        account.pubkey_display()
+    }
 }
