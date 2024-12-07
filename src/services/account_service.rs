@@ -1,9 +1,13 @@
+use rusqlite::Connection;
+use std::sync::{Arc, Mutex};
+
 use crate::database::{
     account::{get_accounts, Account},
-    database_connection,
     errors::DatabaseError,
 };
 
-pub struct AccountService {}
+pub struct AccountService {
+    conn: Arc<Mutex<Connection>>,
+}
 
 impl AccountService {}
