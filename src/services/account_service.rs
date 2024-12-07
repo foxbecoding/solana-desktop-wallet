@@ -51,7 +51,25 @@ impl AccountService {
     }
 
     pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {
-        get_accounts(&self.conn)
+        let conn_binding = self.conn.lock().unwrap();
+        let query = "SELECT id, name, seed, pubkey, passphrase, balance FROM accounts";
+        let mut stmt = conn_binding.prepare(query)?;
+        let account_iter = stmt.query_map([], |row| {
+            Ok(Account {
+                id: row.get(0)?,
+                name: row.get(1)?,
+                seed: row.get(2)?,
+                pubkey: row.get(3)?,
+                passphrase: row.get(4)?,
+                balance: row.get(5)?,
+            })
+        })?;
+
+        let mut accounts = Vec::new();
+        for account_result in account_iter {
+            accounts.push(account_result?);
+        }
+        Ok(accounts)
     }
 
     fn account_name_generator(&self) -> Result<String, DatabaseError> {
