@@ -47,4 +47,13 @@ impl AccountService {
     pub fn get_all_accounts(&self) -> Result<Vec<Account>, DatabaseError> {
         get_accounts(&self.conn)
     }
+
+    fn account_name_generator(&self) -> Result<String, DatabaseError> {
+        let accounts_count = self.get_all_accounts()?.len();
+        Ok(if accounts_count > 0 {
+            format!("Account {}", accounts_count + 1)
+        } else {
+            "Main Account".to_string()
+        })
+    }
 }
