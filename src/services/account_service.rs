@@ -5,3 +5,5 @@ use crate::database::{
 };
 
 pub struct AccountService {}
+
+impl AccountService {}
