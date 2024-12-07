@@ -109,10 +109,10 @@ mod tests {
     #[test]
     fn test_set_accounts_balances() {
         let conn = setup_test_db();
-        AccountModel::new(conn.clone()).unwrap();
-        let accounts = get_accounts(&conn).unwrap();
+        let account_service = AccountService::new(conn);
+        account_service.create_account().unwrap();
+        let accounts = account_service.get_all_accounts().unwrap();
 
-        // Mock connection (requires setting up a mock `Connection` with a library like `mockall`).
         // Assuming we use a mock client to simulate `get_multiple_accounts`.
         let updated_accounts = set_accounts_balances(accounts.clone());
 
@@ -142,9 +142,8 @@ mod tests {
     fn test_run_successful() {
         // Set up a mock database
         let conn = setup_test_db();
-
-        // Create a mock `get_accounts` implementation
-        AccountModel::new(conn.clone()).unwrap();
+        let account_service = AccountService::new(conn.clone());
+        account_service.create_account().unwrap();
 
         // Call the `run` function
         let result = run(conn);
