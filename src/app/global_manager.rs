@@ -64,7 +64,7 @@ impl GlobalManager {
         let cache = Cache::new(conn);
 
         // Check cache for selected account
-        if let Some(selected_account_id) = fetch_cache_value(&cache, &CacheKey::SelectedAccount)? {
+        if let Some(selected_account_id) = cache.get(&CacheKey::SelectedAccount)? {
             if let Some(acc) = self.find_account_by_id(&selected_account_id) {
                 account = Some(acc);
             }
@@ -90,7 +90,7 @@ impl GlobalManager {
         let conn = self.conn.clone();
         let cache = Cache::new(conn);
 
-        if let Some(selected_view) = fetch_cache_value(&cache, &CacheKey::SelectedView)? {
+        if let Some(selected_view) = cache.get(&CacheKey::SelectedView)? {
             let view = app_view_selector(selected_view);
             ViewManager::get(&self.app_instance).set_active_view(view);
         }
