@@ -69,7 +69,9 @@ impl Cache {
         self.get(CacheKey::SelectedAccount)
     }
 
-    pub fn remove_selected_account(&self) -> Result<(), DatabaseError> {}
+    pub fn remove_selected_account(&self) -> Result<(), DatabaseError> {
+        self.remove(CacheKey::SelectedAccount)
+    }
 
     pub fn set_selected_view(&self, value: &CacheValue) -> Result<(), DatabaseError> {
         self.set(CacheKey::SelectedView, value)
