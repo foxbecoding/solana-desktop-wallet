@@ -128,10 +128,8 @@ mod tests {
         let conn = setup_test_db();
         let cache = Cache::new(conn);
 
-        let key = CacheKey::SelectedAccount;
-
         // Try fetching a nonexistent value
-        let fetched_value = cache.get(&key).unwrap();
+        let fetched_value = cache.get_selected_account().unwrap();
 
         assert!(fetched_value.is_none());
     }
