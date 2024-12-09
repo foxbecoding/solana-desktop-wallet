@@ -60,6 +60,8 @@ impl Cache {
         conn.execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
         Ok(())
     }
+
+    pub fn set_selected_account(&self, value: &CacheValue) -> Result<(), DatabaseError> {}
 }
 
 #[cfg(test)]
