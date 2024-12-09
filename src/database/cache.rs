@@ -23,7 +23,7 @@ pub struct CacheValue {
 }
 
 pub struct Cache {
-    pub conn: Arc<Mutex<Connection>>,
+    conn: Arc<Mutex<Connection>>,
 }
 
 impl Cache {
