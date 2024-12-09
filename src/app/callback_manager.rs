@@ -80,7 +80,7 @@ impl CallbackManager {
                     let cache_value = CacheValue {
                         value: account_id.to_string(),
                     };
-                    cache.set(&CacheKey::SelectedAccount, &cache_value)?;
+                    cache.set_selected_account(&cache_value)?;
                     Ok(())
                 })();
 
