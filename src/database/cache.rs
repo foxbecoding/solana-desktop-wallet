@@ -41,7 +41,7 @@ impl Cache {
         Ok(())
     }
 
-    pub fn get(&self, key: &CacheKey) -> Result<Option<CacheValue>, DatabaseError> {
+    pub fn get(&self, key: &CacheKey) -> Result<Option<String>, DatabaseError> {
         let conn = self.conn.lock().unwrap();
         let mut stmt = conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
         let mut rows = stmt.query(params![key.key()])?;
@@ -49,7 +49,7 @@ impl Cache {
         if let Some(row) = rows.next()? {
             let value: String = row.get(0)?;
             let cache_value: CacheValue = serde_json::from_str(&value).unwrap();
-            Ok(Some(cache_value))
+            Ok(Some(cache_value.value))
         } else {
             Ok(None)
         }
