@@ -101,7 +101,7 @@ impl CallbackManager {
                     let cache_value = CacheValue {
                         value: format!("{:?}", view),
                     };
-                    cache.set(&CacheKey::SelectedView, &cache_value)?;
+                    cache.set_selected_view(&cache_value)?;
                     Ok(())
                 })();
 
