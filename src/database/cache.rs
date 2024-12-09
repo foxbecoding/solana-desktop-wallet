@@ -31,7 +31,7 @@ impl Cache {
         Cache { conn }
     }
 
-    fn set(&self, key: &CacheKey, value: &CacheValue) -> Result<(), DatabaseError> {
+    fn set(&self, key: CacheKey, value: &CacheValue) -> Result<(), DatabaseError> {
         let conn = self.conn.lock().unwrap();
         let value = serde_json::to_string(value).unwrap();
         conn.execute(
