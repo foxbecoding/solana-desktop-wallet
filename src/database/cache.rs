@@ -69,7 +69,9 @@ impl Cache {
         self.get(CacheKey::SelectedAccount)
     }
 
-    pub fn set_selected_view(&self, value: &CacheValue) -> Result<(), DatabaseError> {}
+    pub fn set_selected_view(&self, value: &CacheValue) -> Result<(), DatabaseError> {
+        self.set(CacheKey::SelectedView, value)
+    }
 }
 
 #[cfg(test)]
