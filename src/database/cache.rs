@@ -103,7 +103,7 @@ mod tests {
     #[test]
     fn test_get_nonexistent_cache_value() {
         let conn = setup_test_db();
-        let cache = Cache { conn };
+        let cache = Cache::new(conn);
 
         let key = CacheKey::SelectedAccount;
 
