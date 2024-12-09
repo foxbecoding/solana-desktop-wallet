@@ -1,8 +1,5 @@
 use crate::app::{app_view_selector, errors::AppError};
-use crate::database::{
-    account::Account,
-    cache::{fetch_cache_value, Cache, CacheKey},
-};
+use crate::database::{account::Account, cache::Cache};
 use crate::slint_generatedApp::{
     Account as SlintAccount, AccountManager, App as SlintApp, ViewManager,
 };
@@ -64,7 +61,7 @@ impl GlobalManager {
         let cache = Cache::new(conn);
 
         // Check cache for selected account
-        if let Some(selected_account_id) = fetch_cache_value(&cache, &CacheKey::SelectedAccount)? {
+        if let Some(selected_account_id) = cache.get_selected_account()? {
             if let Some(acc) = self.find_account_by_id(&selected_account_id) {
                 account = Some(acc);
             }
@@ -90,7 +87,7 @@ impl GlobalManager {
         let conn = self.conn.clone();
         let cache = Cache::new(conn);
 
-        if let Some(selected_view) = fetch_cache_value(&cache, &CacheKey::SelectedView)? {
+        if let Some(selected_view) = cache.get_selected_view()? {
             let view = app_view_selector(selected_view);
             ViewManager::get(&self.app_instance).set_active_view(view);
         }
