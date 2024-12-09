@@ -61,7 +61,9 @@ impl Cache {
         Ok(())
     }
 
-    pub fn set_selected_account(&self, value: &CacheValue) -> Result<(), DatabaseError> {}
+    pub fn set_selected_account(&self, value: &CacheValue) -> Result<(), DatabaseError> {
+        self.set(&CacheKey::SelectedAccount, value)
+    }
 }
 
 #[cfg(test)]
