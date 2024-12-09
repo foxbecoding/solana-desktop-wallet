@@ -116,7 +116,7 @@ mod tests {
     #[test]
     fn test_remove_cache_value() {
         let conn = setup_test_db();
-        let cache = Cache { conn };
+        let cache = Cache::new(conn);
 
         let key = CacheKey::SelectedAccount;
         let value = CacheValue {
@@ -124,7 +124,7 @@ mod tests {
         };
 
         // Insert value into cache
-        cache.insert(&key, &value).unwrap();
+        cache.set(&key, &value).unwrap();
 
         // Remove the value
         cache.remove(&key).unwrap();
