@@ -64,7 +64,7 @@ impl GlobalManager {
         let cache = Cache::new(conn);
 
         // Check cache for selected account
-        if let Some(selected_account_id) = cache.get(&CacheKey::SelectedAccount)? {
+        if let Some(selected_account_id) = cache.get_selected_account()? {
             if let Some(acc) = self.find_account_by_id(&selected_account_id) {
                 account = Some(acc);
             }
