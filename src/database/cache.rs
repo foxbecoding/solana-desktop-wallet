@@ -73,7 +73,9 @@ impl Cache {
         self.set(CacheKey::SelectedView, value)
     }
 
-    pub fn get_selected_view(&self) -> Result<Option<String>, DatabaseError> {}
+    pub fn get_selected_view(&self) -> Result<Option<String>, DatabaseError> {
+        self.get(CacheKey::SelectedView)
+    }
 }
 
 #[cfg(test)]
