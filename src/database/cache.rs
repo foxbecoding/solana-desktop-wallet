@@ -41,7 +41,7 @@ impl Cache {
         Ok(())
     }
 
-    pub fn get(&self, key: &CacheKey) -> Result<Option<String>, DatabaseError> {
+    fn get(&self, key: &CacheKey) -> Result<Option<String>, DatabaseError> {
         let conn = self.conn.lock().unwrap();
         let mut stmt = conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
         let mut rows = stmt.query(params![key.key()])?;
