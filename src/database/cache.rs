@@ -81,9 +81,9 @@ mod tests {
     }
 
     #[test]
-    fn test_insert_and_get_cache_value() {
+    fn test_set_and_get_cache_value() {
         let conn = setup_test_db();
-        let cache = Cache { conn };
+        let cache = Cache::new(conn);
 
         let key = CacheKey::SelectedAccount;
         let value = CacheValue {
@@ -91,13 +91,13 @@ mod tests {
         };
 
         // Insert value into cache
-        cache.insert(&key, &value).unwrap();
+        cache.set(&key, &value).unwrap();
 
         // Retrieve value from cache
         let fetched_value = cache.get(&key).unwrap();
 
         assert!(fetched_value.is_some());
-        assert_eq!(fetched_value.unwrap().value, "TestAccount");
+        assert_eq!(fetched_value.unwrap(), "TestAccount");
     }
 
     #[test]
