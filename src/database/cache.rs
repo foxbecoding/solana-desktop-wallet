@@ -23,7 +23,7 @@ pub struct CacheValue {
 }
 
 pub struct Cache {
-    pub conn: Arc<Mutex<Connection>>,
+    conn: Arc<Mutex<Connection>>,
 }
 
 impl Cache {
@@ -31,7 +31,7 @@ impl Cache {
         Cache { conn }
     }
 
-    pub fn insert(&self, key: &CacheKey, value: &CacheValue) -> Result<(), DatabaseError> {
+    fn set(&self, key: CacheKey, value: &CacheValue) -> Result<(), DatabaseError> {
         let conn = self.conn.lock().unwrap();
         let value = serde_json::to_string(value).unwrap();
         conn.execute(
@@ -41,7 +41,7 @@ impl Cache {
         Ok(())
     }
 
-    pub fn get(&self, key: &CacheKey) -> Result<Option<CacheValue>, DatabaseError> {
+    fn get(&self, key: CacheKey) -> Result<Option<String>, DatabaseError> {
         let conn = self.conn.lock().unwrap();
         let mut stmt = conn.prepare("SELECT value FROM cache WHERE key = ?1")?;
         let mut rows = stmt.query(params![key.key()])?;
@@ -49,24 +49,40 @@ impl Cache {
         if let Some(row) = rows.next()? {
             let value: String = row.get(0)?;
             let cache_value: CacheValue = serde_json::from_str(&value).unwrap();
-            Ok(Some(cache_value))
+            Ok(Some(cache_value.value))
         } else {
             Ok(None)
         }
     }
 
-    pub fn remove(&self, key: &CacheKey) -> Result<(), DatabaseError> {
+    fn remove(&self, key: CacheKey) -> Result<(), DatabaseError> {
         let conn = self.conn.lock().unwrap();
         conn.execute("DELETE FROM cache WHERE key = ?1", params![key.key()])?;
         Ok(())
     }
-}
 
-pub fn fetch_cache_value(cache: &Cache, key: &CacheKey) -> Result<Option<String>, DatabaseError> {
-    if let Some(value) = cache.get(key)? {
-        Ok(Some(value.value))
-    } else {
-        Ok(None)
+    pub fn set_selected_account(&self, value: &CacheValue) -> Result<(), DatabaseError> {
+        self.set(CacheKey::SelectedAccount, value)
+    }
+
+    pub fn get_selected_account(&self) -> Result<Option<String>, DatabaseError> {
+        self.get(CacheKey::SelectedAccount)
+    }
+
+    pub fn remove_selected_account(&self) -> Result<(), DatabaseError> {
+        self.remove(CacheKey::SelectedAccount)
+    }
+
+    pub fn set_selected_view(&self, value: &CacheValue) -> Result<(), DatabaseError> {
+        self.set(CacheKey::SelectedView, value)
+    }
+
+    pub fn get_selected_view(&self) -> Result<Option<String>, DatabaseError> {
+        self.get(CacheKey::SelectedView)
+    }
+
+    pub fn remove_selected_view(&self) -> Result<(), DatabaseError> {
+        self.remove(CacheKey::SelectedView)
     }
 }
 
@@ -89,34 +105,31 @@ mod tests {
     }
 
     #[test]
-    fn test_insert_and_get_cache_value() {
+    fn test_set_and_get_cache_value() {
         let conn = setup_test_db();
-        let cache = Cache { conn };
+        let cache = Cache::new(conn);
 
-        let key = CacheKey::SelectedAccount;
         let value = CacheValue {
             value: "TestAccount".to_string(),
         };
 
         // Insert value into cache
-        cache.insert(&key, &value).unwrap();
+        cache.set_selected_account(&value).unwrap();
 
         // Retrieve value from cache
-        let fetched_value = cache.get(&key).unwrap();
+        let fetched_value = cache.get_selected_account().unwrap();
 
         assert!(fetched_value.is_some());
-        assert_eq!(fetched_value.unwrap().value, "TestAccount");
+        assert_eq!(fetched_value.unwrap(), "TestAccount");
     }
 
     #[test]
     fn test_get_nonexistent_cache_value() {
         let conn = setup_test_db();
-        let cache = Cache { conn };
-
-        let key = CacheKey::SelectedAccount;
+        let cache = Cache::new(conn);
 
         // Try fetching a nonexistent value
-        let fetched_value = cache.get(&key).unwrap();
+        let fetched_value = cache.get_selected_account().unwrap();
 
         assert!(fetched_value.is_none());
     }
@@ -124,53 +137,20 @@ mod tests {
     #[test]
     fn test_remove_cache_value() {
         let conn = setup_test_db();
-        let cache = Cache { conn };
+        let cache = Cache::new(conn);
 
-        let key = CacheKey::SelectedAccount;
         let value = CacheValue {
             value: "ToBeRemoved".to_string(),
         };
 
         // Insert value into cache
-        cache.insert(&key, &value).unwrap();
+        cache.set_selected_account(&value).unwrap();
 
         // Remove the value
-        cache.remove(&key).unwrap();
+        cache.remove_selected_account().unwrap();
 
         // Try fetching the removed value
-        let fetched_value = cache.get(&key).unwrap();
-
-        assert!(fetched_value.is_none());
-    }
-
-    #[test]
-    fn test_fetch_cache_value() {
-        let conn = setup_test_db();
-        let cache = Cache { conn };
-
-        let key = CacheKey::SelectedAccount;
-        let value = CacheValue {
-            value: "FetchTest".to_string(),
-        };
-
-        // Insert value into cache
-        cache.insert(&key, &value).unwrap();
-
-        // Use fetch_cache_value function
-        let fetched_value = fetch_cache_value(&cache, &key).unwrap();
-
-        assert!(fetched_value.is_some());
-        assert_eq!(fetched_value.unwrap(), "FetchTest");
-    }
-
-    #[test]
-    fn test_fetch_cache_value_nonexistent() {
-        let conn = setup_test_db();
-        let cache = Cache { conn };
-        let key = CacheKey::SelectedAccount;
-
-        // Use fetch_cache_value function without inserting any value
-        let fetched_value = fetch_cache_value(&cache, &key).unwrap();
+        let fetched_value = cache.get_selected_account().unwrap();
 
         assert!(fetched_value.is_none());
     }

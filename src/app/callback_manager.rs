@@ -1,6 +1,6 @@
 use crate::app::global_manager::GlobalManager;
 use crate::database::{
-    cache::{Cache, CacheKey, CacheValue},
+    cache::{Cache, CacheValue},
     errors::DatabaseError,
 };
 use crate::services::account_service::AccountService;
@@ -80,7 +80,7 @@ impl CallbackManager {
                     let cache_value = CacheValue {
                         value: account_id.to_string(),
                     };
-                    cache.insert(&CacheKey::SelectedAccount, &cache_value)?;
+                    cache.set_selected_account(&cache_value)?;
                     Ok(())
                 })();
 
@@ -101,7 +101,7 @@ impl CallbackManager {
                     let cache_value = CacheValue {
                         value: format!("{:?}", view),
                     };
-                    cache.insert(&CacheKey::SelectedView, &cache_value)?;
+                    cache.set_selected_view(&cache_value)?;
                     Ok(())
                 })();
 
