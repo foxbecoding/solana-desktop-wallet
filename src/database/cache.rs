@@ -81,7 +81,9 @@ impl Cache {
         self.get(CacheKey::SelectedView)
     }
 
-    pub fn remove_selected_view(&self) -> Result<(), DatabaseError> {}
+    pub fn remove_selected_view(&self) -> Result<(), DatabaseError> {
+        self.remove(CacheKey::SelectedView)
+    }
 }
 
 #[cfg(test)]
