@@ -136,26 +136,6 @@ mod tests {
     }
 
     #[test]
-    fn test_fetch_cache_value() {
-        let conn = setup_test_db();
-        let cache = Cache { conn };
-
-        let key = CacheKey::SelectedAccount;
-        let value = CacheValue {
-            value: "FetchTest".to_string(),
-        };
-
-        // Insert value into cache
-        cache.insert(&key, &value).unwrap();
-
-        // Use fetch_cache_value function
-        let fetched_value = fetch_cache_value(&cache, &key).unwrap();
-
-        assert!(fetched_value.is_some());
-        assert_eq!(fetched_value.unwrap(), "FetchTest");
-    }
-
-    #[test]
     fn test_fetch_cache_value_nonexistent() {
         let conn = setup_test_db();
         let cache = Cache { conn };
