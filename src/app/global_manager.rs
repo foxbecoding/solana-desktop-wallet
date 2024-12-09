@@ -90,7 +90,7 @@ impl GlobalManager {
         let conn = self.conn.clone();
         let cache = Cache::new(conn);
 
-        if let Some(selected_view) = cache.get(&CacheKey::SelectedView)? {
+        if let Some(selected_view) = cache.get_selected_view()? {
             let view = app_view_selector(selected_view);
             ViewManager::get(&self.app_instance).set_active_view(view);
         }
