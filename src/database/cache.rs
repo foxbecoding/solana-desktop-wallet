@@ -109,16 +109,15 @@ mod tests {
         let conn = setup_test_db();
         let cache = Cache::new(conn);
 
-        let key = CacheKey::SelectedAccount;
         let value = CacheValue {
             value: "TestAccount".to_string(),
         };
 
         // Insert value into cache
-        cache.set(&key, &value).unwrap();
+        cache.set_selected_account(&value).unwrap();
 
         // Retrieve value from cache
-        let fetched_value = cache.get(&key).unwrap();
+        let fetched_value = cache.get_selected_account().unwrap();
 
         assert!(fetched_value.is_some());
         assert_eq!(fetched_value.unwrap(), "TestAccount");
