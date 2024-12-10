@@ -93,6 +93,8 @@ mod tests {
         conn
     }
 
+    fn mock_run_app() {}
+
     fn test_app_start() {
         let conn = setup_test_db();
         let accounts = vec![Account {
