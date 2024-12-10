@@ -142,15 +142,9 @@ mod tests {
         assert!(result.is_ok());
     }
 
-    //#[test]
+    #[test]
     fn test_run_managers() {
-        let conn = setup_test_db();
-        let accounts = vec![];
-        let app = App {
-            conn: conn.clone(),
-            accounts,
-        };
-
+        let _conn = setup_test_db();
         // Create a mock instance of SlintApp
         let slint_app = SlintApp::new().unwrap();
 
