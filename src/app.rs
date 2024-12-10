@@ -97,5 +97,18 @@ mod tests {
     }
 
     #[test]
-    fn test_run_managers() {}
+    fn test_run_managers() {
+        let conn = setup_db_connection();
+        let accounts = vec![];
+        let app = App {
+            conn: conn.clone(),
+            accounts,
+        };
+
+        // Create a mock instance of SlintApp
+        let slint_app = SlintApp::new().unwrap();
+
+        let result = app.run_managers(slint_app);
+        assert!(result.is_ok());
+    }
 }
