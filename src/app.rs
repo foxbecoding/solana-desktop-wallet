@@ -99,7 +99,23 @@ mod tests {
         mock_run_managers(weak_app);
         Ok(())
     }
-    fn mock_run_managers() {}
+
+    fn mock_run_managers(app_instance: SlintApp) {
+        let conn = setup_test_db();
+        let accounts = vec![Account {
+            id: Some(1),
+            name: "Main Account".to_string(),
+            seed: "dummy_seed".to_string(),
+            pubkey: "dummy_pubkey".to_string(),
+            passphrase: "dummy_passphrase".to_string(),
+            balance: Some(100),
+        }];
+
+        GlobalManager::new(conn.clone(), app_instance.clone_strong(), accounts)
+            .run()
+            .unwrap();
+        CallbackManager::new(conn, app_instance).run().unwrap();
+    }
 
     fn test_app_start() {
         let conn = setup_test_db();
