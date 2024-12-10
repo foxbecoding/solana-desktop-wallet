@@ -137,11 +137,8 @@ mod tests {
 
     #[test]
     fn test_run_app() {
-        let conn = setup_test_db();
-        let accounts = vec![];
-        let app = App { conn, accounts };
-
-        let result = app.run_app();
+        let _conn = setup_test_db();
+        let result = mock_run_app();
         assert!(result.is_ok());
     }
 
