@@ -87,5 +87,12 @@ mod tests {
     }
 
     #[test]
-    fn test_run_app() {}
+    fn test_run_app() {
+        let conn = setup_db_connection();
+        let accounts = vec![];
+        let app = App { conn, accounts };
+
+        let result = app.run_app();
+        assert!(result.is_ok());
+    }
 }
