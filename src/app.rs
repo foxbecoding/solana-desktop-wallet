@@ -113,5 +113,31 @@ mod tests {
     }
 
     #[test]
-    fn test_app_view_selector() {}
+    fn test_app_view_selector() {
+        assert_eq!(
+            app_view_selector("Wallet".to_string()),
+            SlintViewEnum::Wallet
+        );
+        assert_eq!(
+            app_view_selector("Collections".to_string()),
+            SlintViewEnum::Collections
+        );
+        assert_eq!(app_view_selector("Swap".to_string()), SlintViewEnum::Swap);
+        assert_eq!(
+            app_view_selector("Explore".to_string()),
+            SlintViewEnum::Explore
+        );
+        assert_eq!(
+            app_view_selector("Settings".to_string()),
+            SlintViewEnum::Settings
+        );
+        assert_eq!(
+            app_view_selector("Accounts".to_string()),
+            SlintViewEnum::Accounts
+        );
+        assert_eq!(
+            app_view_selector("Unknown".to_string()),
+            SlintViewEnum::Wallet
+        );
+    }
 }
