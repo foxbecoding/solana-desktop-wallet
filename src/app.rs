@@ -99,8 +99,10 @@ mod tests {
         mock_run_managers(weak_app)
     }
 
-    fn mock_run_managers(app_instance: SlintApp) -> Result<(), AppError> {
-        let conn = setup_test_db();
+    fn mock_run_managers(
+        conn: Arc<Mutex<Connection>>,
+        app_instance: SlintApp,
+    ) -> Result<(), AppError> {
         let accounts = vec![Account {
             id: Some(1),
             name: "Main Account".to_string(),
@@ -144,11 +146,11 @@ mod tests {
 
     #[test]
     fn test_run_managers() {
-        let _conn = setup_test_db();
+        let conn = setup_test_db();
         // Create a mock instance of SlintApp
         let slint_app = SlintApp::new().unwrap();
 
-        let result = mock_run_managers(slint_app);
+        let result = mock_run_managers(conn, slint_app);
         assert!(result.is_ok());
     }
 
