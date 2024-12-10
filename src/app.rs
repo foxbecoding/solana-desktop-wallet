@@ -95,4 +95,7 @@ mod tests {
         let result = app.run_app();
         assert!(result.is_ok());
     }
+
+    #[test]
+    fn test_run_managers() {}
 }
