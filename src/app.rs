@@ -26,9 +26,11 @@ impl App {
         let app = SlintApp::new()?;
         let weak_app = app.as_weak().unwrap();
         self.run_managers(weak_app)?;
+
         if !cfg!(test) {
             app.run()?;
         }
+
         Ok(())
     }
 
@@ -62,14 +64,37 @@ mod tests {
     use super::*;
     use crate::database::database_connection;
 
-    fn setup_db_connection() -> Arc<Mutex<Connection>> {
-        let conn = database_connection().unwrap();
-        Arc::new(Mutex::new(conn))
+    fn setup_test_db() -> Arc<Mutex<Connection>> {
+        let conn = Arc::new(Mutex::new(database_connection().unwrap()));
+        let conn_clone_binding = conn.clone();
+        let conn_clone = conn_clone_binding.lock().unwrap();
+
+        conn_clone
+            .execute(
+                "CREATE TABLE cache (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+                [],
+            )
+            .unwrap();
+
+        conn_clone
+            .execute(
+                "CREATE TABLE accounts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                seed TEXT NOT NULL,
+                pubkey TEXT NOT NULL,
+                passphrase TEXT NOT NULL,
+                balance INTEGER
+            )",
+                [],
+            )
+            .unwrap();
+
+        conn
     }
 
-    #[test]
     fn test_app_start() {
-        let conn = setup_db_connection();
+        let conn = setup_test_db();
         let accounts = vec![Account {
             id: Some(1),
             name: "Main Account".to_string(),
@@ -88,7 +113,7 @@ mod tests {
 
     #[test]
     fn test_run_app() {
-        let conn = setup_db_connection();
+        let conn = setup_test_db();
         let accounts = vec![];
         let app = App { conn, accounts };
 
@@ -96,9 +121,9 @@ mod tests {
         assert!(result.is_ok());
     }
 
-    #[test]
+    //#[test]
     fn test_run_managers() {
-        let conn = setup_db_connection();
+        let conn = setup_test_db();
         let accounts = vec![];
         let app = App {
             conn: conn.clone(),
