@@ -66,4 +66,7 @@ mod tests {
         let conn = database_connection().unwrap();
         Arc::new(Mutex::new(conn))
     }
+
+    #[test]
+    fn test_app_start() {}
 }
