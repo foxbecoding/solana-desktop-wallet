@@ -93,8 +93,12 @@ mod tests {
         conn
     }
 
-    fn mock_run_app() {}
-
+    fn mock_run_app() -> Result<(), AppError> {
+        let app = SlintApp::new().unwrap();
+        let weak_app = app.as_weak().unwrap();
+        mock_run_managers(weak_app);
+        Ok(())
+    }
     fn mock_run_managers() {}
 
     fn test_app_start() {
