@@ -139,8 +139,8 @@ mod tests {
 
     #[test]
     fn test_run_app() {
-        let _conn = setup_test_db();
-        let result = mock_run_app();
+        let conn = setup_test_db();
+        let result = mock_run_app(conn);
         assert!(result.is_ok());
     }
 
