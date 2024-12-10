@@ -85,4 +85,7 @@ mod tests {
         let result = app.start();
         assert!(result.is_ok());
     }
+
+    #[test]
+    fn test_run_app() {}
 }
