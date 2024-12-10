@@ -96,11 +96,10 @@ mod tests {
     fn mock_run_app() -> Result<(), AppError> {
         let app = SlintApp::new().unwrap();
         let weak_app = app.as_weak().unwrap();
-        mock_run_managers(weak_app);
-        Ok(())
+        mock_run_managers(weak_app)
     }
 
-    fn mock_run_managers(app_instance: SlintApp) {
+    fn mock_run_managers(app_instance: SlintApp) -> Result<(), AppError> {
         let conn = setup_test_db();
         let accounts = vec![Account {
             id: Some(1),
@@ -115,6 +114,7 @@ mod tests {
             .run()
             .unwrap();
         CallbackManager::new(conn, app_instance).run().unwrap();
+        Ok(())
     }
 
     fn test_app_start() {
@@ -154,7 +154,7 @@ mod tests {
         // Create a mock instance of SlintApp
         let slint_app = SlintApp::new().unwrap();
 
-        let result = app.run_managers(slint_app);
+        let result = mock_run_managers(slint_app);
         assert!(result.is_ok());
     }
 
