@@ -59,5 +59,11 @@ pub fn app_view_selector(view: String) -> SlintViewEnum {
 
 #[cfg(test)]
 mod tests {
-    fn setup_mock_connection() {}
+    use super::*;
+    use crate::database::database_connection;
+
+    fn setup_db_connection() -> Arc<Mutex<Connection>> {
+        let conn = database_connection().unwrap();
+        Arc::new(Mutex::new(conn))
+    }
 }
