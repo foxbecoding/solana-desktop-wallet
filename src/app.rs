@@ -58,4 +58,6 @@ pub fn app_view_selector(view: String) -> SlintViewEnum {
 }
 
 #[cfg(test)]
-mod tests {}
+mod tests {
+    fn setup_mock_connection() {}
+}
