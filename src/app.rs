@@ -68,5 +68,21 @@ mod tests {
     }
 
     #[test]
-    fn test_app_start() {}
+    fn test_app_start() {
+        let conn = setup_db_connection();
+        let accounts = vec![Account {
+            id: Some(1),
+            name: "Main Account".to_string(),
+            seed: "dummy_seed".to_string(),
+            pubkey: "dummy_pubkey".to_string(),
+            passphrase: "dummy_passphrase".to_string(),
+            balance: Some(100),
+        }];
+
+        let app = App { conn, accounts };
+
+        // Test that `start` runs without errors.
+        let result = app.start();
+        assert!(result.is_ok());
+    }
 }
