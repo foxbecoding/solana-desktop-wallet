@@ -1,14 +1,13 @@
-use slint::ComponentHandle;
-
-pub(crate) mod callback_manager;
-pub(crate) mod errors;
-pub(crate) mod global_manager;
+pub mod callback_manager;
+pub mod errors;
+pub mod global_manager;
 use crate::app::{
     callback_manager::CallbackManager, errors::AppError, global_manager::GlobalManager,
 };
 use crate::database::account::Account;
 use crate::slint_generatedApp::{App as SlintApp, View as SlintViewEnum};
 use rusqlite::Connection;
+use slint::ComponentHandle;
 use std::sync::{Arc, Mutex};
 
 #[derive(Debug)]
@@ -27,7 +26,9 @@ impl App {
         let app = SlintApp::new()?;
         let weak_app = app.as_weak().unwrap();
         self.run_managers(weak_app)?;
-        app.run()?;
+        if !cfg!(test) {
+            app.run()?;
+        }
         Ok(())
     }
 
@@ -55,3 +56,6 @@ pub fn app_view_selector(view: String) -> SlintViewEnum {
         _ => SlintViewEnum::Wallet,
     }
 }
+
+#[cfg(test)]
+mod tests {}
