@@ -1,5 +1,7 @@
-import {Theme} from "../../theme.slint";
+import { Theme } from "../../theme.slint";
 import { HorizontalBox } from "std-widgets.slint";
+import { SolValueManager } from "../../managers/sol-value-manager.slint";
+
 
 export component SideNavSolValue {
     height: 50px;
@@ -19,7 +21,7 @@ export component SideNavSolValue {
             }
 
             Text {
-                text: "$500 USD";
+                text: "$\{SolValueManager.value} USD";
                 font-size: 20px;
                 font-weight: 700;
             }
