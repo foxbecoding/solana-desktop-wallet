@@ -1,4 +1,5 @@
 import {Theme} from "../../theme.slint";
+import { HorizontalBox } from "std-widgets.slint";
 
 export component SideNavSolValue {
     height: 50px;
@@ -7,5 +8,21 @@ export component SideNavSolValue {
         background: Theme.surface;
         border-radius: 20px;
         height: 40px;
+
+        HorizontalBox {
+            alignment: center;
+
+            Image {
+                source: @image-url("../../assets/icons/solana-icon.svg");
+                width: 20px;
+                horizontal-alignment: left;
+            }
+
+            Text {
+                text: "$500 USD";
+                font-size: 20px;
+                font-weight: 700;
+            }
+        }
     }
 }
