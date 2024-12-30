@@ -3,6 +3,9 @@ use crate::database::{account::Account, cache::Cache};
 use crate::slint_generatedApp::{
     Account as SlintAccount, AccountManager, App as SlintApp, SolValueManager, ViewManager,
 };
+use crate::token_value::TokenValue;
+use anyhow::Error as AnyhowError;
+use jupiter_api::client::Client as JupiterClient;
 use rusqlite::Connection;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use std::{
@@ -29,15 +32,16 @@ impl GlobalManager {
         }
     }
 
-    pub fn run(&self) -> Result<(), AppError> {
-        self.init_globals()?;
+    pub async fn run(&self) -> Result<(), AppError> {
+        self.init_globals().await?;
         Ok(())
     }
 
-    fn init_globals(&self) -> Result<(), AppError> {
+    async fn init_globals(&self) -> Result<(), AppError> {
         self.set_selected_account()?;
         self.set_accounts();
         self.set_selected_view()?;
+        self.set_sol_usd_value().await?;
         Ok(())
     }
 
@@ -94,7 +98,27 @@ impl GlobalManager {
         Ok(())
     }
 
-    fn set_sol_usd_value(&self) {}
+    async fn set_sol_usd_value(&self) -> Result<(), AppError> {
+        const SOL_KEY: &str = "So11111111111111111111111111111111111111112";
+        let token_keys = [SOL_KEY];
+
+        // Create a TokenValue instance and fetch prices
+        let token_value = TokenValue::new(&token_keys).await?;
+
+        // Print out the prices for each key
+        for id in &token_value.ids {
+            if let Some(data) = token_value.get_price(id) {
+                println!(
+                    "ID: {}, Type: {}, Price: {}",
+                    data.id, data.token_type, data.price
+                );
+            } else {
+                println!("No data found for the key: {}", id);
+            }
+        }
+        //SolValueManager::get(&self.app_instance).set_value(valug);
+        Ok(())
+    }
 }
 
 fn slint_account_builder(account: &Account) -> SlintAccount {
