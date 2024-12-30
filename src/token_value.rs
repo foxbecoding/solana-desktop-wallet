@@ -23,3 +23,24 @@ pub struct TokenValue {
     pub ids: Vec<String>,
     pub prices: HashMap<String, TokenData>,
 }
+
+impl TokenValue {
+    /// Create a new TokenValue and fetch prices for the given keys
+    pub async fn new(ids: &[&str]) -> Result<Self, Box<dyn Error>> {
+        // Construct the URL with all keys
+        let url = format!("https://api.jup.ag/price/v2?ids={}", ids.join(","));
+
+        // Make the HTTP request
+        let response: TokenResponse = reqwest::get(&url).await?.json().await?;
+
+        Ok(TokenValue {
+            ids: ids.iter().map(|&key| key.to_string()).collect(),
+            prices: response.data,
+        })
+    }
+
+    /// Get price information for a specific key
+    pub fn get_price(&self, id: &str) -> Option<&TokenData> {
+        self.prices.get(id)
+    }
+}
