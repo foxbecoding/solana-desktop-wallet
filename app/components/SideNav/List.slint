@@ -12,7 +12,9 @@ export component SideNavList inherits VerticalLayout {
     private property <image> accountsIcon: ViewManager.active_view == View.Accounts ? @image-url("../../assets/icons/account-icon-filled.svg") : @image-url("../../assets/icons/account-icon.svg");
 
     function labelSelector(view: View) -> string {
-        if (view == View.Wallet) {
+        if (view == View.Accounts) {
+            return "Accounts";
+        } else if (view == View.Wallet) {
             return "Wallet";
         } else if (view == View.Collections) {
             return "Collections";
@@ -22,8 +24,6 @@ export component SideNavList inherits VerticalLayout {
             return "Explore";
         } else if (view == View.Settings) {
             return "Settings";
-        } else if (view == View.Accounts) {
-            return "Accounts";
         } else {
             return "Unavailable";
         }
