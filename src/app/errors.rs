@@ -29,4 +29,3 @@ pub enum AppError {
     #[error("No account selected")]
     NoAccountSelected,
 }
-
