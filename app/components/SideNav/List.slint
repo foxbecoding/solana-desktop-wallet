@@ -30,6 +30,7 @@ export component SideNavList inherits VerticalLayout {
     }
 
     private property <[ListItem]> listItems: [
+        { view: View.Accounts, icon: accountsIcon, label: labelSelector(View.Accounts) },
         { view: View.Wallet, icon: walletIcon, label: labelSelector(View.Wallet) },
         {
             view: View.Collections,
@@ -39,7 +40,6 @@ export component SideNavList inherits VerticalLayout {
         { view: View.Swap, icon: swapIcon, label: labelSelector(View.Swap) },
         { view: View.Explore, icon: explorerIcon, label: labelSelector(View.Explore) },
         { view: View.Settings, icon: settingsIcon, label: labelSelector(View.Settings) },
-        { view: View.Accounts, icon: accountsIcon, label: labelSelector(View.Accounts) },
     ];
 
     for item[index] in listItems: SideNavListItem {
