@@ -10,6 +10,7 @@ mod connection;
 mod database;
 mod initializer;
 mod services;
+mod token_value;
 
 use crate::app::errors::AppError;
 use crate::database::database_connection;
