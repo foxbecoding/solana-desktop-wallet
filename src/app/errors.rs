@@ -1,9 +1,10 @@
+use crate::database::errors::DatabaseError;
+use anyhow::Error as AnyhowError;
 use serde::de::StdError;
 use slint::PlatformError;
+use solana_sdk::pubkey::ParsePubkeyError;
 use thiserror::Error;
 use webbrowser::ParseBrowserError;
-use solana_sdk::pubkey::ParsePubkeyError;
-use crate::database::errors::DatabaseError;
 
 #[derive(Error, Debug)]
 pub enum AppError {
@@ -19,9 +20,13 @@ pub enum AppError {
     #[error("Parse pubkey error: {0}")]
     ParsePubkeyError(#[from] ParsePubkeyError),
 
+    #[error("Anyhow error: {0}")]
+    AnyhowError(#[from] AnyhowError),
+
     #[error("Other error: {0}")]
     Other(#[from] Box<dyn StdError>),
 
     #[error("No account selected")]
     NoAccountSelected,
 }
+
