@@ -16,7 +16,7 @@ export component SideNavAccount {
             text: AccountManager.selected_account.name;
             overflow: TextOverflow.elide;
         }
-        
+
         VerticalLayout {
             alignment: center;
             height: 30px;
@@ -29,6 +29,7 @@ export component SideNavAccount {
                         font-weight: 500;
                     }
                 }
+
                 AppButton {
                     label: "View On Solscan";
                     icon: @image-url("../../assets/icons/open-icon.svg");
@@ -38,18 +39,6 @@ export component SideNavAccount {
                 }
             }
         }
-
-        VerticalLayout {
-            padding-top: 9px;
-            AppButton {
-                type: AppButtonType.SECONDARY;
-                label: "View Accounts";
-                icon: @image-url("../../assets/icons/eye-icon.svg");
-                clicked => {
-                    ViewManager.active_view = View.Accounts;
-                    ViewManager.cache_active_view(View.Accounts);
-                }
-            }
-        }
     }
 }
+
