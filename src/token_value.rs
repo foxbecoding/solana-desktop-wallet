@@ -10,3 +10,10 @@ pub struct TokenData {
     pub token_type: String,
     pub price: String,
 }
+
+// Struct for the full response
+#[derive(Serialize, Deserialize, Debug)]
+pub struct TokenResponse {
+    pub data: HashMap<String, TokenData>,
+    pub time_taken: f64,
+}
