@@ -17,3 +17,9 @@ pub struct TokenResponse {
     pub data: HashMap<String, TokenData>,
     pub time_taken: f64,
 }
+
+// The main struct
+pub struct TokenValue {
+    pub ids: Vec<String>,
+    pub prices: HashMap<String, TokenData>,
+}
