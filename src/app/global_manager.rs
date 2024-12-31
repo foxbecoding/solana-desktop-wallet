@@ -4,8 +4,6 @@ use crate::slint_generatedApp::{
     Account as SlintAccount, AccountManager, App as SlintApp, SolValueManager, ViewManager,
 };
 use crate::token_value::TokenValue;
-use anyhow::Error as AnyhowError;
-use jupiter_api::client::Client as JupiterClient;
 use rusqlite::Connection;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use std::{
@@ -100,23 +98,15 @@ impl GlobalManager {
 
     async fn set_sol_usd_value(&self) -> Result<(), AppError> {
         const SOL_KEY: &str = "So11111111111111111111111111111111111111112";
-        let token_keys = [SOL_KEY];
+        let token_keys = vec![SOL_KEY];
 
         // Create a TokenValue instance and fetch prices
         let token_value = TokenValue::new(&token_keys).await?;
 
-        // Print out the prices for each key
-        for id in &token_value.ids {
-            if let Some(data) = token_value.get_price(id) {
-                println!(
-                    "ID: {}, Type: {}, Price: {}",
-                    data.id, data.token_type, data.price
-                );
-            } else {
-                println!("No data found for the key: {}", id);
-            }
-        }
-        //SolValueManager::get(&self.app_instance).set_value(valug);
+        if let Some(token_data) = token_value.get_price(SOL_KEY) {
+            SolValueManager::get(&self.app_instance).set_value(token_data.formatted_price().into());
+        };
+
         Ok(())
     }
 }
