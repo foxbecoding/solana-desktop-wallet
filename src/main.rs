@@ -3,20 +3,23 @@
 
 use slint::include_modules as include_slint_modules;
 use std::sync::{Arc, Mutex};
+use tokio;
 
 mod app;
 mod connection;
 mod database;
 mod initializer;
 mod services;
+mod token_value;
 
 use crate::app::errors::AppError;
 use crate::database::database_connection;
 use crate::initializer::run as Run_Initializer;
 
 include_slint_modules!();
-fn main() -> Result<(), AppError> {
+#[tokio::main]
+async fn main() -> Result<(), AppError> {
     let conn = Arc::new(Mutex::new(database_connection()?));
-    Run_Initializer(conn)?;
+    Run_Initializer(conn).await?;
     Ok(())
 }

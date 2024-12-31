@@ -1,8 +1,9 @@
 use crate::app::{app_view_selector, errors::AppError};
 use crate::database::{account::Account, cache::Cache};
 use crate::slint_generatedApp::{
-    Account as SlintAccount, AccountManager, App as SlintApp, ViewManager,
+    Account as SlintAccount, AccountManager, App as SlintApp, SolValueManager, ViewManager,
 };
+use crate::token_value::TokenValue;
 use rusqlite::Connection;
 use slint::{Global, ModelRc, SharedString, VecModel};
 use std::{
@@ -29,8 +30,16 @@ impl GlobalManager {
         }
     }
 
-    pub fn run(&self) -> Result<(), AppError> {
-        self.init_globals()?;
+    pub async fn run(&self) -> Result<(), AppError> {
+        self.init_globals().await?;
+        Ok(())
+    }
+
+    async fn init_globals(&self) -> Result<(), AppError> {
+        self.set_selected_account()?;
+        self.set_accounts();
+        self.set_selected_view()?;
+        self.set_sol_usd_value().await?;
         Ok(())
     }
 
@@ -44,13 +53,6 @@ impl GlobalManager {
         let rc_accounts: Rc<VecModel<SlintAccount>> = Rc::new(VecModel::from(slint_accounts));
         let model_rc_accounts = ModelRc::from(rc_accounts.clone());
         AccountManager::get(&self.app_instance).set_accounts(model_rc_accounts);
-    }
-
-    fn init_globals(&self) -> Result<(), AppError> {
-        self.set_selected_account()?;
-        self.set_accounts();
-        self.set_selected_view()?;
-        Ok(())
     }
 
     fn set_selected_account(&self) -> Result<(), AppError> {
@@ -91,6 +93,20 @@ impl GlobalManager {
             let view = app_view_selector(selected_view);
             ViewManager::get(&self.app_instance).set_active_view(view);
         }
+        Ok(())
+    }
+
+    async fn set_sol_usd_value(&self) -> Result<(), AppError> {
+        const SOL_KEY: &str = "So11111111111111111111111111111111111111112";
+        let token_keys = vec![SOL_KEY];
+
+        // Create a TokenValue instance and fetch prices
+        let token_value = TokenValue::new(&token_keys).await?;
+
+        if let Some(token_data) = token_value.get_price(SOL_KEY) {
+            SolValueManager::get(&self.app_instance).set_value(token_data.formatted_price().into());
+        };
+
         Ok(())
     }
 }
