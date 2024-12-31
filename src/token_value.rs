@@ -10,6 +10,17 @@ pub struct TokenData {
     pub price: String,
 }
 
+impl TokenData {
+    /// Get the price formatted to two decimal places
+    pub fn formatted_price(&self) -> String {
+        if let Ok(price) = self.price.parse::<f64>() {
+            format!("{:.2}", price)
+        } else {
+            self.price.clone() // Fallback to the original string if parsing fails
+        }
+    }
+}
+
 // Struct for the full response
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TokenResponse {
