@@ -1,5 +1,5 @@
 import {HorizontalBox} from "std-widgets.slint";
-import {SideNavAccount, SideNavList} from "components.slint";
+import {SideNavAccount, SideNavList, SideNavSolValue} from "components.slint";
 import {Theme} from "../../theme.slint";
 
 export component SideNav inherits Rectangle {
@@ -9,8 +9,12 @@ export component SideNav inherits Rectangle {
     HorizontalBox {
         VerticalLayout {
             spacing: 9px;
-            SideNavAccount {}
-            SideNavList {}
+            SideNavSolValue { }
+
+            SideNavAccount { }
+
+            SideNavList { }
         }
     }
 }
+
