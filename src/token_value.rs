@@ -7,7 +7,6 @@ use std::error::Error;
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct TokenData {
     pub id: String,
-    pub token_type: String,
     pub price: String,
 }
 
@@ -15,7 +14,8 @@ pub struct TokenData {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TokenResponse {
     pub data: HashMap<String, TokenData>,
-    pub time_taken: f64,
+    #[serde(rename = "timeTaken")]
+    pub time_taken: Option<f64>,
 }
 
 // The main struct
